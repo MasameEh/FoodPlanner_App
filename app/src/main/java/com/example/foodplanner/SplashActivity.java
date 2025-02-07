@@ -16,6 +16,8 @@ import java.util.List;
 
 import model.Category;
 import model.CategoryResponse;
+import model.Meal;
+import model.MealResponse;
 import network.MealService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,27 +46,43 @@ public class SplashActivity extends AppCompatActivity {
         MealService mealService = retrofit.create(MealService.class);
 
         Call<CategoryResponse> call = mealService.getCategories();
+        Call<MealResponse> call1 = mealService.getRandomMeal();
 
-        call.enqueue(new Callback<CategoryResponse>() {
+        call1.enqueue(new Callback<MealResponse>() {
             @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                if (response.isSuccessful()) {
-                    CategoryResponse products = response.body();
-                    List<Category> productsList = products.getCategories();
-                    Log.i(TAG, "onResponse: " + response.body().getCategories().size());
-                    int sizeOfList = productsList.size();
-                    Toast.makeText(SplashActivity.this, "Number of products: " + sizeOfList,Toast.LENGTH_SHORT).show();
-                    
-                } else {
-                    // Handle errors (e.g., HTTP 404, 500)
-                    Toast.makeText(SplashActivity.this, "Number of products: " + response.errorBody(),Toast.LENGTH_SHORT).show();
-                }
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                MealResponse meals = response.body();
+                List<Meal> mealsList = meals.getMeals();
+                Log.i(TAG, "onResponse: " + mealsList.get(0).getMealCountry());
+
+                Toast.makeText(SplashActivity.this, "Meal instruction: " + mealsList.get(0).getMealInstructions(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable t) {
-                // Handle network failure or request failure
+            public void onFailure(Call<MealResponse> call, Throwable throwable) {
+
             }
         });
+//        call.enqueue(new Callback<CategoryResponse>() {
+//            @Override
+//            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+//                if (response.isSuccessful()) {
+//                    CategoryResponse products = response.body();
+//                    List<Category> categoriesList = products.getCategories();
+//                    Log.i(TAG, "onResponse: " + categoriesList.get(0).getCategoryName());
+//                    int sizeOfList = categoriesList.size();
+//                    Toast.makeText(SplashActivity.this, "Number of products: " + sizeOfList,Toast.LENGTH_SHORT).show();
+//
+//                } else {
+//                    // Handle errors (e.g., HTTP 404, 500)
+//                    Toast.makeText(SplashActivity.this, "Number of products: " + response.errorBody(),Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+//                // Handle network failure or request failure
+//            }
+//        });
     }
 }

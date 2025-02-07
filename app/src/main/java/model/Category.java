@@ -1,10 +1,16 @@
 package model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Category {
 
+    @SerializedName("idCategory")
     private String categoryId;
+    @SerializedName("strCategory")
     private String categoryName;
+    @SerializedName("strCategoryThumb")
     private String categoryImage;
+    @SerializedName("strCategoryDescription")
     private String categoryDescription;
 
     public Category(String categoryDescription, String categoryImage, String categoryName, String categoryId) {
