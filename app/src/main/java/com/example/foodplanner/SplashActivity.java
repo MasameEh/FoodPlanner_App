@@ -47,15 +47,118 @@ public class SplashActivity extends AppCompatActivity {
 
         Call<CategoryResponse> call = mealService.getCategories();
         Call<MealResponse> call1 = mealService.getRandomMeal();
+        Call<MealResponse> call2 = mealService.getMealsByName("s");
+        Call<MealResponse> call3 = mealService.getMealsByFirstLetter("f");
+        Call<MealResponse> call4 = mealService.getMealsById("52772");
 
-        call1.enqueue(new Callback<MealResponse>() {
+        Call<MealResponse> call5 = mealService.getMealsByMainIngredient("chicken_breast");
+        Call<MealResponse> call6 = mealService.getMealsByCategory("Seafood");
+        Call<MealResponse> call7 = mealService.getMealsByCountry("Egyptian");
+
+//        call2.enqueue(new Callback<MealResponse>() {
+//            @Override
+//            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+//                MealResponse meals = response.body();
+//                List<Meal> mealsList = meals.getMeals();
+//                Log.i(TAG, "onResponse: " + mealsList.get(0).getMealCountry());
+//
+//                Toast.makeText(SplashActivity.this, "Meal Name: " + mealsList.get(0).getMealName(),Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MealResponse> call, Throwable throwable) {
+//
+//            }
+//        });
+//        call1.enqueue(new Callback<MealResponse>() {
+//            @Override
+//            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+//                MealResponse meals = response.body();
+//                List<Meal> mealsList = meals.getMeals();
+//                Log.i(TAG, "onResponse: " + mealsList.get(0).getMealCountry());
+//
+//                Toast.makeText(SplashActivity.this, "Meal Name: " + mealsList.get(0).getMealName(),Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MealResponse> call, Throwable throwable) {
+//
+//            }
+//        });
+//
+//        call3.enqueue(new Callback<MealResponse>() {
+//            @Override
+//            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+//                MealResponse meals = response.body();
+//                List<Meal> mealsList = meals.getMeals();
+//                Log.i(TAG, "onResponse: " + mealsList.get(0).getMealCountry());
+//
+//                Toast.makeText(SplashActivity.this, "Meal Name: " + mealsList.get(0).getMealName(),Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MealResponse> call, Throwable throwable) {
+//
+//            }
+//        });
+//        call4.enqueue(new Callback<MealResponse>() {
+//            @Override
+//            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+//                MealResponse meals = response.body();
+//                List<Meal> mealsList = meals.getMeals();
+//                Log.i(TAG, "onResponse: " + mealsList.get(0).getMealCountry());
+//
+//                Toast.makeText(SplashActivity.this, "Meal Name: " + mealsList.get(0).getMealName(),Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MealResponse> call, Throwable throwable) {
+//
+//            }
+//        });
+
+
+
+        call5.enqueue(new Callback<MealResponse>() {
             @Override
             public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
                 MealResponse meals = response.body();
                 List<Meal> mealsList = meals.getMeals();
-                Log.i(TAG, "onResponse: " + mealsList.get(0).getMealCountry());
+                Log.i(TAG, "onResponse: " + mealsList.get(0).toString());
 
-                Toast.makeText(SplashActivity.this, "Meal instruction: " + mealsList.get(0).getMealInstructions(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(SplashActivity.this, "Meal Name: " + mealsList.get(0).getMealName(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable throwable) {
+
+            }
+        });
+
+        call6.enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                MealResponse meals = response.body();
+                List<Meal> mealsList = meals.getMeals();
+                Log.i(TAG, "onResponse: " + mealsList.get(0).toString());
+
+                Toast.makeText(SplashActivity.this, "Meal Name: " + mealsList.get(0).getMealName(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<MealResponse> call, Throwable throwable) {
+
+            }
+        });
+
+        call7.enqueue(new Callback<MealResponse>() {
+            @Override
+            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+                MealResponse meals = response.body();
+                List<Meal> mealsList = meals.getMeals();
+                Log.i(TAG, "onResponse: " + mealsList.get(0).toString());
+
+                Toast.makeText(SplashActivity.this, "Meal Name: " + mealsList.get(0).getMealName(),Toast.LENGTH_SHORT).show();
             }
 
             @Override

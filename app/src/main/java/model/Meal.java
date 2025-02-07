@@ -455,4 +455,18 @@ public class Meal {
     public void setStrMeasure20(String strMeasure20) {
         this.strMeasure20 = strMeasure20;
     }
+
+    @Override
+    public String toString() {
+        return "Meal{" +
+                "mealId='" + mealId + '\'' +
+                ", mealName='" + mealName + '\'' +
+                ", mealDrinkAlternate='" + mealDrinkAlternate + '\'' +
+                ", mealCategory='" + mealCategory + '\'' +
+                ", mealCountry='" + mealCountry + '\'' +
+                ", mealInstructions='" + mealInstructions + '\'' +
+                ", mealTag='" + mealTag + '\'' +
+                ", mealImage='" + mealImage + '\'' +
+                '}';
+    }
 }
