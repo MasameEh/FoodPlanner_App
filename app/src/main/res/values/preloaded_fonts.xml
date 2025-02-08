@@ -2,8 +2,11 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/baloo_tamma</item>
+        <item>@font/josefin_sans</item>
         <item>@font/josefin_sans_bold</item>
 
+        <item>@font/josefin_sans_light</item>
+        <item>@font/josefin_sans_thin</item>
         <item>@font/pacifico</item>
     </array>
 </resources>
