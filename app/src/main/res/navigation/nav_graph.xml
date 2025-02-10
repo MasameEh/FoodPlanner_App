@@ -52,5 +52,9 @@
         android:id="@+id/homeFragment"
         android:name="com.example.foodplanner.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <argument
+            android:name="user"
+            app:argType="model.User" />
+    </fragment>
 </navigation>

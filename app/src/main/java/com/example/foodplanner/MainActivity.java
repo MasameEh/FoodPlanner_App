@@ -12,9 +12,13 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    NavController navController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,5 +38,21 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        NavHostFragment navHostFr = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+        navController = navHostFr.getNavController();
+
+        navController.addOnDestinationChangedListener((navController1, navDestination, bundle) -> {
+            if(navDestination.getId() == R.id.splashFragment || navDestination.getId() == R.id.welcomeFragment ){
+
+            }
+        });
+
+
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp() || super.onSupportNavigateUp();
+    }
+
 }

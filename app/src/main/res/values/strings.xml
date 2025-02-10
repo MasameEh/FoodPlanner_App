@@ -14,4 +14,6 @@
     <string name="sign_up">Sign Up</string>
     <string name="discover_new_recipes_plan_your_meals">Discover new recipes, plan your meals</string>
     <string name="confirm_password">Confirm Password</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
