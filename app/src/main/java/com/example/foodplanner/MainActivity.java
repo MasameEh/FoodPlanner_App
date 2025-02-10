@@ -1,49 +1,38 @@
 package com.example.foodplanner;
 
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import auth.AuthService;
-import auth.FirebaseAuthService;
-
 public class MainActivity extends AppCompatActivity {
 
-    Button googleBtn;
-    Button emailBtn;
-
-    TextView loginTv;
-    Intent intent;
-    private AuthService authService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-
-        emailBtn = findViewById(R.id.btn_emailsignup);
-        googleBtn = findViewById(R.id.btn_google);
-        loginTv = findViewById(R.id.tv_login);
-
-        authService = new FirebaseAuthService();
-        emailBtn.setOnClickListener(v -> {
-            intent = new Intent(MainActivity.this, SignUpActivity.class);
-            startActivity(intent);
+        Window window = getWindow();
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //window.setStatusBarColor(ContextCompat.getColor(this, R.color.primary));
+//        window.getDecorView().setSystemUiVisibility(
+//                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+//                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+//        window.setStatusBarColor(Color.TRANSPARENT);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
         });
 
-        googleBtn.setOnClickListener(v -> {
-
-        });
-        loginTv.setOnClickListener(v -> {
-            intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        });
     }
 }
