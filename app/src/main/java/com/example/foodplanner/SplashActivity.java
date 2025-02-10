@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
 
     public static final String baseUrl = "https://www.themealdb.com/api/json/v1/1/";
     private static final String TAG = "SplashActivity";
-    private static final int SPLASH_TIME_OUT = 2000;
+    private static final int SPLASH_TIME_OUT = 3800;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

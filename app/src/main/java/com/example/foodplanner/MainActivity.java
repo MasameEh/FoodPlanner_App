@@ -11,6 +11,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import auth.AuthService;
+import auth.FirebaseAuthService;
+
 public class MainActivity extends AppCompatActivity {
 
     Button googleBtn;
@@ -18,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView loginTv;
     Intent intent;
-
+    private AuthService authService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,11 +32,15 @@ public class MainActivity extends AppCompatActivity {
         googleBtn = findViewById(R.id.btn_google);
         loginTv = findViewById(R.id.tv_login);
 
+        authService = new FirebaseAuthService();
         emailBtn.setOnClickListener(v -> {
             intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
         });
 
+        googleBtn.setOnClickListener(v -> {
+
+        });
         loginTv.setOnClickListener(v -> {
             intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);

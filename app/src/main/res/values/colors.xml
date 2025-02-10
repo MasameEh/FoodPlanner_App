@@ -2,6 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="appColor">#96C560</color>
-
+    <color name="primary">#63c560</color>
+    <color name="secondary">#c1ebb7</color>
+    <color name="tertiary">#00bfee</color>
+    <color name="onPrimary">#004f0e</color>
+    <color name="onSecondary">#476b42</color>
+    <color name="onTertiary">#00bfee</color>
 </resources>

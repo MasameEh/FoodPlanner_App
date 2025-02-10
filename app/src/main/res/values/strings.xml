@@ -6,4 +6,12 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_up_with_email">SIGN UP WITH EMAIL</string>
     <string name="google">Google</string>
+    <string name="welcome_to_mealbuddy">Welcome to MealBuddy</string>
+    <string name="discover_new_recipe_and_plan_meals">Discover new recipe and plan meals</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="discover_new_recipes_plan_your_meals">Discover new recipes, plan your meals</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>
