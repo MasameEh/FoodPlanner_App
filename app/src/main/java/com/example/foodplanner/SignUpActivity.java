@@ -16,6 +16,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import auth.AuthCallback;
+import auth.AuthService;
+import auth.FirebaseAuthService;
 import utils.InputValidator;
 
 
@@ -28,7 +31,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText confirmPassEt;
 
     Button sigUpBtn;
-    private FirebaseAuth mAuth;
+    private AuthService authService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
         confirmPassEt = findViewById(R.id.et_confirmPass);
         sigUpBtn = findViewById(R.id.btn_signup);
         // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
+        authService = new FirebaseAuthService();
 
         sigUpBtn.setOnClickListener(v -> {
             String username  = usernameEt.getText().toString();
@@ -60,7 +63,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseUser currentUser = authService.getCurrentUser();
 
         if(currentUser != null){
 
@@ -68,25 +71,20 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void createAccount(String email, String password){
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            String msg = task.getException().getMessage();
-                            Toast.makeText(SignUpActivity.this,  msg,
-                                    Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
-                        }
-                    }
-                });
+        authService.signUpWithEmail(email, password, new AuthCallback() {
+            @Override
+            public void onSuccess(FirebaseUser user) {
+                Log.d(TAG, "Sign-up successful");
+                Toast.makeText(SignUpActivity.this, "Sign-up successful! Please login.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.w(TAG, "Sign-up failed", e);
+                Toast.makeText(SignUpActivity.this, "Sign-up failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 
