@@ -43,4 +43,30 @@ public class InputValidator {
 
         return isValid; // Return true if all fields are valid
     }
+
+    public static boolean validateLoginInputs(EditText emailEt, EditText passwordEt) {
+        boolean isValid = true;
+
+        String email = emailEt.getText().toString().trim();
+        String password = passwordEt.getText().toString().trim();
+
+        if (email.isEmpty()) {
+            emailEt.setError("Email is required");
+            isValid = false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEt.setError("Invalid email format");
+            isValid = false;
+        }
+
+        if (password.isEmpty()) {
+            passwordEt.setError("Password is required");
+            isValid = false;
+        } else if (password.length() < 6) {
+            passwordEt.setError("Password must be at least 6 characters");
+            isValid = false;
+        }
+
+
+        return isValid; // Return true if all fields are valid
+    }
 }

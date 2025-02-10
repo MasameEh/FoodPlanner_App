@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseUser;
 import auth.AuthCallback;
 import auth.AuthService;
 import auth.FirebaseAuthService;
+import model.User;
+import utils.InputValidator;
 
 
 public class LoginFragment extends Fragment {
@@ -36,8 +38,6 @@ public class LoginFragment extends Fragment {
     public LoginFragment() {
         // Required empty public constructor
     }
-
-
 
 
     @Override
@@ -64,7 +64,10 @@ public class LoginFragment extends Fragment {
         authService = new FirebaseAuthService();
 
         loginBtn.setOnClickListener(v -> {
-            userLogin(emailEt.getText().toString(), passwordEt.getText().toString());
+                if (InputValidator.validateLoginInputs(emailEt, passwordEt)) {
+                    userLogin(emailEt.getText().toString().trim(), passwordEt.getText().toString().trim());
+                }
+
         });
     }
 
@@ -73,9 +76,12 @@ public class LoginFragment extends Fragment {
             @Override
             public void onSuccess(FirebaseUser user) {
                 Log.d(TAG, "signInWithEmail:success");
-                Toast.makeText(requireContext(), "Authentication succeeded.", Toast.LENGTH_SHORT).show();
+                //sToast.makeText(requireContext(), "Authentication succeeded.", Toast.LENGTH_SHORT).show();
                 // Navigate to the next screen
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment);
+                User user1 =  new User(email, email);
+                LoginFragmentDirections.ActionLoginFragmentToHomeFragment action =
+                        LoginFragmentDirections.actionLoginFragmentToHomeFragment(user1);
+                Navigation.findNavController(view).navigate(action);
 
             }
 
