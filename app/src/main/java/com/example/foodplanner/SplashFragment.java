@@ -55,4 +55,10 @@ public class SplashFragment extends Fragment {
         super.onResume();
         requireActivity().getWindow().setStatusBarColor(ContextCompat.getColor(requireContext(), R.color.primary));
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //requireActivity().getWindow().setStatusBarColor(ContextCompat.getColor(requireContext(),R.));
+    }
 }
