@@ -1,17 +1,15 @@
 package com.example.foodplanner;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-import model.CategoryResponse;
-import model.MealResponse;
-import network.MealService;
+import com.example.foodplanner.model.CategoryResponse;
+import com.example.foodplanner.model.MealResponse;
+import com.example.foodplanner.network.MealService;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -47,14 +45,14 @@ public class SplashActivity extends AppCompatActivity {
         Call<MealResponse> call7 = mealService.getMealsByCountry("Egyptian");
 
         // Delay and move to the next activity
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashActivity.this, WelcomeActivity.class);
-                startActivity(intent);
-                finish(); // Close this activity
-            }
-        }, SPLASH_TIME_OUT);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent intent = new Intent(SplashActivity.this, WelcomeActivity.class);
+//                startActivity(intent);
+//                finish(); // Close this activity
+//            }
+//        }, SPLASH_TIME_OUT);
 
 //        call2.enqueue(new Callback<MealResponse>() {
 //            @Override

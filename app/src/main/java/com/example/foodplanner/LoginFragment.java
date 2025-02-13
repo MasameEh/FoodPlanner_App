@@ -1,5 +1,9 @@
 package com.example.foodplanner;
 
+import static androidx.navigation.Navigation.findNavController;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,13 +20,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.foodplanner.db.CacheHelper;
 import com.google.firebase.auth.FirebaseUser;
 
-import auth.AuthCallback;
-import auth.AuthService;
-import auth.FirebaseAuthService;
-import model.User;
-import utils.InputValidator;
+import com.example.foodplanner.auth.AuthCallback;
+import com.example.foodplanner.auth.AuthService;
+import com.example.foodplanner.auth.FirebaseAuthRepository;
+import com.example.foodplanner.model.User;
+import com.example.foodplanner.utils.InputValidator;
 
 
 public class LoginFragment extends Fragment {
@@ -37,6 +42,8 @@ public class LoginFragment extends Fragment {
     private View view;
 
     private AuthService authService;
+    CacheHelper cacheHelper;
+
 
     public LoginFragment() {
         // Required empty public constructor
@@ -46,6 +53,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cacheHelper =  new CacheHelper(requireContext());
 
     }
 
@@ -64,10 +72,10 @@ public class LoginFragment extends Fragment {
         emailEt = view.findViewById(R.id.et_email1);
         passwordEt = view.findViewById(R.id.et_password1);
         signupTv = view.findViewById(R.id.tv_signup);
-        authService = new FirebaseAuthService();
+        authService = new FirebaseAuthRepository(requireContext());
 
         signupTv.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signupFragment);
+            findNavController(view).navigate(R.id.action_loginFragment_to_signupFragment);
         });
         loginBtn.setOnClickListener(v -> {
                 if (InputValidator.validateLoginInputs(emailEt, passwordEt)) {
@@ -84,10 +92,11 @@ public class LoginFragment extends Fragment {
                 Log.d(TAG, "signInWithEmail:success");
                 //sToast.makeText(requireContext(), "Authentication succeeded.", Toast.LENGTH_SHORT).show();
                 // Navigate to the next screen
+                cacheHelper.saveString("userId", user.getUid());
                 User user1 =  new User(email, email);
                 LoginFragmentDirections.ActionLoginFragmentToHomeFragment action =
                         LoginFragmentDirections.actionLoginFragmentToHomeFragment(user1);
-                Navigation.findNavController(view).navigate(action);
+                findNavController(view).navigate(action);
 
             }
 

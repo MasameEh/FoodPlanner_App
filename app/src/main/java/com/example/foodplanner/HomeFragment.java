@@ -18,11 +18,11 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import model.Meal;
-import model.MealResponse;
-import model.User;
-import network.MealService;
-import network.RetrofitClient;
+import com.example.foodplanner.model.Meal;
+import com.example.foodplanner.model.MealResponse;
+import com.example.foodplanner.model.User;
+import com.example.foodplanner.network.MealService;
+import com.example.foodplanner.network.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

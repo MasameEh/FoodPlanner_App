@@ -1,6 +1,7 @@
 package com.example.foodplanner;
 
-import android.content.Intent;
+import static androidx.navigation.Navigation.findNavController;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,8 +16,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import auth.AuthService;
-import auth.FirebaseAuthService;
+import com.example.foodplanner.auth.AuthService;
+import com.example.foodplanner.auth.FirebaseAuthRepository;
 
 
 public class WelcomeFragment extends Fragment {
@@ -36,7 +37,7 @@ public class WelcomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        authService = new FirebaseAuthService();
+        authService = new FirebaseAuthRepository(requireContext());
     }
 
     @Override
@@ -55,7 +56,7 @@ public class WelcomeFragment extends Fragment {
 
         // sign up
         emailBtn.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_signupFragment);
+            findNavController(view).navigate(R.id.action_welcomeFragment_to_signupFragment);
         });
         // google auth
         googleBtn.setOnClickListener(v -> {
@@ -64,7 +65,7 @@ public class WelcomeFragment extends Fragment {
 
         // normal log in
         loginTv.setOnClickListener(v -> {
-            Navigation.findNavController(view).navigate(R.id.action_welcomeFragment_to_loginFragment);
+            findNavController(view).navigate(R.id.action_welcomeFragment_to_loginFragment);
         });
 
     }

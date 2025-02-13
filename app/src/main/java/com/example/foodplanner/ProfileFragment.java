@@ -1,16 +1,29 @@
 package com.example.foodplanner;
 
+import static androidx.navigation.Navigation.findNavController;
+
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.example.foodplanner.auth.FirebaseAuthRepository;
+import com.example.foodplanner.db.CacheHelper;
 
 
 public class ProfileFragment extends Fragment {
 
+    Button logoutBtn;
+    CacheHelper cacheHelper;
+
+    FirebaseAuthRepository firebaseAuth;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -23,6 +36,8 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requireActivity().setTitle("Profile");
+        cacheHelper =  new CacheHelper(requireContext());
+        firebaseAuth = new FirebaseAuthRepository(requireContext());
     }
 
     @Override
@@ -30,5 +45,19 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        logoutBtn = view.findViewById(R.id.btn_logout);
+
+        logoutBtn.setOnClickListener(v -> {
+            firebaseAuth.logout();;
+            cacheHelper.saveString("userId", null);
+            findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
+        });
     }
 }

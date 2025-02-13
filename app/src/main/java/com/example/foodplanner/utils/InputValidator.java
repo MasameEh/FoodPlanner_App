@@ -1,4 +1,4 @@
-package utils;
+package com.example.foodplanner.utils;
 
 import android.util.Patterns;
 import android.widget.EditText;

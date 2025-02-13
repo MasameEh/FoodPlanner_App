@@ -1,5 +1,7 @@
 package com.example.foodplanner;
 
+import static androidx.navigation.Navigation.findNavController;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,11 +17,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.foodplanner.db.CacheHelper;
+
 public class SplashFragment extends Fragment {
 
 
     private static final String TAG = "SplashScreen";
     private static final int SPLASH_TIME_OUT = 4000;
+    CacheHelper cacheHelper;
 
     public SplashFragment() {
         // Required empty public constructor
@@ -42,10 +47,10 @@ public class SplashFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        new Handler().postDelayed(new Runnable() {
+        view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_welcomeFragment);
+                findNavController(view).navigate(R.id.action_splashFragment_to_welcomeFragment);
             }
         }, SPLASH_TIME_OUT);
     }

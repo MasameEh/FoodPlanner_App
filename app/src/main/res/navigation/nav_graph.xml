@@ -12,6 +12,10 @@
         <action
             android:id="@+id/action_splashFragment_to_welcomeFragment"
             app:destination="@id/welcomeFragment"
+            app:popUpTo="@id/splashFragment" />
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -60,7 +64,7 @@
         tools:layout="@layout/fragment_home" >
         <argument
             android:name="user"
-            app:argType="model.User"
+            app:argType="com.example.foodplanner.model.User"
             app:nullable="true"  />
     </fragment>
     <fragment
@@ -77,5 +81,9 @@
         android:id="@+id/profileFragment"
         android:name="com.example.foodplanner.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

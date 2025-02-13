@@ -15,12 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.foodplanner.db.CacheHelper;
 import com.google.firebase.auth.FirebaseUser;
 
-import auth.AuthCallback;
-import auth.AuthService;
-import auth.FirebaseAuthService;
-import utils.InputValidator;
+import com.example.foodplanner.auth.AuthCallback;
+import com.example.foodplanner.auth.AuthService;
+import com.example.foodplanner.auth.FirebaseAuthRepository;
+import com.example.foodplanner.utils.InputValidator;
 
 
 public class SignupFragment extends Fragment {
@@ -35,6 +36,7 @@ public class SignupFragment extends Fragment {
     private AuthService authService;
 
     private View view;
+    CacheHelper cacheHelper;
 
     public SignupFragment() {
         // Required empty public constructor
@@ -45,7 +47,8 @@ public class SignupFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        authService = new FirebaseAuthService();
+        authService = new FirebaseAuthRepository(requireContext());
+        cacheHelper =  new CacheHelper(requireContext());
     }
 
     @Override
@@ -83,7 +86,8 @@ public class SignupFragment extends Fragment {
             @Override
             public void onSuccess(FirebaseUser user) {
                 Log.d(TAG, "Sign-up successful");
-                //Toast.makeText(requireContext(), "Sign-up successful! Please login.", Toast.LENGTH_SHORT).show();
+                cacheHelper.saveString("userId", user.getUid());
+                Toast.makeText(requireContext(), "Sign-up successful!", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_homeFragment);
             }
 

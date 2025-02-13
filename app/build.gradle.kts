@@ -54,4 +54,5 @@ dependencies {
     implementation ("com.google.android.material:material:1.13.0-alpha10")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:21.3.0")
+    implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
 }

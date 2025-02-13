@@ -1,7 +1,7 @@
-package network;
+package com.example.foodplanner.network;
 
-import model.CategoryResponse;
-import model.MealResponse;
+import com.example.foodplanner.model.CategoryResponse;
+import com.example.foodplanner.model.MealResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

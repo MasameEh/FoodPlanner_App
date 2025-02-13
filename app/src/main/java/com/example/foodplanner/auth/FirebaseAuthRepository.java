@@ -1,17 +1,33 @@
-package auth;
+package com.example.foodplanner.auth;
+
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class FirebaseAuthService implements AuthService{
+public class FirebaseAuthRepository implements AuthService{
+    private Context context;
     private final FirebaseAuth mAuth;
 
-    public FirebaseAuthService() {
+    private SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    private static FirebaseAuthRepository repo = null;
+
+    public FirebaseAuthRepository(Context context) {
+        this.context = context;
         this.mAuth = FirebaseAuth.getInstance();
+        sharedPreferences = context.getSharedPreferences("data",MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
-    
+
+    public SharedPreferences getSharedPreferences() {
+        return sharedPreferences;
+    }
     public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
     }
@@ -51,4 +67,8 @@ public class FirebaseAuthService implements AuthService{
                 });
     }
 
+    @Override
+    public void logout() {
+        mAuth.signOut();
+    }
 }
