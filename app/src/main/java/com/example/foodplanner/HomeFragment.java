@@ -26,7 +26,6 @@ import network.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 
 public class HomeFragment extends Fragment {
@@ -76,8 +75,8 @@ public class HomeFragment extends Fragment {
         Log.i(TAG, "onViewCreated: " );
         // get references to views
         bookmarkIv = view.findViewById(R.id.iv_r_bookmark);
-        mealIv = view.findViewById(R.id.iv_r_meal_thumbnail);
-        mealNameTv = view.findViewById(R.id.tv_r_meal_name);
+        mealIv = view.findViewById(R.id.iv_item_thumbnail);
+        mealNameTv = view.findViewById(R.id.tv_item_name);
 
        // populate
         callRandomMeal.enqueue(new Callback<MealResponse>() {

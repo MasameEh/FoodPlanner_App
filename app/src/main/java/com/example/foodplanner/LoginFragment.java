@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +32,8 @@ public class LoginFragment extends Fragment {
     Button loginBtn;
     EditText emailEt;
     EditText passwordEt;
+
+    TextView signupTv;
     private View view;
 
     private AuthService authService;
@@ -50,7 +53,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_login, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
@@ -60,9 +63,12 @@ public class LoginFragment extends Fragment {
         loginBtn = view.findViewById(R.id.btn_login);
         emailEt = view.findViewById(R.id.et_email1);
         passwordEt = view.findViewById(R.id.et_password1);
-
+        signupTv = view.findViewById(R.id.tv_signup);
         authService = new FirebaseAuthService();
 
+        signupTv.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_signupFragment);
+        });
         loginBtn.setOnClickListener(v -> {
                 if (InputValidator.validateLoginInputs(emailEt, passwordEt)) {
                     userLogin(emailEt.getText().toString().trim(), passwordEt.getText().toString().trim());
@@ -88,7 +94,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onFailure(Exception e) {
                 Log.w(TAG, "signInWithEmail:failure", e);
-                Toast.makeText(requireContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "email or password is incorrect.", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -83,14 +83,14 @@ public class SignupFragment extends Fragment {
             @Override
             public void onSuccess(FirebaseUser user) {
                 Log.d(TAG, "Sign-up successful");
-                Toast.makeText(requireContext(), "Sign-up successful! Please login.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(requireContext(), "Sign-up successful! Please login.", Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_homeFragment);
             }
 
             @Override
             public void onFailure(Exception e) {
                 Log.w(TAG, "Sign-up failed", e);
-                Toast.makeText(requireContext(), "Sign-up failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Sign-up failed" + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

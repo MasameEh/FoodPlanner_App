@@ -64,6 +64,10 @@ public class Meal {
     private String strMeasure20;
 
 
+    public Meal(String mealName,  String mealImage){
+        this.mealName = mealName;
+        this.mealImage = mealImage;
+    }
     public String getMealId() {
         return mealId;
     }
