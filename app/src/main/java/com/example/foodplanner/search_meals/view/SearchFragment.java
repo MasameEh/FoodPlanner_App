@@ -7,12 +7,27 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.model.Category;
+import com.example.foodplanner.data.model.Ingredient;
+import com.example.foodplanner.data.remote.network.CategoriesRemoteDataSourceImp;
+import com.example.foodplanner.data.remote.network.MealsRemoteDataSource;
+import com.example.foodplanner.data.repo.CategoryRepositoryImp;
+import com.example.foodplanner.data.repo.MealsRepositoryImp;
+import com.example.foodplanner.search_meals.presenter.SearchPresenter;
+import com.example.foodplanner.search_meals.presenter.SearchPresenterImp;
+import com.example.foodplanner.search_meals.view.adapters.CategoryRecyclerViewAdapter;
+import com.example.foodplanner.search_meals.view.adapters.IngredientRecyclerViewAdapter;
+import com.example.foodplanner.search_meals.view.adapters.CountryRecyclerViewAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -23,67 +38,30 @@ import java.util.List;
 import com.example.foodplanner.data.model.Meal;
 
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchView{
 
 
     ChipGroup chipGroup;
     RecyclerView recyclerView;
-    List<Meal> mealsCountry;
-    List<Meal> mealsInger;
-    List<Meal> mealsCatg;
+    EditText searchEt;
+    String selectedChip;
+
+    IngredientRecyclerViewAdapter ingredientAdapter;
+    CategoryRecyclerViewAdapter categoryAdapter;
+
+    CountryRecyclerViewAdapter countryAdapter;
+    private static final String TAG = "SearchFragment";
+    SearchPresenter searchPresenter;
 
     public SearchFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         requireActivity().setTitle("SearchFragment");
-
-        mealsInger = new ArrayList<>(Arrays.asList(
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg"),
-                new Meal("Apple & Blackberry Crumble", "https://www.themealdb.com/images/media/meals/xvsurr1511719182.jpg"),
-                new Meal("Ayam Percik", "https://www.themealdb.com/images/media/meals/020z181619788503.jpg"),
-                new Meal("Fish pie", "https://www.themealdb.com/images/media/meals/ysxwuq1487323065.jpg"),
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/sqrtwu1511721265.jpg"),
-                new Meal("Flamiche", "https://www.themealdb.com/images/media/meals/wssvvs1511785879.jpg"),
-                new Meal("French Onion Soup", "https://www.themealdb.com/images/media/meals/xvrrux1511783685.jpg"),
-                new Meal("Full English Breakfast", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg"),
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg"),
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg"),
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg")
-        ));
-
-        mealsCountry = new ArrayList<>(Arrays.asList(
-                new Meal("American", "https://cdn.britannica.com/33/4833-050-F6E415FE/Flag-United-States-of-America.jpg"),
-                new Meal("British", "https://cdn.britannica.com/33/4833-050-F6E415FE/Flag-United-States-of-America.jpg"),
-                new Meal("American", "https://www.themealdb.com/images/media/meals/020z181619788503.jpg"),
-                new Meal("American", "https://cdn.britannica.com/33/4833-050-F6E415FE/Flag-United-States-of-America.jpg"),
-                new Meal("British", "https://cdn.britannica.com/33/4833-050-F6E415FE/Flag-United-States-of-America.jpg"),
-                new Meal("British", "https://www.themealdb.com/images/media/meals/wssvvs1511785879.jpg"),
-                new Meal("French Onion Soup", "https://www.themealdb.com/images/media/meals/xvrrux1511783685.jpg"),
-                new Meal("Full English Breakfast", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg"),
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg"),
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg"),
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg")
-        ));
-
-        mealsCatg = new ArrayList<>(Arrays.asList(
-                new Meal("Beef", "https://www.themealdb.com/images/category/beef.png"),
-                new Meal("Chicken", "https://www.themealdb.com/images/category/chicken.png"),
-                new Meal("Dessert", "https://www.themealdb.com/images/category/dessert.png"),
-                new Meal("Lamb", "https://www.themealdb.com/images/category/lamb.png"),
-                new Meal("British", "https://cdn.britannica.com/33/4833-050-F6E415FE/Flag-United-States-of-America.jpg"),
-                new Meal("British", "https://www.themealdb.com/images/category/chicken.png"),
-                new Meal("French Onion Soup", "https://www.themealdb.com/images/category/chicken.png"),
-                new Meal("Full English Breakfast", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg"),
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg"),
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg"),
-                new Meal("Apple Frangipan Tart", "https://www.themealdb.com/images/media/meals/wxywrq1468235067.jpg")
-        ));
 
     }
 
@@ -97,12 +75,42 @@ public class SearchFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        chipGroup = view.findViewById(R.id.chipGroup);
-        recyclerView = view.findViewById(R.id.rv_items);
-        int spacing = 16; // 16dp spacing
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, spacing, true));
+        searchPresenter = new SearchPresenterImp(
+                CategoryRepositoryImp.getInstance(CategoriesRemoteDataSourceImp.getInstance()),
+                MealsRepositoryImp.getInstance(MealsRemoteDataSource.getInstance())
+                ,this);
+
+        initializeUI(view);
         setupChoiceChips();
 
+        searchEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if (selectedChip.equals("Categories")) {
+
+                    searchPresenter.filterCategories(s.toString());
+                    Log.i(TAG, "onTextChanged: " + s);
+                } else if (selectedChip.equals("Ingredients")) {
+                    searchPresenter.filterIngredients(s.toString());
+                } else if (selectedChip.equals("Countries")) {
+                    Log.i(TAG, "onTextChanged: " + s);
+                    searchPresenter.filterCountries(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        int spacing = 16;
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, spacing, true));
 
     }
 
@@ -114,25 +122,72 @@ public class SearchFragment extends Fragment {
             chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if(isChecked && chip.getText().equals("Countries")){
                     Toast.makeText(requireContext(), chip.getText(), Toast.LENGTH_SHORT).show();
-                    SearchRecyclerViewAdapter myRv = new SearchRecyclerViewAdapter(requireContext(), mealsCountry);
-                    recyclerView.setAdapter(myRv);
+                    searchPresenter.getCountries();
+                    selectedChip = "Countries";
+
                 }
                 else if(isChecked && chip.getText().equals("Ingredients")){
                     Toast.makeText(requireContext(), chip.getText(), Toast.LENGTH_SHORT).show();
-                    SearchRecyclerViewAdapter myRv = new SearchRecyclerViewAdapter(requireContext(), mealsInger);
-                    recyclerView.setAdapter(myRv);
+                    searchPresenter.getIngredients();
+                    selectedChip = "Ingredients";
                 }
                 else if(isChecked && chip.getText().equals("Categories")){
                     Toast.makeText(requireContext(), chip.getText(), Toast.LENGTH_SHORT).show();
-                    SearchRecyclerViewAdapter myRv = new SearchRecyclerViewAdapter(requireContext(), mealsCatg);
-                    recyclerView.setAdapter(myRv);
-                }
-                else{
-                    SearchRecyclerViewAdapter myRv = new SearchRecyclerViewAdapter(requireContext(), new ArrayList<>());
-                    recyclerView.setAdapter(myRv);
+                    searchPresenter.getCategories();
+                    selectedChip = "Categories";
                 }
             });
 
         }
+    }
+
+    public void initializeUI(View view){
+        chipGroup = view.findViewById(R.id.chipGroup);
+        recyclerView = view.findViewById(R.id.rv_items);
+        searchEt =  view.findViewById(R.id.et_search);
+    }
+
+
+    @Override
+    public void showCategories(List<Category> categories) {
+        Log.i(TAG, "showCategories: " + categories.get(0).getCategoryName());
+         categoryAdapter = new CategoryRecyclerViewAdapter(requireContext(), categories);
+        recyclerView.setAdapter(categoryAdapter);
+    }
+
+    @Override
+    public void showCountries(List<Meal> countries) {
+        countryAdapter = new CountryRecyclerViewAdapter(requireContext(), countries);
+        Log.i(TAG, "showCountries: " + countries.get(0).getMealCountry());
+        recyclerView.setAdapter(countryAdapter);
+    }
+
+    @Override
+    public void showIngredients(List<Ingredient> ingredients) {
+        Log.i(TAG, "showIngredients: " + ingredients.get(0).getName());
+        ingredientAdapter =  new IngredientRecyclerViewAdapter(requireContext(), ingredients);
+        recyclerView.setAdapter(ingredientAdapter);
+    }
+
+    @Override
+    public void showFilteredCountries(List<Meal> countries) {
+        Log.i(TAG, "countryAdapter: " + countries);
+        countryAdapter.setData(countries);
+    }
+
+    @Override
+    public void showFilteredCategories(List<Category> categories) {
+        Log.i(TAG, "showFilteredCategories: " + categories);
+        categoryAdapter.setData(categories);
+    }
+
+    @Override
+    public void showFilteredIngredients(List<Ingredient> ingredients) {
+        ingredientAdapter.setData(ingredients);
+    }
+
+    @Override
+    public void showErr(String err) {
+
     }
 }

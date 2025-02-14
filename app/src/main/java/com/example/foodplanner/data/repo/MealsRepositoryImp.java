@@ -1,5 +1,8 @@
 package com.example.foodplanner.data.repo;
 
+import com.example.foodplanner.data.model.Ingredient;
+import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.remote.network.IngredientCallBack;
 import com.example.foodplanner.data.remote.network.MealsRemoteDataSource;
 import com.example.foodplanner.data.remote.network.NetworkCallBack;
 
@@ -21,8 +24,18 @@ public class MealsRepositoryImp implements MealRepository{
         return repo;
     }
     @Override
-    public void getRandomMeal(NetworkCallBack networkCallBack){
+    public void getRandomMeal(NetworkCallBack<Meal> networkCallBack){
         mealsRemote.getRandomMeal(networkCallBack);
+    }
+
+    @Override
+    public void getCountries(NetworkCallBack<Meal> networkCallBack) {
+        mealsRemote.getCountries(networkCallBack);
+    }
+
+    @Override
+    public void getIngredients(IngredientCallBack networkCallBack) {
+        mealsRemote.getIngredients(networkCallBack);
     }
 
 }

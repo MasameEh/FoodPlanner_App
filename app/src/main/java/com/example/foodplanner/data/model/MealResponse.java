@@ -3,7 +3,7 @@ package com.example.foodplanner.data.model;
 import java.util.List;
 
 public class MealResponse {
-    private List<Meal> meals;
+    private final List<Meal> meals;
 
     public MealResponse(List<Meal> meals) {
         this.meals = meals;
@@ -13,7 +13,4 @@ public class MealResponse {
         return meals;
     }
 
-    public void setMeals(List<Meal> categories) {
-        this.meals = categories;
-    }
 }

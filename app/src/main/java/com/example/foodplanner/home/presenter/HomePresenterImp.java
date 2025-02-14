@@ -7,7 +7,7 @@ import com.example.foodplanner.home.view.HomeView;
 
 import java.util.List;
 
-public class HomePresenterImp implements HomePresenter, NetworkCallBack {
+public class HomePresenterImp implements HomePresenter, NetworkCallBack<Meal> {
 
     private boolean isBookmarked = false;
     HomeView homeView;
