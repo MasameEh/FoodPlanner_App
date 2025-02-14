@@ -1,13 +1,15 @@
 package com.example.foodplanner.signup.view;
 
+import static androidx.navigation.Navigation.findNavController;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
-import android.util.Log;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +18,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.local.CacheHelper;
-import com.google.firebase.auth.FirebaseUser;
 
-import com.example.foodplanner.data.remote.auth.AuthCallback;
-import com.example.foodplanner.data.remote.auth.AuthService;
+import com.example.foodplanner.data.local.CacheHelper;
 import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
+import com.example.foodplanner.data.repo.AuthRepositoryImp;
+import com.example.foodplanner.signup.presenter.SignupPresenter;
+import com.example.foodplanner.signup.presenter.SignupPresenterImp;
 import com.example.foodplanner.utils.InputValidator;
 
 
-public class SignupFragment extends Fragment {
+public class SignupFragment extends Fragment implements SignupView{
 
     private static final String TAG = "SignUpScreen";
     EditText usernameEt;
@@ -34,22 +36,18 @@ public class SignupFragment extends Fragment {
     EditText confirmPassEt;
 
     Button sigUpBtn;
-//    private AuthService authService;
-
     private View view;
-//    CacheHelper cacheHelper;
+
+    SignupPresenter signupPresenter;
 
     public SignupFragment() {
         // Required empty public constructor
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        authService = new FirebaseRemoteDataSource(requireContext());
-//        cacheHelper =  new CacheHelper(requireContext());
+
     }
 
     @Override
@@ -62,25 +60,31 @@ public class SignupFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        signupPresenter = new SignupPresenterImp(AuthRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
+                CacheHelper.getInstance(requireContext())), this);
+
         this.view = view;
-        usernameEt = view.findViewById(R.id.et_username);
-        emailEt = view.findViewById(R.id.et_email);
-        passwordEt = view.findViewById(R.id.et_password);
-        confirmPassEt = view.findViewById(R.id.et_confirmPass);
-        sigUpBtn = view.findViewById(R.id.btn_signup);
+        initializeUI(view);
 
         sigUpBtn.setOnClickListener(v -> {
-            String username  = usernameEt.getText().toString();
-            String email  = emailEt.getText().toString();
-            String password  = passwordEt.getText().toString();
-            String passwordC  = confirmPassEt.getText().toString();
+            String username  = usernameEt.getText().toString().trim();
+            String email  = emailEt.getText().toString().trim();
+            String password  = passwordEt.getText().toString().trim();
+            String passwordC  = confirmPassEt.getText().toString().trim();
             if (InputValidator.validateSignupInputs(usernameEt, emailEt, passwordEt, confirmPassEt)) {
-                createAccount(emailEt.getText().toString().trim(), passwordEt.getText().toString().trim());
+                signupPresenter.registerUser(email, password, username);
             }
 
         });
     }
 
+    void initializeUI(View view){
+        usernameEt = view.findViewById(R.id.et_username);
+        emailEt = view.findViewById(R.id.et_email);
+        passwordEt = view.findViewById(R.id.et_password);
+        confirmPassEt = view.findViewById(R.id.et_confirmPass);
+        sigUpBtn = view.findViewById(R.id.btn_signup);
+    }
 
     private void createAccount(String email, String password){
 //        authService.signUpWithEmail(email, password, new AuthCallback() {
@@ -98,5 +102,14 @@ public class SignupFragment extends Fragment {
 //                Toast.makeText(requireContext(), "Sign-up failed" + e.getMessage(), Toast.LENGTH_SHORT).show();
 //            }
 //        });
+    }
+
+    @Override
+    public void navigateToHome() {
+        findNavController(view).navigate(R.id.action_signupFragment_to_homeFragment);
+    }
+
+    public void showError(String message){
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

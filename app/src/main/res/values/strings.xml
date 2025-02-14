@@ -20,4 +20,5 @@
     <string name="countries">Countries</string>
     <string name="categories">Categories</string>
     <string name="ingredients">Ingredients</string>
+    <string name="daily_inspiration">Daily Inspiration</string>
 </resources>

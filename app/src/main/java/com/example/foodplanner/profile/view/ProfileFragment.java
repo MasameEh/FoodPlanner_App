@@ -9,36 +9,38 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
 import com.example.foodplanner.data.local.CacheHelper;
+import com.example.foodplanner.data.repo.AuthRepositoryImp;
+import com.example.foodplanner.profile.presenter.ProfilePresenter;
+import com.example.foodplanner.profile.presenter.ProfilePresenterImp;
 
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements ProfileView{
 
     Button logoutBtn;
-    CacheHelper cacheHelper;
+    private static final String TAG = "ProfileFragment";
+    private View view;
 
-    FirebaseRemoteDataSource firebaseAuth;
+    private ProfilePresenter profilePresenter;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requireActivity().setTitle("Profile");
-//        cacheHelper =  new CacheHelper(requireContext());
-//        firebaseAuth = new FirebaseRemoteDataSource(requireContext());
     }
 
     @Override
@@ -51,14 +53,29 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        this.view=view;
+        profilePresenter = new ProfilePresenterImp(AuthRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
+                CacheHelper.getInstance(requireContext())), this);
 
         logoutBtn = view.findViewById(R.id.btn_logout);
 
-//        logoutBtn.setOnClickListener(v -> {
+        logoutBtn.setOnClickListener(v -> {
 //            firebaseAuth.logout();;
 //            cacheHelper.saveString("userId", null);
 //            findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
-//        });
+            Log.i(TAG, "onViewCreated: log out clicked" );
+            profilePresenter.logoutUser();
+        });
+    }
+
+    @Override
+    public void navigateToLogin() {
+        Log.i(TAG, "nav to login" );
+        findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show();
     }
 }

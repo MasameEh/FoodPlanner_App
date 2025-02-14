@@ -9,6 +9,7 @@ public class AuthRepositoryImp implements AuthRepository {
     private FirebaseRemoteDataSource firebaseSource;
     private final CacheHelper cacheHelper;
     private static AuthRepositoryImp repo;
+
     private AuthRepositoryImp(FirebaseRemoteDataSource firebaseSource, CacheHelper cacheHelper) {
         this.firebaseSource = firebaseSource;
         this.cacheHelper = cacheHelper;
@@ -35,7 +36,18 @@ public class AuthRepositoryImp implements AuthRepository {
         cacheHelper.clear();
     }
     @Override
-    public void userLogin(String email, String password, AuthCallback callback) {
+    public void loginUser(String email, String password, AuthCallback callback) {
         firebaseSource.login(email, password, callback);
+    }
+
+    @Override
+    public void registerUser(String email, String password, String username, AuthCallback callback) {
+        firebaseSource.signUpWithEmail(email, password, username, callback);
+    }
+
+    @Override
+    public void logoutUser(AuthCallback callback) {
+
+        firebaseSource.logout(callback);
     }
 }

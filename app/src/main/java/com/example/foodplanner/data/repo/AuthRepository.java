@@ -11,6 +11,8 @@ public interface AuthRepository {
 
     void clearUserData();
 
-    void userLogin(String email, String password, AuthCallback callback);
+    void loginUser(String email, String password, AuthCallback callback);
+    void registerUser(String email, String password, String username, AuthCallback callback);
 
+    void logoutUser(AuthCallback callback);
 }

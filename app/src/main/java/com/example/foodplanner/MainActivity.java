@@ -32,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 //        cacheHelper =  new CacheHelper(this);
-//        String userId = cacheHelper.getString("userId");
+
+        String userId = CacheHelper.getInstance(this).getString("userId");
 
         //navigationView = findViewById(R.id.nav_view);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -71,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        if(userId != null && navController.getCurrentDestination() != null){
-//            navController.navigate(R.id.action_splashFragment_to_homeFragment);
-//        }
+        if(userId != null && navController.getCurrentDestination() != null){
+            navController.navigate(R.id.action_splashFragment_to_homeFragment);
+        }
     }
 
     @Override

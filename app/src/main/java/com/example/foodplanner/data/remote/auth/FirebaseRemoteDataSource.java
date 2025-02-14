@@ -1,7 +1,6 @@
 package com.example.foodplanner.data.remote.auth;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.util.Log;
 
 import com.google.firebase.auth.AuthCredential;
@@ -46,11 +45,11 @@ public class FirebaseRemoteDataSource implements AuthService{
     }
 
     @Override
-    public void signUpWithEmail(String email, String password, AuthCallback callback) {
+    public void signUpWithEmail(String email, String password, String username, AuthCallback callback) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        //saveUserToFirestore(userId, username, email);
+                        saveUserToFirestore(mAuth.getCurrentUser().getUid(), username, email);
                         callback.onSuccess(mAuth.getCurrentUser());
                     } else {
                         callback.onFailure(task.getException());
@@ -100,9 +99,14 @@ public class FirebaseRemoteDataSource implements AuthService{
 //                .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
 //    }
 
-
     @Override
-    public void logout() {
-        mAuth.signOut();
+    public void logout(AuthCallback callback) {
+        try {
+            mAuth.signOut();
+            callback.onSuccess(mAuth.getCurrentUser());
+        } catch (Exception e) {
+            callback.onFailure(e);
+        }
+
     }
 }

@@ -1,10 +1,7 @@
 package com.example.foodplanner.login.presenter;
 
-import com.example.foodplanner.data.local.CacheHelper;
 import com.example.foodplanner.data.remote.auth.AuthCallback;
-import com.example.foodplanner.data.remote.auth.AuthService;
 import com.example.foodplanner.data.repo.AuthRepository;
-import com.example.foodplanner.data.repo.AuthRepositoryImp;
 import com.example.foodplanner.login.view.LoginView;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -19,10 +16,9 @@ public class LoginPresenterImp implements LoginPresenter, AuthCallback {
         this.loginView = loginView;
     }
 
-
     @Override
     public void loginUser(String email, String password) {
-        authRepo.userLogin(email, password, this);
+        authRepo.loginUser(email, password, this);
     }
 
     @Override
@@ -33,6 +29,6 @@ public class LoginPresenterImp implements LoginPresenter, AuthCallback {
 
     @Override
     public void onFailure(Exception e) {
-
+        loginView.showError(e.getMessage());
     }
 }

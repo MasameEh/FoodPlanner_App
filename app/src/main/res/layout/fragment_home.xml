@@ -24,7 +24,7 @@
             android:layout_gravity="top"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/placeholder" />
+            app:srcCompat="@drawable/holder" />
 
         <TextView
             android:id="@+id/tv_item_name"
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:fontFamily="@font/josefin_sans_bold"
-        android:text="Daily Inspiration"
+        android:text="@string/daily_inspiration"
         android:textColor="@color/onPrimary"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"

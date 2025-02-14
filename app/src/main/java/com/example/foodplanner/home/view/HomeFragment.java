@@ -1,9 +1,11 @@
 package com.example.foodplanner.home.view;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -42,7 +44,6 @@ public class HomeFragment extends Fragment implements HomeView{
 
     TextView mealNameTv;
 
-    boolean isBookmarked = false;
     User user;
 
     HomePresenter presenter;
@@ -81,7 +82,7 @@ public class HomeFragment extends Fragment implements HomeView{
         // get references to views
         initializeUI(view);
         presenter.getRandomMeal();
-
+        //mealIv.setColorFilter(ContextCompat.getColor(requireContext(), R.color.primary), PorterDuff.Mode.SRC_ATOP);
         bookmarkIv.setOnClickListener(v -> {
             presenter.toggleBookmark();
         });

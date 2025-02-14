@@ -49,9 +49,8 @@ public class WelcomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        emailBtn = view.findViewById(R.id.btn_emailsignup);
-        googleBtn = view.findViewById(R.id.btn_google);
-        loginTv = view.findViewById(R.id.tv_login);
+
+        initializeUI(view);
 
         // sign up
         emailBtn.setOnClickListener(v -> {
@@ -67,6 +66,12 @@ public class WelcomeFragment extends Fragment {
             findNavController(view).navigate(R.id.action_welcomeFragment_to_loginFragment);
         });
 
+    }
+
+    void initializeUI(View view){
+        emailBtn = view.findViewById(R.id.btn_emailsignup);
+        googleBtn = view.findViewById(R.id.btn_google);
+        loginTv = view.findViewById(R.id.tv_login);
     }
 
     @Override
