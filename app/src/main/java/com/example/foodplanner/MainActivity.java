@@ -1,10 +1,7 @@
 package com.example.foodplanner;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
@@ -14,18 +11,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.foodplanner.db.CacheHelper;
+import com.example.foodplanner.data.local.CacheHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     NavController navController;
-    NavigationView navigationView ;
+    NavigationView navigationView;
 
     CacheHelper cacheHelper;
 
@@ -35,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        cacheHelper =  new CacheHelper(this);
-        String userId = cacheHelper.getString("userId");
+//        cacheHelper =  new CacheHelper(this);
+//        String userId = cacheHelper.getString("userId");
 
         //navigationView = findViewById(R.id.nav_view);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -75,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if(userId != null && navController.getCurrentDestination() != null){
-            navController.navigate(R.id.action_splashFragment_to_homeFragment);
-        }
+//        if(userId != null && navController.getCurrentDestination() != null){
+//            navController.navigate(R.id.action_splashFragment_to_homeFragment);
+//        }
     }
 
     @Override

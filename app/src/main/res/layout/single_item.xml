@@ -19,7 +19,7 @@
         <ImageView
             android:id="@+id/iv_item_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="145dp"
+            android:layout_height="match_parent"
             android:layout_gravity="top"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
@@ -27,13 +27,15 @@
 
         <TextView
             android:id="@+id/tv_item_name"
-            android:layout_width="171dp"
-            android:layout_height="62dp"
+            android:layout_width="265dp"
+            android:layout_height="56dp"
             android:layout_gravity="bottom|center"
+            android:background="@color/primaryWithOpacity"
+            android:backgroundTint="@color/primaryWithOpacity"
             android:fontFamily="@font/josefin_sans_bold"
             android:gravity="center"
             android:text=" Chicken Fajita"
-            android:textColor="@color/onPrimary"
+            android:textColor="@color/white"
             android:textSize="20sp" />
 
     </androidx.cardview.widget.CardView>

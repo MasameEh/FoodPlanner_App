@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-import com.example.foodplanner.model.CategoryResponse;
-import com.example.foodplanner.model.MealResponse;
-import com.example.foodplanner.network.MealService;
+import com.example.foodplanner.data.model.CategoryResponse;
+import com.example.foodplanner.data.model.MealResponse;
+import com.example.foodplanner.data.remote.network.MealService;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
