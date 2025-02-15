@@ -46,8 +46,15 @@ public class AuthRepositoryImp implements AuthRepository {
     }
 
     @Override
+    public void signInWithGoogle(String idToken, AuthCallback callback) {
+        firebaseSource.signInWithGoogle(idToken, callback);
+    }
+
+    @Override
     public void logoutUser(AuthCallback callback) {
 
         firebaseSource.logout(callback);
     }
+
+
 }

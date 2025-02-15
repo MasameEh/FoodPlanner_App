@@ -83,29 +83,6 @@ public class LoginFragment extends Fragment implements LoginView{
         });
     }
 
-//    private void userLogin(String email, String password){
-//        authService.login(email, password, new AuthCallback() {
-//            @Override
-//            public void onSuccess(FirebaseUser user) {
-//                Log.d(TAG, "signInWithEmail:success");
-//                //sToast.makeText(requireContext(), "Authentication succeeded.", Toast.LENGTH_SHORT).show();
-//                // Navigate to the next screen
-//                cacheHelper.saveString("userId", user.getUid());
-//                User user1 =  new User(email, email);
-//                LoginFragmentDirections.ActionLoginFragmentToHomeFragment action =
-//                        LoginFragmentDirections.actionLoginFragmentToHomeFragment(user1);
-//                findNavController(view).navigate(action);
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Exception e) {
-//                Log.w(TAG, "signInWithEmail:failure", e);
-//                Toast.makeText(requireContext(), "email or password is incorrect.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//    }
-
     private void initializeUI(View view){
         loginBtn = view.findViewById(R.id.btn_login);
         emailEt = view.findViewById(R.id.et_email1);

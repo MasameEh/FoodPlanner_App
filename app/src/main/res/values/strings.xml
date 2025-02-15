@@ -2,7 +2,7 @@
     <string name="app_name">FoodPlanner</string>
     <string name="logo">MealBuddy</string>
     <string name="log_in">Log in</string>
-    <string name="log_in_underline"><u>Log in</u></string>
+    <string name="log_in_underline"><u>Login</u></string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_up_with_email">SIGN UP WITH EMAIL</string>
     <string name="google">Google</string>

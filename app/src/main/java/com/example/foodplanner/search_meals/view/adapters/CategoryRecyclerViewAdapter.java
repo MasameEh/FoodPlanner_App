@@ -14,9 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Category;
-import com.example.foodplanner.data.model.Meal;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class CategoryRecyclerViewAdapter extends RecyclerView.Adapter<CategoryRecyclerViewHolder>{
@@ -66,7 +65,6 @@ class CategoryRecyclerViewHolder extends RecyclerView.ViewHolder{
     View conView;
     ImageView itemImage;
     TextView itemName;
-
 
     public CategoryRecyclerViewHolder(@NonNull View itemView) {
         super(itemView);

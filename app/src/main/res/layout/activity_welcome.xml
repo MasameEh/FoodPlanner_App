@@ -2,6 +2,7 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary"
@@ -9,7 +10,6 @@
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/welcome_background"
@@ -27,7 +27,7 @@
             android:fontFamily="@font/josefin_sans_bold"
             android:text="@string/google"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:icon="@drawable/google"
             app:iconGravity="textStart"
             app:iconSize="22dp"
@@ -48,7 +48,7 @@
             android:fontFamily="@font/josefin_sans_bold"
             android:text="@string/sign_up_with_email"
             android:textColor="@color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:icon="@drawable/email"
             app:iconGravity="textStart"
             app:iconSize="18dp"

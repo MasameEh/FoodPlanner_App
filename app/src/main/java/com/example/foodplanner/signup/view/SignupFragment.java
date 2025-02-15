@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
@@ -35,6 +36,7 @@ public class SignupFragment extends Fragment implements SignupView{
     EditText passwordEt;
     EditText confirmPassEt;
 
+    TextView loginTv;
     Button sigUpBtn;
     private View view;
 
@@ -66,6 +68,9 @@ public class SignupFragment extends Fragment implements SignupView{
         this.view = view;
         initializeUI(view);
 
+        loginTv.setOnClickListener(v -> {
+            findNavController(view).navigate(R.id.action_signupFragment_to_loginFragment);
+        });
         sigUpBtn.setOnClickListener(v -> {
             String username  = usernameEt.getText().toString().trim();
             String email  = emailEt.getText().toString().trim();
@@ -84,6 +89,7 @@ public class SignupFragment extends Fragment implements SignupView{
         passwordEt = view.findViewById(R.id.et_password);
         confirmPassEt = view.findViewById(R.id.et_confirmPass);
         sigUpBtn = view.findViewById(R.id.btn_signup);
+        loginTv = view.findViewById(R.id.tv_login2);
     }
 
     private void createAccount(String email, String password){

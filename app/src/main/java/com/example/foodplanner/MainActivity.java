@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     NavController navController;
     NavigationView navigationView;
 
-    CacheHelper cacheHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-//        cacheHelper =  new CacheHelper(this);
 
         String userId = CacheHelper.getInstance(this).getString("userId");
 
@@ -68,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
             }else{
                 bottomNavigationView.setVisibility(View.VISIBLE);
-                actionBar.show();
+                //actionBar.show();
             }
         });
 
