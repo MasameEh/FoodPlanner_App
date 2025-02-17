@@ -1,7 +1,7 @@
 package com.example.foodplanner.home.presenter;
 
 import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.data.remote.network.NetworkCallBack;
+import com.example.foodplanner.data.remote.network.Meal.NetworkCallBack;
 import com.example.foodplanner.data.repo.MealRepository;
 import com.example.foodplanner.home.view.HomeView;
 
@@ -23,6 +23,9 @@ public class HomePresenterImp implements HomePresenter, NetworkCallBack<Meal> {
         mealRepo.getRandomMeal(this);
     }
 
+    public void getVariousRandomMeals() {
+        //mealRepo.getVariousRandomMeals(this);
+    }
     @Override
     public void addToFavoriteMeals() {
 
@@ -31,6 +34,7 @@ public class HomePresenterImp implements HomePresenter, NetworkCallBack<Meal> {
     @Override
     public void onSuccessResult(List<Meal> meals) {
         homeView.showRandomMealData(meals);
+        //homeView.showRandomMealsData(meals);
     }
 
     @Override
@@ -42,4 +46,7 @@ public class HomePresenterImp implements HomePresenter, NetworkCallBack<Meal> {
         isBookmarked = !isBookmarked;
         homeView.updateBookmarkIcon(isBookmarked);
     }
+
+
+
 }

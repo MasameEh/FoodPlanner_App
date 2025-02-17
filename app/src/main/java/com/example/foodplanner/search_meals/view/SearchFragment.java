@@ -19,8 +19,8 @@ import android.widget.Toast;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Ingredient;
-import com.example.foodplanner.data.remote.network.CategoriesRemoteDataSourceImp;
-import com.example.foodplanner.data.remote.network.MealsRemoteDataSource;
+import com.example.foodplanner.data.remote.network.Category.CategoriesRemoteDataSourceImp;
+import com.example.foodplanner.data.remote.network.Meal.MealsRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.CategoryRepositoryImp;
 import com.example.foodplanner.data.repo.MealsRepositoryImp;
 import com.example.foodplanner.search_meals.presenter.SearchPresenter;
@@ -31,8 +31,6 @@ import com.example.foodplanner.search_meals.view.adapters.CountryRecyclerViewAda
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.example.foodplanner.data.model.Meal;
@@ -77,7 +75,7 @@ public class SearchFragment extends Fragment implements SearchView{
         super.onViewCreated(view, savedInstanceState);
         searchPresenter = new SearchPresenterImp(
                 CategoryRepositoryImp.getInstance(CategoriesRemoteDataSourceImp.getInstance()),
-                MealsRepositoryImp.getInstance(MealsRemoteDataSource.getInstance())
+                MealsRepositoryImp.getInstance(MealsRemoteDataSourceImp.getInstance())
                 ,this);
 
         initializeUI(view);

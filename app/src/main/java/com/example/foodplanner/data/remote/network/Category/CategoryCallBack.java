@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.remote.network;
+package com.example.foodplanner.data.remote.network.Category;
 
 import com.example.foodplanner.data.model.Category;
 

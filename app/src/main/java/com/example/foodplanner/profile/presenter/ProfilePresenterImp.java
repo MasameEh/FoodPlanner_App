@@ -8,9 +8,9 @@ import com.google.firebase.auth.FirebaseUser;
 public class ProfilePresenterImp implements ProfilePresenter, AuthCallback {
 
 
-    private AuthRepository authRepo;
+    private final AuthRepository authRepo;
 
-    private ProfileView profileView;
+    private final ProfileView profileView;
 
     public ProfilePresenterImp(AuthRepository authRepo, ProfileView profileView) {
         this.authRepo = authRepo;

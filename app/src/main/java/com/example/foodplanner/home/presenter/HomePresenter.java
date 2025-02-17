@@ -4,4 +4,6 @@ public interface HomePresenter {
     void getRandomMeal();
     void addToFavoriteMeals();
     void toggleBookmark();
+
+    void getVariousRandomMeals();
 }

@@ -1,10 +1,7 @@
 package com.example.foodplanner.data.repo;
 
-import com.example.foodplanner.data.model.Category;
-import com.example.foodplanner.data.remote.network.CategoriesRemoteDataSource;
-import com.example.foodplanner.data.remote.network.CategoryCallBack;
-import com.example.foodplanner.data.remote.network.MealsRemoteDataSource;
-import com.example.foodplanner.data.remote.network.NetworkCallBack;
+import com.example.foodplanner.data.remote.network.Category.CategoriesRemoteDataSource;
+import com.example.foodplanner.data.remote.network.Category.CategoryCallBack;
 
 public class CategoryRepositoryImp implements CategoryRepository{
 

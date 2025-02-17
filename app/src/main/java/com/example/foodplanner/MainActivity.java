@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         }
         //NavigationUI.setupWithNavController(navigationView, navController);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
         navController.addOnDestinationChangedListener((navController1, navDestination, bundle) -> {
             if(navDestination.getId() == R.id.splashFragment || navDestination.getId() == R.id.signupFragment
                     || navDestination.getId() == R.id.welcomeFragment || navDestination.getId() == R.id.loginFragment){

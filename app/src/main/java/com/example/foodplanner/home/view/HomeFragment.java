@@ -1,18 +1,22 @@
 package com.example.foodplanner.home.view;
 
-import android.graphics.PorterDuff;
+import static androidx.navigation.Navigation.findNavController;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,17 +26,12 @@ import java.util.List;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.data.model.MealResponse;
 import com.example.foodplanner.data.model.User;
-import com.example.foodplanner.data.remote.network.MealService;
-import com.example.foodplanner.data.remote.network.MealsRemoteDataSource;
+import com.example.foodplanner.data.remote.network.Meal.MealsRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.MealsRepositoryImp;
 import com.example.foodplanner.home.presenter.HomePresenter;
 import com.example.foodplanner.home.presenter.HomePresenterImp;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.example.foodplanner.meal_details.view.MealDetailsFragmentArgs;
 
 
 public class HomeFragment extends Fragment implements HomeView{
@@ -48,7 +47,12 @@ public class HomeFragment extends Fragment implements HomeView{
 
     HomePresenter presenter;
 
+    ProgressBar progressBar;
+    RecyclerView rv;
 
+    CardView cv;
+    private Meal randomMeal;
+    RandomMealsRecyclerViewAdapter randomMealsAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -62,7 +66,7 @@ public class HomeFragment extends Fragment implements HomeView{
         requireActivity().setTitle("Home");
         //user = HomeFragmentArgs.fromBundle(getArguments()).getUser();
 
-        presenter = new HomePresenterImp(this, MealsRepositoryImp.getInstance(MealsRemoteDataSource.getInstance()));
+        presenter = new HomePresenterImp(this, MealsRepositoryImp.getInstance(MealsRemoteDataSourceImp.getInstance()));
 
     }
 
@@ -82,11 +86,23 @@ public class HomeFragment extends Fragment implements HomeView{
         // get references to views
         initializeUI(view);
         presenter.getRandomMeal();
-        //mealIv.setColorFilter(ContextCompat.getColor(requireContext(), R.color.primary), PorterDuff.Mode.SRC_ATOP);
+        //presenter.getVariousRandomMeals();
+
         bookmarkIv.setOnClickListener(v -> {
             presenter.toggleBookmark();
         });
 
+
+
+
+        cv.setOnClickListener(v ->
+        {
+            //findNavController(view).navigate(R.id.action_homeFragment_to_mealDetailsFragment);
+            HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
+                    HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(randomMeal.getMealId());
+            NavHostFragment.findNavController(this).navigate(action);
+
+        });
         user = getArguments() != null ? getArguments().getParcelable("user") : null;
         if (user == null) {
             user = new User("Guest", "guest@example.com"); // Default User
@@ -100,10 +116,13 @@ public class HomeFragment extends Fragment implements HomeView{
         bookmarkIv = view.findViewById(R.id.iv_r_bookmark);
         mealIv = view.findViewById(R.id.iv_item_thumbnail);
         mealNameTv = view.findViewById(R.id.tv_item_name);
+        rv =  view.findViewById(R.id.rv_random);
+        cv =  view.findViewById(R.id.cv_home);
+        progressBar = view.findViewById(R.id.pB_progress);
     }
     @Override
     public void showRandomMealData(List<Meal> meals) {
-        Meal randomMeal = meals.get(0);
+        randomMeal = meals.get(0);
         mealNameTv.setText(randomMeal.getMealName());
         Glide.with(HomeFragment.this)
                 .load(randomMeal.getMealImage())
@@ -118,5 +137,12 @@ public class HomeFragment extends Fragment implements HomeView{
     public void updateBookmarkIcon(boolean isBookmarked){
         bookmarkIv.setImageResource(isBookmarked ? R.drawable.bookmark_filled : R.drawable.bookmark_white);
         Toast.makeText(requireContext(), "Added to favorite",Toast.LENGTH_SHORT).show();
+    }
+
+    public void showRandomMealsData(List<Meal> meals){
+        //progressBar.setVisibility(View.GONE);
+        Log.i(TAG, "meals: " + meals.get(0).getMealName());
+        randomMealsAdapter = new RandomMealsRecyclerViewAdapter(requireContext(), meals);
+        rv.setAdapter(randomMealsAdapter);
     }
 }

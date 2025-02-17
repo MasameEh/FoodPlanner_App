@@ -1,8 +1,9 @@
-package com.example.foodplanner.data.remote.network;
+package com.example.foodplanner.data.remote.network.Category;
 
 import android.util.Log;
 
 import com.example.foodplanner.data.model.CategoryResponse;
+import com.example.foodplanner.data.remote.network.MealService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -10,7 +11,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CategoriesRemoteDataSourceImp implements CategoriesRemoteDataSource{
+public class CategoriesRemoteDataSourceImp implements CategoriesRemoteDataSource {
 
     private static final String BASE_URL = "https://www.themealdb.com/api/json/v1/1/";
 
