@@ -9,6 +9,9 @@ import com.example.foodplanner.search_meals.view.SearchView;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class MealDetailsPresenterImp implements MealDetailsPresenter, NetworkCallBack<Meal> {
 
 
@@ -23,7 +26,13 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter, NetworkCal
     }
 
     public void getMealDetails(String mealId){
-        mealRepo.getMealById(this, mealId);
+        mealRepo.getMealById(mealId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals -> mealDetailsView.showMealDetails(meals),
+                        throwable -> mealDetailsView.showError(throwable.getMessage())
+                );
     }
 
     @Override

@@ -15,8 +15,10 @@ import com.example.foodplanner.search_meals.view.SearchView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchPresenterImp implements SearchPresenter, CategoryCallBack,
-        IngredientCallBack, NetworkCallBack<Meal>  {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public class SearchPresenterImp implements SearchPresenter {
 
     SearchView searchview;
 
@@ -38,17 +40,42 @@ public class SearchPresenterImp implements SearchPresenter, CategoryCallBack,
 
     @Override
     public void getCategories() {
-        categoryRepo.getCategories(this);
+        categoryRepo.getCategories()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    categories1 -> {
+                        this.categories = new ArrayList<>(categories1);
+                        searchview.showCategories(categories1);
+                    }    ,
+                    throwable ->  searchview.showErr(throwable.getMessage())
+                );
     }
 
     @Override
     public void getCountries() {
-       mealRepo.getCountries(this);
+       mealRepo.getCountries()
+               .subscribeOn(Schedulers.io())
+               .observeOn(AndroidSchedulers.mainThread())
+               .subscribe(
+                       countries -> {
+                           searchview.showCountries(countries);
+                       },
+                       throwable -> searchview.showErr(throwable.getMessage())
+               );
     }
 
     @Override
     public void getIngredients() {
-        mealRepo.getIngredients(this);
+        mealRepo.getIngredients()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        ingredients -> {
+                            searchview.showIngredients(ingredients);
+                        },
+                        throwable -> searchview.showErr(throwable.getMessage())
+                );;
     }
 
     @Override
@@ -110,36 +137,4 @@ public class SearchPresenterImp implements SearchPresenter, CategoryCallBack,
         searchview.showFilteredIngredients(filtered);
     }
 
-    @Override
-    public void onSuccessCategory(List<Category> categories) {
-        this.categories = new ArrayList<>(categories);
-        searchview.showCategories(categories);
-    }
-
-    @Override
-    public void onFailureCategory(String errMsg) {
-        searchview.showErr(errMsg);
-    }
-
-    @Override
-    public void onSuccessIngredient(List<Ingredient> ingredients) {
-        this.ingredients = new ArrayList<>(ingredients);
-        searchview.showIngredients(ingredients);
-    }
-
-    @Override
-    public void onFailureIngredient(String errMsg) {
-        searchview.showErr(errMsg);
-    }
-
-    @Override
-    public void onSuccessResult(List<Meal> countries) {
-        this.countries = new ArrayList<>(countries);
-        searchview.showCountries(countries);
-    }
-
-    @Override
-    public void onFailureResult(String errMsg) {
-        searchview.showErr(errMsg);
-    }
 }

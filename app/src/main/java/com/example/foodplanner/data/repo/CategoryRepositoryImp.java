@@ -1,7 +1,12 @@
 package com.example.foodplanner.data.repo;
 
+import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.remote.network.Category.CategoriesRemoteDataSource;
 import com.example.foodplanner.data.remote.network.Category.CategoryCallBack;
+
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class CategoryRepositoryImp implements CategoryRepository{
 
@@ -20,7 +25,7 @@ public class CategoryRepositoryImp implements CategoryRepository{
         return repo;
     }
 
-    public void getCategories(CategoryCallBack networkCallBack) {
-        categoriesRemote.getAllCategories(networkCallBack);
+    public Single<List<Category>> getCategories() {
+        return categoriesRemote.getAllCategories();
     }
 }

@@ -1,16 +1,22 @@
 package com.example.foodplanner.data.remote.network.Meal;
 
+import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealResponse;
 import com.example.foodplanner.data.remote.network.IngredientCallBack;
+
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 
 public interface MealsRemoteDataSource {
 
-    void getVariousRandomMeals(NetworkCallBack<Meal> networkCallBack);
-    void getRandomMeal(NetworkCallBack<Meal> networkCallBack);
+    Single<List<Meal>> getVariousRandomMeals();
+    public Single<List<Meal>> getRandomMeal();
 
-    void getCountries(NetworkCallBack<Meal> networkCallBack);
+    public Single<List<Meal>> getCountries();
 
-    void getIngredients(IngredientCallBack networkCallBack);
+    Single<List<Ingredient>>  getIngredients();
 
-    void getMealById(NetworkCallBack<Meal> networkCallBack, String mealId);
+    public Single<List<Meal>> getMealById(String mealId) ;
 }

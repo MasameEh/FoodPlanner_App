@@ -56,9 +56,13 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.3.0")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation ("com.google.firebase:firebase-firestore:24.10.0")
+    //RXJava
     implementation ("io.reactivex.rxjava3:rxjava:3.1.8")
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
     //room
     implementation ("androidx.room:room-runtime:2.6.1")
     annotationProcessor ("androidx.room:room-compiler:2.6.1")
+
+    implementation("androidx.room:room-rxjava3:$2.6.1")
+    implementation ("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
 }

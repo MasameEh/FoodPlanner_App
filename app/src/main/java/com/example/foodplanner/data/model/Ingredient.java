@@ -14,7 +14,7 @@ public class Ingredient {
 
     @SerializedName("strType")
     private String type;
-    private String measure; // New field for measurement
+    private String measure;
 
     // Constructor for manually adding ingredients
     public Ingredient(String name, String measure) {

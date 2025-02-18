@@ -3,17 +3,23 @@ package com.example.foodplanner.data.remote.network.Meal;
 
 import android.util.Log;
 
+import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.IngredientResponse;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealResponse;
 import com.example.foodplanner.data.remote.network.IngredientCallBack;
 import com.example.foodplanner.data.remote.network.MealService;
 
+import java.util.List;
+
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class MealsRemoteDataSourceImp implements MealsRemoteDataSource{
 
@@ -27,6 +33,7 @@ public class MealsRemoteDataSourceImp implements MealsRemoteDataSource{
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create()) // Convert JSON to Java objects
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
 
         mealService = retrofit.create(MealService.class);
@@ -38,124 +45,72 @@ public class MealsRemoteDataSourceImp implements MealsRemoteDataSource{
         return instance;
     }
 
-    public void getVariousRandomMeals(NetworkCallBack<Meal> networkCallBack){
-        Call<MealResponse> callRandomMeals = mealService.getMealsByName("");
+    public Single<List<Meal>> getVariousRandomMeals(){
+        Single<MealResponse> callRandomMeals = mealService.getMealsByName("");
 
-        Log.i(TAG, "getVariousRandomMeals: ");
-        callRandomMeals.enqueue(new Callback<MealResponse>() {
-
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                Log.i(TAG, "onResponse: " + response.body().getMeals());
-                if (response.isSuccessful()){
-                    networkCallBack.onSuccessResult(response.body().getMeals());
-                }{
-                    networkCallBack.onFailureResult(response.message());
-                }
-
-            }
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable throwable) {
-                Log.i(TAG, "onFailure: ");
-                networkCallBack.onFailureResult(throwable.getMessage());
-            }
-        });
+        return callRandomMeals.map(item-> item.getMeals());
     }
 
-    public void getRandomMeal(NetworkCallBack<Meal> networkCallBack){
+    public Single<List<Meal>> getRandomMeal(){
         Log.i(TAG, "getRandomMeal: ");
-        Call<MealResponse> callRandomMeal = mealService.getRandomMeal();
-
-        callRandomMeal.enqueue(new Callback<MealResponse>() {
-
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                //Log.i(TAG, "onResponse: " + response.body().getMeals());
-                if (response.isSuccessful()){
-                    networkCallBack.onSuccessResult(response.body().getMeals());
-                }{
-                    networkCallBack.onFailureResult(response.message());
-                }
-
-            }
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable throwable) {
-                Log.i(TAG, "onFailure: ");
-                networkCallBack.onFailureResult(throwable.getMessage());
-            }
-        });
+        Single<MealResponse> callRandomMeal = mealService.getRandomMeal();
+        return callRandomMeal.map(item-> item.getMeals());
     }
 
 
-    public void getCountries(NetworkCallBack<Meal> networkCallBack){
+    public Single<List<Meal>> getCountries(){
         Log.i(TAG, "getCountries: ");
-        Call<MealResponse> callRandomMeal = mealService.getCountries();
+        Single<MealResponse> callCountries = mealService.getCountries();
 
-        callRandomMeal.enqueue(new Callback<MealResponse>() {
+        return callCountries.map(item-> item.getMeals());
 
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                Log.i(TAG, "onResponse: " + response.body().getMeals());
-                if (response.isSuccessful()){
-                    networkCallBack.onSuccessResult(response.body().getMeals());
-                }{
-                    networkCallBack.onFailureResult(response.message());
-                }
-
-            }
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable throwable) {
-                Log.i(TAG, "onFailure: ");
-                networkCallBack.onFailureResult(throwable.getMessage());
-            }
-        });
     }
 
-    public void getIngredients(IngredientCallBack networkCallBack){
+    public Single<List<Ingredient>> getIngredients(){
         Log.i(TAG, "getIngredients: ");
-        Call<IngredientResponse> callRandomMeal = mealService.getIngredients();
-
-        callRandomMeal.enqueue(new Callback<IngredientResponse>() {
-            @Override
-            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
-                Log.i(TAG, "onResponse: " + response.body().getIngredients());
-                if (response.isSuccessful()){
-                    networkCallBack.onSuccessIngredient(response.body().getIngredients());
-                }{
-                    networkCallBack.onFailureIngredient(response.message());
-                }
-
-            }
-            @Override
-            public void onFailure(Call<IngredientResponse> call, Throwable throwable) {
-                Log.i(TAG, "onFailure: ");
-                networkCallBack.onFailureIngredient(throwable.getMessage());
-            }
-        });
+        Single<IngredientResponse> callIngredients = mealService.getIngredients();
+        return callIngredients.map(item-> item.getIngredients());
+//        callRandomMeal.enqueue(new Callback<IngredientResponse>() {
+//            @Override
+//            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
+//                Log.i(TAG, "onResponse: " + response.body().getIngredients());
+//                if (response.isSuccessful()){
+//                    networkCallBack.onSuccessIngredient(response.body().getIngredients());
+//                }{
+//                    networkCallBack.onFailureIngredient(response.message());
+//                }
+//
+//            }
+//            @Override
+//            public void onFailure(Call<IngredientResponse> call, Throwable throwable) {
+//                Log.i(TAG, "onFailure: ");
+//                networkCallBack.onFailureIngredient(throwable.getMessage());
+//            }
+//        });
     }
 
     @Override
-    public void getMealById(NetworkCallBack<Meal> networkCallBack, String mealId) {
+    public Single<List<Meal>> getMealById(String mealId) {
         Log.i(TAG, "getMealById: ");
-        Call<MealResponse> callMeal = mealService.getMealsById(mealId);
-
-        callMeal.enqueue(new Callback<MealResponse>() {
-
-            @Override
-            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-                Log.i(TAG, "onResponse: " + response.body().getMeals());
-                if (response.isSuccessful()){
-                    networkCallBack.onSuccessResult(response.body().getMeals());
-                }{
-                    networkCallBack.onFailureResult(response.message());
-                }
-
-            }
-            @Override
-            public void onFailure(Call<MealResponse> call, Throwable throwable) {
-                Log.i(TAG, "onFailure: ");
-                networkCallBack.onFailureResult(throwable.getMessage());
-            }
-        });
+        Single<MealResponse> callMeal = mealService.getMealsById(mealId);
+        return callMeal.map(item-> item.getMeals());
+//        callMeal.enqueue(new Callback<MealResponse>() {
+//
+//            @Override
+//            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
+//                Log.i(TAG, "onResponse: " + response.body().getMeals());
+//                if (response.isSuccessful()){
+//                    networkCallBack.onSuccessResult(response.body().getMeals());
+//                }{
+//                    networkCallBack.onFailureResult(response.message());
+//                }
+//
+//            }
+//            @Override
+//            public void onFailure(Call<MealResponse> call, Throwable throwable) {
+//                Log.i(TAG, "onFailure: ");
+//                networkCallBack.onFailureResult(throwable.getMessage());
+//            }
+//        });
     }
 }

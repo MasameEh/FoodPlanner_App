@@ -3,40 +3,42 @@ package com.example.foodplanner.data.remote.network;
 import com.example.foodplanner.data.model.CategoryResponse;
 import com.example.foodplanner.data.model.IngredientResponse;
 import com.example.foodplanner.data.model.MealResponse;
+
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface MealService {
     @GET("categories.php")
-    Call<CategoryResponse> getCategories();
+    Single<CategoryResponse> getCategories();
 
     @GET("list.php?a=list")
-    Call<MealResponse> getCountries();
+    Single<MealResponse> getCountries();
 
     @GET("list.php?i=list")
-    Call<IngredientResponse> getIngredients();
+    Single<IngredientResponse> getIngredients();
     @GET("random.php")
-    Call<MealResponse> getRandomMeal();
+    Single<MealResponse> getRandomMeal();
 
     @GET("search.php")
-    Call<MealResponse> getMealsByName(@Query("s") String name);
+    Single<MealResponse> getMealsByName(@Query("s") String name);
 
     @GET("search.php")
-    Call<MealResponse> getMealsByFirstLetter(@Query("f") String letter);
+    Single<MealResponse> getMealsByFirstLetter(@Query("f") String letter);
 
     @GET("lookup.php")
-    Call<MealResponse> getMealsById(@Query("i") String id);
+    Single<MealResponse> getMealsById(@Query("i") String id);
 
 
     @GET("filter.php")
-    Call<MealResponse> getMealsByMainIngredient(@Query("i") String name);
+    Single<MealResponse> getMealsByMainIngredient(@Query("i") String name);
 
     @GET("filter.php")
-    Call<MealResponse> getMealsByCategory(@Query("c") String name);
+    Single<MealResponse> getMealsByCategory(@Query("c") String name);
 
     @GET("filter.php")
-    Call<MealResponse> getMealsByCountry(@Query("a") String name);
+    Single<MealResponse> getMealsByCountry(@Query("a") String name);
 
 
 
