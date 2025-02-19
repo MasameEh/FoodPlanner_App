@@ -4,17 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true" >
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
+        android:backgroundTint="@color/white"
         tools:context=".meal_details.view.MealDetailsFragment">
 
         <ImageView
             android:id="@+id/iv_meal_detail_image"
             android:layout_width="match_parent"
-            android:layout_height="349dp"
+            android:layout_height="316dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="wrap"
@@ -27,35 +29,67 @@
             android:layout_width="0dp"
             android:layout_height="92dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="-40dp"
             android:layout_marginEnd="8dp"
             android:background="@android:color/white"
             app:cardCornerRadius="16dp"
             app:cardElevation="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/textView16"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.47">
+            app:layout_constraintTop_toBottomOf="@+id/iv_meal_detail_image">
 
-            <TextView
-                android:id="@+id/tv_meal_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|top"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/josefin_sans_bold"
-                android:gravity="center"
-                android:textSize="20sp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tv_meal_country"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/josefin_sans_bold"
-                android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/tv_meal_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:fontFamily="@font/josefin_sans_bold"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_meal_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/josefin_sans_bold"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@+id/iv_meal_country"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_meal_name" />
+
+                <TextView
+                    android:id="@+id/tv_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/josefin_sans_bold"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_meal_country"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_meal_name" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/iv_meal_country"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="8dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_meal_name"
+                    app:shapeAppearanceOverlay="@style/RoundedImage" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -65,9 +99,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:text="@string/ingredients"
-            android:textSize="20sp"
             android:fontFamily="@font/josefin_sans_bold"
+            android:text="@string/ingredients"
+            android:textColor="@color/onPrimary"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
@@ -85,14 +120,68 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
-        <VideoView
-            android:id="@+id/videoView"
+        <TextView
+            android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/josefin_sans_bold"
+            android:text="@string/instructions"
+            android:textColor="@color/onPrimary"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rv_meal_ingredients" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:cardElevation="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView13">
+
+            <TextView
+                android:id="@+id/tv_instructions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="TextView" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/josefin_sans_bold"
+            android:text="Youtube"
+            android:textColor="@color/onPrimary"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/web_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardView3" />
+
+
+        <WebView
+            android:id="@+id/web_view"
+            android:layout_width="350dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardView3"
+            app:layout_constraintVertical_bias="1.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package com.example.foodplanner.home.presenter;
 
+import android.util.Log;
+
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.repo.MealRepository;
 import com.example.foodplanner.home.view.HomeView;
@@ -15,6 +17,7 @@ public class HomePresenterImp implements HomePresenter{
     HomeView homeView;
     MealRepository mealRepo;
 
+    private static final String TAG = "HomePresenterImp";
     public HomePresenterImp(HomeView homeView, MealRepository mealRepo) {
         this.homeView = homeView;
         this.mealRepo = mealRepo;
@@ -32,7 +35,14 @@ public class HomePresenterImp implements HomePresenter{
     }
 
     public void getVariousRandomMeals() {
-        //mealRepo.getVariousRandomMeals(this);
+        mealRepo.getVariousRandomMeals()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals -> homeView.showRandomMealsData(meals),
+                        throwable -> homeView.showErr(throwable.getMessage())
+                );
+
     }
     @Override
     public void addToFavoriteMeals() {

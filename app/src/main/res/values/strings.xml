@@ -23,4 +23,5 @@
     <string name="daily_inspiration">Daily Inspiration</string>
     <string name="login">LOGIN</string>
     <string name="search">Search</string>
+    <string name="instructions">Instructions</string>
 </resources>

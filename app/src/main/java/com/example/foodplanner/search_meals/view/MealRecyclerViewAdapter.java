@@ -1,7 +1,6 @@
-package com.example.foodplanner.search_meals.view.adapters;
+package com.example.foodplanner.search_meals.view;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,26 +8,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.utils.CountryMapper;
 
-public class CountryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder>{
+import java.util.List;
+
+public class MealRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder>{
 
     private static final String TAG = "SearchRecyclerViewAdapter";
     private final Context context;
     private final List<Meal> dataSet;
 
-    public CountryRecyclerViewAdapter(Context context, List<Meal> dataSet) {
+    private final OnMealClickListener listener;
+    public MealRecyclerViewAdapter(Context context, List<Meal> dataSet, OnMealClickListener listener) {
         this.context = context;
         this.dataSet = dataSet;
+        this.listener = listener;
     }
     @NonNull
     @Override
@@ -45,10 +44,16 @@ public class CountryRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     // populate items
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-        Meal currCountry = dataSet.get(position);
+        Meal currMeal = dataSet.get(position);
 
-        holder.itemName.setText(currCountry.getMealCountry());
-        holder.itemImage.setImageResource(CountryMapper.getImageForCountry(currCountry.getMealCountry()));
+        holder.itemName.setText(currMeal.getMealName());
+        Glide.with(context).load(currMeal.getMealImage()).into(holder.itemImage);
+
+        holder.itemCard.setOnClickListener(
+                v -> {
+                    listener.onMealClicked(currMeal.getMealId());
+                }
+        );
 
     }
 
@@ -71,11 +76,12 @@ class RecyclerViewHolder extends RecyclerView.ViewHolder{
     ImageView itemImage;
     TextView itemName;
 
-
+    CardView itemCard;
     public RecyclerViewHolder(@NonNull View itemView) {
         super(itemView);
         conView = itemView;
         itemName = itemView.findViewById(R.id.tv_item_name);
         itemImage = itemView.findViewById(R.id.iv_item_thumbnail);
+        itemCard = itemView.findViewById(R.id.cv_random_item);
     }
 }

@@ -1,16 +1,13 @@
-package com.example.foodplanner.search_meals.presenter;
+package com.example.foodplanner.search_options.presenter;
 
 import android.util.Log;
 
 import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.data.remote.network.Category.CategoryCallBack;
-import com.example.foodplanner.data.remote.network.IngredientCallBack;
-import com.example.foodplanner.data.remote.network.Meal.NetworkCallBack;
 import com.example.foodplanner.data.repo.CategoryRepository;
 import com.example.foodplanner.data.repo.MealRepository;
-import com.example.foodplanner.search_meals.view.SearchView;
+import com.example.foodplanner.search_options.view.OptionsSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,23 +15,24 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class SearchPresenterImp implements SearchPresenter {
+public class OptionsSearchPresenterImp implements OptionsSearchPresenter {
 
-    SearchView searchview;
+    OptionsSearchView searchView;
 
     CategoryRepository categoryRepo;
     MealRepository mealRepo;
 
-    private List<Meal> countries = new ArrayList<>();
+    private List<Meal> countries;
     private List<Category> categories;
-    private List<Ingredient> ingredients = new ArrayList<>();
+    private List<Ingredient> ingredients;
+
 
     private static final String TAG = "SearchPresenterImp";
 
-    public SearchPresenterImp(CategoryRepository categoryRepo, MealRepository mealRepo, SearchView searchview) {
+    public OptionsSearchPresenterImp(CategoryRepository categoryRepo, MealRepository mealRepo, OptionsSearchView searchview) {
         this.categoryRepo = categoryRepo;
         this.mealRepo = mealRepo;
-        this.searchview = searchview;
+        this.searchView = searchview;
     }
 
 
@@ -46,9 +44,9 @@ public class SearchPresenterImp implements SearchPresenter {
                 .subscribe(
                     categories1 -> {
                         this.categories = new ArrayList<>(categories1);
-                        searchview.showCategories(categories1);
+                        searchView.showCategories(categories1);
                     }    ,
-                    throwable ->  searchview.showErr(throwable.getMessage())
+                    throwable ->  searchView.showErr(throwable.getMessage())
                 );
     }
 
@@ -59,9 +57,10 @@ public class SearchPresenterImp implements SearchPresenter {
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe(
                        countries -> {
-                           searchview.showCountries(countries);
+                           this.countries = new ArrayList<>(countries);
+                           searchView.showCountries(countries);
                        },
-                       throwable -> searchview.showErr(throwable.getMessage())
+                       throwable -> searchView.showErr(throwable.getMessage())
                );
     }
 
@@ -72,9 +71,10 @@ public class SearchPresenterImp implements SearchPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         ingredients -> {
-                            searchview.showIngredients(ingredients);
+                            this.ingredients = new ArrayList<>(ingredients);
+                            searchView.showIngredients(ingredients);
                         },
-                        throwable -> searchview.showErr(throwable.getMessage())
+                        throwable -> searchView.showErr(throwable.getMessage())
                 );;
     }
 
@@ -93,7 +93,7 @@ public class SearchPresenterImp implements SearchPresenter {
                 }
             }
         }
-        searchview.showFilteredCountries(filtered);
+        searchView.showFilteredCountries(filtered);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class SearchPresenterImp implements SearchPresenter {
         List<Category> filtered = new ArrayList<>();
 
 
-        Log.i(TAG, "Original Categories Size: " + categories.size());
+        //Log.i(TAG, "Original Categories Size: " + categories.size());
 
         if (query.isEmpty()) {
             filtered.addAll(categories);
@@ -116,7 +116,7 @@ public class SearchPresenterImp implements SearchPresenter {
             }
         }
         Log.i(TAG, "Filtered Categories Count: " + filtered.size());
-        searchview.showFilteredCategories(filtered);
+        searchView.showFilteredCategories(filtered);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class SearchPresenterImp implements SearchPresenter {
                 }
             }
         }
-        searchview.showFilteredIngredients(filtered);
+        searchView.showFilteredIngredients(filtered);
     }
 
 }

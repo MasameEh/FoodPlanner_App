@@ -16,4 +16,8 @@ public interface MealRepository {
     Single<List<Ingredient>>  getIngredients();
 
     Single<List<Meal>> getMealById(String mealId);
+
+    Single<List<Meal>> getMealsByCategory(String category);
+    Single<List<Meal>> getMealsByIngredient(String ingredient);
+    Single<List<Meal>> getMealsByCountry(String country);
 }

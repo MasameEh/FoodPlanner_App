@@ -31,10 +31,11 @@ import com.example.foodplanner.data.remote.network.Meal.MealsRemoteDataSourceImp
 import com.example.foodplanner.data.repo.MealsRepositoryImp;
 import com.example.foodplanner.home.presenter.HomePresenter;
 import com.example.foodplanner.home.presenter.HomePresenterImp;
-import com.example.foodplanner.meal_details.view.MealDetailsFragmentArgs;
+import com.example.foodplanner.search_meals.view.OnMealClickListener;
+import com.example.foodplanner.search_options.view.OnItemClickListener;
 
 
-public class HomeFragment extends Fragment implements HomeView{
+public class HomeFragment extends Fragment implements HomeView, OnMealClickListener {
 
     private static final String TAG = "HomeFragment";
 
@@ -86,18 +87,15 @@ public class HomeFragment extends Fragment implements HomeView{
         // get references to views
         initializeUI(view);
         presenter.getRandomMeal();
-        //presenter.getVariousRandomMeals();
+        presenter.getVariousRandomMeals();
 
         bookmarkIv.setOnClickListener(v -> {
             presenter.toggleBookmark();
         });
 
 
-
-
         cv.setOnClickListener(v ->
         {
-            //findNavController(view).navigate(R.id.action_homeFragment_to_mealDetailsFragment);
             HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
                     HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(randomMeal.getMealId());
             NavHostFragment.findNavController(this).navigate(action);
@@ -117,7 +115,7 @@ public class HomeFragment extends Fragment implements HomeView{
         mealIv = view.findViewById(R.id.iv_item_thumbnail);
         mealNameTv = view.findViewById(R.id.tv_item_name);
         rv =  view.findViewById(R.id.rv_random);
-        cv =  view.findViewById(R.id.cv_home);
+        cv =  view.findViewById(R.id.cv_random_item);
         progressBar = view.findViewById(R.id.pB_progress);
     }
     @Override
@@ -139,10 +137,19 @@ public class HomeFragment extends Fragment implements HomeView{
         Toast.makeText(requireContext(), "Added to favorite",Toast.LENGTH_SHORT).show();
     }
 
+
     public void showRandomMealsData(List<Meal> meals){
         //progressBar.setVisibility(View.GONE);
         Log.i(TAG, "meals: " + meals.get(0).getMealName());
-        randomMealsAdapter = new RandomMealsRecyclerViewAdapter(requireContext(), meals);
+        randomMealsAdapter = new RandomMealsRecyclerViewAdapter(requireContext(), meals, this);
         rv.setAdapter(randomMealsAdapter);
+    }
+
+
+    @Override
+    public void onMealClicked(String mealId) {
+        HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
+                HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(randomMeal.getMealId());
+        NavHostFragment.findNavController(this).navigate(action);
     }
 }

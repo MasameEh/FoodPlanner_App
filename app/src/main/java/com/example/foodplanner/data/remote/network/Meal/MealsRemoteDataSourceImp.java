@@ -9,6 +9,7 @@ import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealResponse;
 import com.example.foodplanner.data.remote.network.IngredientCallBack;
 import com.example.foodplanner.data.remote.network.MealService;
+import com.example.foodplanner.utils.RandomMealsPicker;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class MealsRemoteDataSourceImp implements MealsRemoteDataSource{
     }
 
     public Single<List<Meal>> getVariousRandomMeals(){
-        Single<MealResponse> callRandomMeals = mealService.getMealsByName("");
+        Single<MealResponse> callRandomMeals = mealService.getMealsByCountry(RandomMealsPicker.getRandomMealArea());
 
         return callRandomMeals.map(item-> item.getMeals());
     }
@@ -70,23 +71,6 @@ public class MealsRemoteDataSourceImp implements MealsRemoteDataSource{
         Log.i(TAG, "getIngredients: ");
         Single<IngredientResponse> callIngredients = mealService.getIngredients();
         return callIngredients.map(item-> item.getIngredients());
-//        callRandomMeal.enqueue(new Callback<IngredientResponse>() {
-//            @Override
-//            public void onResponse(Call<IngredientResponse> call, Response<IngredientResponse> response) {
-//                Log.i(TAG, "onResponse: " + response.body().getIngredients());
-//                if (response.isSuccessful()){
-//                    networkCallBack.onSuccessIngredient(response.body().getIngredients());
-//                }{
-//                    networkCallBack.onFailureIngredient(response.message());
-//                }
-//
-//            }
-//            @Override
-//            public void onFailure(Call<IngredientResponse> call, Throwable throwable) {
-//                Log.i(TAG, "onFailure: ");
-//                networkCallBack.onFailureIngredient(throwable.getMessage());
-//            }
-//        });
     }
 
     @Override
@@ -94,23 +78,23 @@ public class MealsRemoteDataSourceImp implements MealsRemoteDataSource{
         Log.i(TAG, "getMealById: ");
         Single<MealResponse> callMeal = mealService.getMealsById(mealId);
         return callMeal.map(item-> item.getMeals());
-//        callMeal.enqueue(new Callback<MealResponse>() {
-//
-//            @Override
-//            public void onResponse(Call<MealResponse> call, Response<MealResponse> response) {
-//                Log.i(TAG, "onResponse: " + response.body().getMeals());
-//                if (response.isSuccessful()){
-//                    networkCallBack.onSuccessResult(response.body().getMeals());
-//                }{
-//                    networkCallBack.onFailureResult(response.message());
-//                }
-//
-//            }
-//            @Override
-//            public void onFailure(Call<MealResponse> call, Throwable throwable) {
-//                Log.i(TAG, "onFailure: ");
-//                networkCallBack.onFailureResult(throwable.getMessage());
-//            }
-//        });
+    }
+
+    @Override
+    public Single<List<Meal>> getMealsByCategory(String category) {
+        Single<MealResponse> callMeals = mealService.getMealsByCategory(category);
+        return callMeals.map(item-> item.getMeals());
+    }
+
+    @Override
+    public Single<List<Meal>> getMealsByIngredient(String ingredient) {
+        Single<MealResponse> callMeals = mealService.getMealsByMainIngredient(ingredient);
+        return callMeals.map(item-> item.getMeals());
+    }
+
+    @Override
+    public Single<List<Meal>> getMealsByCountry(String country) {
+        Single<MealResponse> callMeals = mealService.getMealsByCountry(country);
+        return callMeals.map(item-> item.getMeals());
     }
 }

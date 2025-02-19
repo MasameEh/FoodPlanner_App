@@ -25,6 +25,7 @@
             android:clickable="true"
             android:focusable="true"
             android:fontFamily="@font/josefin_sans_bold"
+            android:minWidth="48dp"
             android:minHeight="48dp"
             android:text="@string/log_in_underline"
             android:textColor="@color/white"

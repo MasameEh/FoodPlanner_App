@@ -2,10 +2,8 @@ package com.example.foodplanner.meal_details.presenter;
 
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.remote.network.Meal.NetworkCallBack;
-import com.example.foodplanner.data.repo.CategoryRepository;
 import com.example.foodplanner.data.repo.MealRepository;
 import com.example.foodplanner.meal_details.view.MealDetailsView;
-import com.example.foodplanner.search_meals.view.SearchView;
 
 import java.util.List;
 

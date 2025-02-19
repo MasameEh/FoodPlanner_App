@@ -1,6 +1,6 @@
-package com.example.foodplanner.search_meals.presenter;
+package com.example.foodplanner.search_options.presenter;
 
-public interface SearchPresenter {
+public interface OptionsSearchPresenter {
     void getCategories();
     void getCountries();
     void getIngredients();

@@ -1,4 +1,4 @@
-package com.example.foodplanner.search_meals.view;
+package com.example.foodplanner.search_options.view;
 
 import android.graphics.Rect;
 import android.view.View;

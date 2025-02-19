@@ -1,4 +1,4 @@
-package com.example.foodplanner.search_meals.view;
+package com.example.foodplanner.search_options.view;
 
 import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Ingredient;
@@ -6,7 +6,7 @@ import com.example.foodplanner.data.model.Meal;
 
 import java.util.List;
 
-public interface SearchView {
+public interface OptionsSearchView {
 
     void showCategories(List<Category> categories);
     void showCountries(List<Meal> countries);

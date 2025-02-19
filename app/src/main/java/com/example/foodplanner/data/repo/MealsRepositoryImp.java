@@ -47,6 +47,21 @@ public class MealsRepositoryImp implements MealRepository{
         return mealsRemote.getMealById( mealId);
     }
 
+    @Override
+    public Single<List<Meal>> getMealsByCategory(String category) {
+        return mealsRemote.getMealsByCategory(category);
+    }
+
+    @Override
+    public Single<List<Meal>> getMealsByIngredient(String ingredient) {
+        return mealsRemote.getMealsByIngredient(ingredient);
+    }
+
+    @Override
+    public Single<List<Meal>> getMealsByCountry(String country) {
+        return mealsRemote.getMealsByCountry(country);
+    }
+
     public Single<List<Meal>> getVariousRandomMeals(){
         return mealsRemote.getVariousRandomMeals();
     }

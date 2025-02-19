@@ -1,10 +1,11 @@
-package com.example.foodplanner.search_meals.view;
+package com.example.foodplanner.search_options.view;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
@@ -23,11 +24,11 @@ import com.example.foodplanner.data.remote.network.Category.CategoriesRemoteData
 import com.example.foodplanner.data.remote.network.Meal.MealsRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.CategoryRepositoryImp;
 import com.example.foodplanner.data.repo.MealsRepositoryImp;
-import com.example.foodplanner.search_meals.presenter.SearchPresenter;
-import com.example.foodplanner.search_meals.presenter.SearchPresenterImp;
-import com.example.foodplanner.search_meals.view.adapters.CategoryRecyclerViewAdapter;
-import com.example.foodplanner.search_meals.view.adapters.IngredientRecyclerViewAdapter;
-import com.example.foodplanner.search_meals.view.adapters.CountryRecyclerViewAdapter;
+import com.example.foodplanner.search_options.presenter.OptionsSearchPresenter;
+import com.example.foodplanner.search_options.presenter.OptionsSearchPresenterImp;
+import com.example.foodplanner.search_options.view.adapters.CategoryRecyclerViewAdapter;
+import com.example.foodplanner.search_options.view.adapters.IngredientRecyclerViewAdapter;
+import com.example.foodplanner.search_options.view.adapters.CountryRecyclerViewAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
@@ -36,7 +37,7 @@ import java.util.List;
 import com.example.foodplanner.data.model.Meal;
 
 
-public class SearchFragment extends Fragment implements SearchView{
+public class OptionsSearchFragment extends Fragment implements OptionsSearchView, OnItemClickListener  {
 
 
     ChipGroup chipGroup;
@@ -49,9 +50,9 @@ public class SearchFragment extends Fragment implements SearchView{
 
     CountryRecyclerViewAdapter countryAdapter;
     private static final String TAG = "SearchFragment";
-    SearchPresenter searchPresenter;
+    OptionsSearchPresenter optionsSearchPresenter;
 
-    public SearchFragment() {
+    public OptionsSearchFragment() {
         // Required empty public constructor
     }
 
@@ -67,13 +68,13 @@ public class SearchFragment extends Fragment implements SearchView{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        return inflater.inflate(R.layout.fragment_options_search, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        searchPresenter = new SearchPresenterImp(
+        optionsSearchPresenter = new OptionsSearchPresenterImp(
                 CategoryRepositoryImp.getInstance(CategoriesRemoteDataSourceImp.getInstance()),
                 MealsRepositoryImp.getInstance(MealsRemoteDataSourceImp.getInstance())
                 ,this);
@@ -92,13 +93,13 @@ public class SearchFragment extends Fragment implements SearchView{
 
                 if (selectedChip.equals("Categories")) {
 
-                    searchPresenter.filterCategories(s.toString());
+                    optionsSearchPresenter.filterCategories(s.toString());
                     Log.i(TAG, "onTextChanged: " + s);
                 } else if (selectedChip.equals("Ingredients")) {
-                    searchPresenter.filterIngredients(s.toString());
+                    optionsSearchPresenter.filterIngredients(s.toString());
                 } else if (selectedChip.equals("Countries")) {
                     Log.i(TAG, "onTextChanged: " + s);
-                    searchPresenter.filterCountries(s.toString());
+                    optionsSearchPresenter.filterCountries(s.toString());
                 }
             }
 
@@ -107,8 +108,8 @@ public class SearchFragment extends Fragment implements SearchView{
 
             }
         });
-        int spacing = 16;
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, spacing, true));
+        int spacing = 24;
+        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, spacing, true));
 
     }
 
@@ -120,18 +121,18 @@ public class SearchFragment extends Fragment implements SearchView{
             chip.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if(isChecked && chip.getText().equals("Countries")){
                     Toast.makeText(requireContext(), chip.getText(), Toast.LENGTH_SHORT).show();
-                    searchPresenter.getCountries();
+                    optionsSearchPresenter.getCountries();
                     selectedChip = "Countries";
 
                 }
                 else if(isChecked && chip.getText().equals("Ingredients")){
                     Toast.makeText(requireContext(), chip.getText(), Toast.LENGTH_SHORT).show();
-                    searchPresenter.getIngredients();
+                    optionsSearchPresenter.getIngredients();
                     selectedChip = "Ingredients";
                 }
                 else if(isChecked && chip.getText().equals("Categories")){
                     Toast.makeText(requireContext(), chip.getText(), Toast.LENGTH_SHORT).show();
-                    searchPresenter.getCategories();
+                    optionsSearchPresenter.getCategories();
                     selectedChip = "Categories";
                 }
             });
@@ -142,20 +143,20 @@ public class SearchFragment extends Fragment implements SearchView{
     public void initializeUI(View view){
         chipGroup = view.findViewById(R.id.chipGroup);
         recyclerView = view.findViewById(R.id.rv_items);
-        searchEt =  view.findViewById(R.id.et_search);
+        searchEt =  view.findViewById(R.id.et_filter);
     }
 
 
     @Override
     public void showCategories(List<Category> categories) {
         Log.i(TAG, "showCategories: " + categories.get(0).getCategoryName());
-         categoryAdapter = new CategoryRecyclerViewAdapter(requireContext(), categories);
+         categoryAdapter = new CategoryRecyclerViewAdapter(requireContext(), categories, this);
         recyclerView.setAdapter(categoryAdapter);
     }
 
     @Override
     public void showCountries(List<Meal> countries) {
-        countryAdapter = new CountryRecyclerViewAdapter(requireContext(), countries);
+        countryAdapter = new CountryRecyclerViewAdapter(requireContext(), countries, this);
         Log.i(TAG, "showCountries: " + countries.get(0).getMealCountry());
         recyclerView.setAdapter(countryAdapter);
     }
@@ -163,7 +164,7 @@ public class SearchFragment extends Fragment implements SearchView{
     @Override
     public void showIngredients(List<Ingredient> ingredients) {
         Log.i(TAG, "showIngredients: " + ingredients.get(0).getName());
-        ingredientAdapter =  new IngredientRecyclerViewAdapter(requireContext(), ingredients);
+        ingredientAdapter =  new IngredientRecyclerViewAdapter(requireContext(), ingredients, this);
         recyclerView.setAdapter(ingredientAdapter);
     }
 
@@ -187,5 +188,13 @@ public class SearchFragment extends Fragment implements SearchView{
     @Override
     public void showErr(String err) {
 
+    }
+
+    @Override
+    public void onItemClick(String name, String type) {
+        selectedChip = "";
+        OptionsSearchFragmentDirections.ActionSearchFragmentToSearchMealsFragment action =
+                OptionsSearchFragmentDirections.actionSearchFragmentToSearchMealsFragment(name, type);
+        NavHostFragment.findNavController(this).navigate(action);
     }
 }
