@@ -25,14 +25,14 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.User;
-import com.example.foodplanner.data.remote.network.Meal.MealsRemoteDataSourceImp;
-import com.example.foodplanner.data.repo.MealsRepositoryImp;
+import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
+import com.example.foodplanner.data.repo.fav_meal_repo.MealRepositoryImp;
 import com.example.foodplanner.home.presenter.HomePresenter;
 import com.example.foodplanner.home.presenter.HomePresenterImp;
 import com.example.foodplanner.search_meals.view.OnMealClickListener;
-import com.example.foodplanner.search_options.view.OnItemClickListener;
 
 
 public class HomeFragment extends Fragment implements HomeView, OnMealClickListener {
@@ -67,7 +67,10 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
         requireActivity().setTitle("Home");
         //user = HomeFragmentArgs.fromBundle(getArguments()).getUser();
 
-        presenter = new HomePresenterImp(this, MealsRepositoryImp.getInstance(MealsRemoteDataSourceImp.getInstance()));
+        presenter = new HomePresenterImp(this,
+                MealRepositoryImp.getInstance(
+                        MealRemoteDataSourceImp.getInstance(),
+                        MealLocalDataSourceImp.getInstance(requireContext())));
 
     }
 
@@ -129,11 +132,20 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
 
     @Override
     public void showErr(String err) {
-        Toast.makeText(requireContext(), "Meal Name: " + err,Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View layout = inflater.inflate(R.layout.custom_toast, null);
+
+        TextView text = layout.findViewById(R.id.toast_text);
+        text.setText(err);
+
+        Toast toast = new Toast(requireContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 
     public void updateBookmarkIcon(boolean isBookmarked){
-        bookmarkIv.setImageResource(isBookmarked ? R.drawable.bookmark_filled : R.drawable.bookmark_white);
+        bookmarkIv.setImageResource(isBookmarked ? R.drawable.touch_colored: R.drawable.touch);
         Toast.makeText(requireContext(), "Added to favorite",Toast.LENGTH_SHORT).show();
     }
 

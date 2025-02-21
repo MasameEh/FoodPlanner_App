@@ -15,6 +15,10 @@
         android:icon="@drawable/ic_favorite"
         android:title="FAV" />
     <item
+        android:id="@+id/mealsPlan"
+        android:icon="@drawable/ic_meal_plan"
+        android:title="MEALPLAN" />
+    <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/user_ic"
         android:title="PRFOILE" />

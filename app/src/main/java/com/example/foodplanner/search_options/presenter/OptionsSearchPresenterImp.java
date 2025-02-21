@@ -5,8 +5,8 @@ import android.util.Log;
 import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.data.repo.CategoryRepository;
-import com.example.foodplanner.data.repo.MealRepository;
+import com.example.foodplanner.data.repo.category_repo.CategoryRepository;
+import com.example.foodplanner.data.repo.fav_meal_repo.MealRepository;
 import com.example.foodplanner.search_options.view.OptionsSearchView;
 
 import java.util.ArrayList;

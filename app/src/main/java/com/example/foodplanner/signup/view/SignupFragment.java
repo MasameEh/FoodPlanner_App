@@ -92,23 +92,6 @@ public class SignupFragment extends Fragment implements SignupView{
         loginTv = view.findViewById(R.id.tv_login2);
     }
 
-    private void createAccount(String email, String password){
-//        authService.signUpWithEmail(email, password, new AuthCallback() {
-//            @Override
-//            public void onSuccess(FirebaseUser user) {
-//                Log.d(TAG, "Sign-up successful");
-////                cacheHelper.saveString("userId", user.getUid());
-//                Toast.makeText(requireContext(), "Sign-up successful!", Toast.LENGTH_SHORT).show();
-//                Navigation.findNavController(view).navigate(R.id.action_signupFragment_to_homeFragment);
-//            }
-//
-//            @Override
-//            public void onFailure(Exception e) {
-//                Log.w(TAG, "Sign-up failed", e);
-//                Toast.makeText(requireContext(), "Sign-up failed" + e.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-    }
 
     @Override
     public void navigateToHome() {
@@ -116,6 +99,15 @@ public class SignupFragment extends Fragment implements SignupView{
     }
 
     public void showError(String message){
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View layout = inflater.inflate(R.layout.custom_toast, null);
+
+        TextView text = layout.findViewById(R.id.toast_text);
+        text.setText(message);
+
+        Toast toast = new Toast(requireContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }

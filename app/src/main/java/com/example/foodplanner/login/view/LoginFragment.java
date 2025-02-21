@@ -97,6 +97,16 @@ public class LoginFragment extends Fragment implements LoginView{
 
     @Override
     public void showError(String message) {
-        Toast.makeText(requireContext(), "email or password is incorrect.", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(requireContext(), "email or password is incorrect.", Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View layout = inflater.inflate(R.layout.custom_toast, null);
+
+        TextView text = layout.findViewById(R.id.toast_text);
+        text.setText("email or password is incorrect.");
+
+        Toast toast = new Toast(requireContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 }

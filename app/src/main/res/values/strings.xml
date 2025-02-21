@@ -24,4 +24,6 @@
     <string name="login">LOGIN</string>
     <string name="search">Search</string>
     <string name="instructions">Instructions</string>
+    <string name="your_favorite_meals">Your Favorite Meals:</string>
+    <string name="planned_meals_for">"Planned Meals for "</string>
 </resources>

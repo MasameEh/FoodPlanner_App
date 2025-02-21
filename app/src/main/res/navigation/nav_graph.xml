@@ -79,7 +79,11 @@
         android:id="@+id/favoriteFragment"
         android:name="com.example.foodplanner.fav_meals.view.FavoriteFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.foodplanner.search_options.view.OptionsSearchFragment"
@@ -121,6 +125,15 @@
             app:argType="string" />
         <action
             android:id="@+id/action_searchMealsFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealsPlan"
+        android:name="com.example.foodplanner.planned_meals.view.MealsPlanFragment"
+        android:label="fragment_meals_plan"
+        tools:layout="@layout/fragment_meals_plan" >
+        <action
+            android:id="@+id/action_mealsPlan_to_mealDetailsFragment"
             app:destination="@id/mealDetailsFragment" />
     </fragment>
 </navigation>

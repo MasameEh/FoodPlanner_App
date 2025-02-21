@@ -18,12 +18,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.remote.network.Category.CategoriesRemoteDataSourceImp;
-import com.example.foodplanner.data.remote.network.Meal.MealsRemoteDataSourceImp;
-import com.example.foodplanner.data.repo.CategoryRepositoryImp;
-import com.example.foodplanner.data.repo.MealsRepositoryImp;
+import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
+import com.example.foodplanner.data.repo.category_repo.CategoryRepositoryImp;
+import com.example.foodplanner.data.repo.fav_meal_repo.MealRepositoryImp;
 import com.example.foodplanner.search_options.presenter.OptionsSearchPresenter;
 import com.example.foodplanner.search_options.presenter.OptionsSearchPresenterImp;
 import com.example.foodplanner.search_options.view.adapters.CategoryRecyclerViewAdapter;
@@ -76,8 +77,10 @@ public class OptionsSearchFragment extends Fragment implements OptionsSearchView
         super.onViewCreated(view, savedInstanceState);
         optionsSearchPresenter = new OptionsSearchPresenterImp(
                 CategoryRepositoryImp.getInstance(CategoriesRemoteDataSourceImp.getInstance()),
-                MealsRepositoryImp.getInstance(MealsRemoteDataSourceImp.getInstance())
-                ,this);
+                MealRepositoryImp.getInstance(
+                        MealRemoteDataSourceImp.getInstance(),
+                        MealLocalDataSourceImp.getInstance(requireContext()))
+                        ,this);
 
         initializeUI(view);
         setupChoiceChips();

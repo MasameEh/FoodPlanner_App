@@ -14,10 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.data.remote.network.Meal.MealsRemoteDataSourceImp;
-import com.example.foodplanner.data.repo.MealsRepositoryImp;
-import com.example.foodplanner.home.view.HomeFragmentDirections;
+import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
+import com.example.foodplanner.data.repo.fav_meal_repo.MealRepositoryImp;
 import com.example.foodplanner.search_meals.presenter.SearchMealPresenterImp;
 import com.example.foodplanner.search_meals.presenter.SearchMealsPresenter;
 
@@ -49,7 +49,9 @@ public class SearchMealsFragment extends Fragment implements SearchMealView, OnM
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         presenter = new SearchMealPresenterImp(
-                MealsRepositoryImp.getInstance(MealsRemoteDataSourceImp.getInstance())
+                MealRepositoryImp.getInstance(
+                        MealRemoteDataSourceImp.getInstance(),
+                        MealLocalDataSourceImp.getInstance(requireContext()))
                 ,this);
         String name = SearchMealsFragmentArgs.fromBundle(getArguments()).getName();
         String type = SearchMealsFragmentArgs.fromBundle(getArguments()).getType();

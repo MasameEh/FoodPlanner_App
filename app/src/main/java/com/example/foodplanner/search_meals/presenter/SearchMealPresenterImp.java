@@ -1,8 +1,7 @@
 package com.example.foodplanner.search_meals.presenter;
 
-import com.example.foodplanner.data.repo.MealRepository;
+import com.example.foodplanner.data.repo.fav_meal_repo.MealRepository;
 import com.example.foodplanner.search_meals.view.SearchMealView;
-import com.example.foodplanner.search_options.view.OptionsSearchView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
