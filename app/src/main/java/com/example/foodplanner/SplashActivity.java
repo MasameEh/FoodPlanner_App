@@ -7,10 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-import com.example.foodplanner.data.model.CategoryResponse;
-import com.example.foodplanner.data.model.MealResponse;
 import com.example.foodplanner.data.remote.network.MealService;
-import retrofit2.Call;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -24,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.fragment_splash);
         LottieAnimationView lottieAnimationView = findViewById(R.id.lottie_splash);
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -34,15 +32,15 @@ public class SplashActivity extends AppCompatActivity {
 
         MealService mealService = retrofit.create(MealService.class);
 
-        Call<CategoryResponse> call = mealService.getCategories();
-        Call<MealResponse> call1 = mealService.getRandomMeal();
-        Call<MealResponse> call2 = mealService.getMealsByName("s");
-        Call<MealResponse> call3 = mealService.getMealsByFirstLetter("f");
-        Call<MealResponse> call4 = mealService.getMealsById("52772");
-
-        Call<MealResponse> call5 = mealService.getMealsByMainIngredient("chicken_breast");
-        Call<MealResponse> call6 = mealService.getMealsByCategory("Seafood");
-        Call<MealResponse> call7 = mealService.getMealsByCountry("Egyptian");
+//        Call<CategoryResponse> call = mealService.getCategories();
+//        Call<MealResponse> call1 = mealService.getRandomMeal();
+//        Call<MealResponse> call2 = mealService.getMealsByName("s");
+//        Call<MealResponse> call3 = mealService.getMealsByFirstLetter("f");
+//        Call<MealResponse> call4 = mealService.getMealsById("52772");
+//
+//        Call<MealResponse> call5 = mealService.getMealsByMainIngredient("chicken_breast");
+//        Call<MealResponse> call6 = mealService.getMealsByCategory("Seafood");
+//        Call<MealResponse> call7 = mealService.getMealsByCountry("Egyptian");
 
         // Delay and move to the next activity
 //        new Handler().postDelayed(new Runnable() {

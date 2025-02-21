@@ -25,16 +25,17 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.User;
-import com.example.foodplanner.data.remote.network.Meal.MealsRemoteDataSourceImp;
-import com.example.foodplanner.data.repo.MealsRepositoryImp;
+import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
+import com.example.foodplanner.data.repo.fav_meal_repo.MealRepositoryImp;
 import com.example.foodplanner.home.presenter.HomePresenter;
 import com.example.foodplanner.home.presenter.HomePresenterImp;
-import com.example.foodplanner.meal_details.view.MealDetailsFragmentArgs;
+import com.example.foodplanner.search_meals.view.OnMealClickListener;
 
 
-public class HomeFragment extends Fragment implements HomeView{
+public class HomeFragment extends Fragment implements HomeView, OnMealClickListener {
 
     private static final String TAG = "HomeFragment";
 
@@ -66,7 +67,10 @@ public class HomeFragment extends Fragment implements HomeView{
         requireActivity().setTitle("Home");
         //user = HomeFragmentArgs.fromBundle(getArguments()).getUser();
 
-        presenter = new HomePresenterImp(this, MealsRepositoryImp.getInstance(MealsRemoteDataSourceImp.getInstance()));
+        presenter = new HomePresenterImp(this,
+                MealRepositoryImp.getInstance(
+                        MealRemoteDataSourceImp.getInstance(),
+                        MealLocalDataSourceImp.getInstance(requireContext())));
 
     }
 
@@ -86,18 +90,15 @@ public class HomeFragment extends Fragment implements HomeView{
         // get references to views
         initializeUI(view);
         presenter.getRandomMeal();
-        //presenter.getVariousRandomMeals();
+        presenter.getVariousRandomMeals();
 
         bookmarkIv.setOnClickListener(v -> {
             presenter.toggleBookmark();
         });
 
 
-
-
         cv.setOnClickListener(v ->
         {
-            //findNavController(view).navigate(R.id.action_homeFragment_to_mealDetailsFragment);
             HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
                     HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(randomMeal.getMealId());
             NavHostFragment.findNavController(this).navigate(action);
@@ -117,7 +118,7 @@ public class HomeFragment extends Fragment implements HomeView{
         mealIv = view.findViewById(R.id.iv_item_thumbnail);
         mealNameTv = view.findViewById(R.id.tv_item_name);
         rv =  view.findViewById(R.id.rv_random);
-        cv =  view.findViewById(R.id.cv_home);
+        cv =  view.findViewById(R.id.cv_random_item);
         progressBar = view.findViewById(R.id.pB_progress);
     }
     @Override
@@ -131,18 +132,36 @@ public class HomeFragment extends Fragment implements HomeView{
 
     @Override
     public void showErr(String err) {
-        Toast.makeText(requireContext(), "Meal Name: " + err,Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View layout = inflater.inflate(R.layout.custom_toast, null);
+
+        TextView text = layout.findViewById(R.id.toast_text);
+        text.setText(err);
+
+        Toast toast = new Toast(requireContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 
     public void updateBookmarkIcon(boolean isBookmarked){
-        bookmarkIv.setImageResource(isBookmarked ? R.drawable.bookmark_filled : R.drawable.bookmark_white);
+        bookmarkIv.setImageResource(isBookmarked ? R.drawable.touch_colored: R.drawable.touch);
         Toast.makeText(requireContext(), "Added to favorite",Toast.LENGTH_SHORT).show();
     }
+
 
     public void showRandomMealsData(List<Meal> meals){
         //progressBar.setVisibility(View.GONE);
         Log.i(TAG, "meals: " + meals.get(0).getMealName());
-        randomMealsAdapter = new RandomMealsRecyclerViewAdapter(requireContext(), meals);
+        randomMealsAdapter = new RandomMealsRecyclerViewAdapter(requireContext(), meals, this);
         rv.setAdapter(randomMealsAdapter);
+    }
+
+
+    @Override
+    public void onMealClicked(String mealId) {
+        HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
+                HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(randomMeal.getMealId());
+        NavHostFragment.findNavController(this).navigate(action);
     }
 }

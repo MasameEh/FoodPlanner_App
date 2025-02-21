@@ -9,11 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.search_meals.view.OnMealClickListener;
+import com.example.foodplanner.search_options.view.OnItemClickListener;
 
 import java.util.List;
 
@@ -21,9 +24,12 @@ public class RandomMealsRecyclerViewAdapter extends RecyclerView.Adapter<RandomR
     private static final String TAG = "CategoryRecyclerViewAdapter";
     private final Context context;
     private final List<Meal> dataSet;
-    public RandomMealsRecyclerViewAdapter(Context context, List<Meal> dataSet) {
+    private final OnMealClickListener listener;
+
+    public RandomMealsRecyclerViewAdapter(Context context, List<Meal> dataSet, OnMealClickListener listener) {
         this.context = context;
         this.dataSet = dataSet;
+        this.listener = listener;
     }
 
     @NonNull
@@ -46,6 +52,10 @@ public class RandomMealsRecyclerViewAdapter extends RecyclerView.Adapter<RandomR
 
         holder.itemName.setText(currMeal.getMealName());
         Glide.with(context).load(currMeal.getMealImage()).into(holder.itemImage);
+        holder.itemCardView.setOnClickListener(v -> {
+            listener.onMealClicked(currMeal.getMealId());
+        });
+
     }
 
     @Override
@@ -65,11 +75,12 @@ class RandomRecyclerViewHolder extends RecyclerView.ViewHolder{
     View conView;
     ImageView itemImage;
     TextView itemName;
-
+    CardView itemCardView;
     public RandomRecyclerViewHolder(@NonNull View itemView) {
         super(itemView);
         conView = itemView;
         itemName = itemView.findViewById(R.id.tv_item_name);
         itemImage = itemView.findViewById(R.id.iv_item_thumbnail);
+        itemCardView = itemView.findViewById(R.id.cv_random_item);
     }
 }

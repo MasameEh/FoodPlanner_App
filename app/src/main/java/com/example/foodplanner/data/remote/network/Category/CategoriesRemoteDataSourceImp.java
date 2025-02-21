@@ -2,9 +2,14 @@ package com.example.foodplanner.data.remote.network.Category;
 
 import android.util.Log;
 
+import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.CategoryResponse;
 import com.example.foodplanner.data.remote.network.MealService;
 
+import java.util.List;
+
+import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,6 +30,7 @@ public class CategoriesRemoteDataSourceImp implements CategoriesRemoteDataSource
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create()) // Convert JSON to Java objects
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
 
         mealService = retrofit.create(MealService.class);
@@ -38,25 +44,10 @@ public class CategoriesRemoteDataSourceImp implements CategoriesRemoteDataSource
     }
 
     @Override
-    public void getAllCategories(CategoryCallBack networkCallBack){
-        Call<CategoryResponse> Categoriescall = mealService.getCategories();
+    public Single<List<Category>> getAllCategories(){
+        Single<CategoryResponse> categoriesCall = mealService.getCategories();
 
-        Categoriescall.enqueue(new Callback<CategoryResponse>() {
-            @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
-                Log.i(TAG, "onResponse: " + response.body().getCategories());
-                if (response.isSuccessful() && response.body() != null){
-                    networkCallBack.onSuccessCategory(response.body().getCategories());
-                }{
-                    networkCallBack.onFailureCategory(response.message());
-                }
+        return categoriesCall.map(item -> item.getCategories());
 
-            }
-            @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable throwable) {
-                Log.i(TAG, "onFailure: ");
-                networkCallBack.onFailureCategory(throwable.getMessage());
-            }
-        });
     }
 }

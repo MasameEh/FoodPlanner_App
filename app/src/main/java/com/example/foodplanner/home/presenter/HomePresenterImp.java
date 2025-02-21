@@ -1,18 +1,18 @@
 package com.example.foodplanner.home.presenter;
 
-import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.data.remote.network.Meal.NetworkCallBack;
-import com.example.foodplanner.data.repo.MealRepository;
+import com.example.foodplanner.data.repo.fav_meal_repo.MealRepository;
 import com.example.foodplanner.home.view.HomeView;
 
-import java.util.List;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class HomePresenterImp implements HomePresenter, NetworkCallBack<Meal> {
+public class HomePresenterImp implements HomePresenter{
 
     private boolean isBookmarked = false;
     HomeView homeView;
     MealRepository mealRepo;
 
+    private static final String TAG = "HomePresenterImp";
     public HomePresenterImp(HomeView homeView, MealRepository mealRepo) {
         this.homeView = homeView;
         this.mealRepo = mealRepo;
@@ -20,27 +20,30 @@ public class HomePresenterImp implements HomePresenter, NetworkCallBack<Meal> {
 
     @Override
     public void getRandomMeal() {
-        mealRepo.getRandomMeal(this);
+        mealRepo.getRandomMeal()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals -> homeView.showRandomMealData(meals),
+                        throwable -> homeView.showErr(throwable.getMessage())
+                );
     }
 
     public void getVariousRandomMeals() {
-        //mealRepo.getVariousRandomMeals(this);
+        mealRepo.getVariousRandomMeals()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        meals -> homeView.showRandomMealsData(meals),
+                        throwable -> homeView.showErr(throwable.getMessage())
+                );
+
     }
     @Override
     public void addToFavoriteMeals() {
 
     }
 
-    @Override
-    public void onSuccessResult(List<Meal> meals) {
-        homeView.showRandomMealData(meals);
-        //homeView.showRandomMealsData(meals);
-    }
-
-    @Override
-    public void onFailureResult(String errMsg) {
-        homeView.showErr(errMsg);
-    }
 
     public void toggleBookmark() {
         isBookmarked = !isBookmarked;
