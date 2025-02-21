@@ -1,6 +1,5 @@
-package com.example.foodplanner.data.local.db.db;
+package com.example.foodplanner.data.local.db.MealFavs;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,16 +11,19 @@ import com.example.foodplanner.data.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+
 @Dao
 public interface MealDAO {
 
     @Query("SELECT * FROM meals_table")
-    LiveData<List<Meal>> getAllFavProducts();
+    Flowable<List<Meal>> getAllFavProducts();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertMeal(Meal product);
+    Completable insertMeal(Meal meal);
 
     @Delete
-    void deleteMeal(Meal product);
+    Completable deleteMeal(Meal meal);
 
 }

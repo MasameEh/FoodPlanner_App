@@ -1,28 +1,32 @@
 package com.example.foodplanner.meal_details.presenter;
 
 import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.data.remote.network.Meal.NetworkCallBack;
-import com.example.foodplanner.data.repo.MealRepository;
+import com.example.foodplanner.data.model.MealPlan;
+import com.example.foodplanner.data.repo.meal_plan_repo.MealPlanRepository;
+import com.example.foodplanner.data.repo.fav_meal_repo.MealRepository;
 import com.example.foodplanner.meal_details.view.MealDetailsView;
 
-import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class MealDetailsPresenterImp implements MealDetailsPresenter, NetworkCallBack<Meal> {
+public class MealDetailsPresenterImp implements MealDetailsPresenter {
 
 
     MealDetailsView mealDetailsView;
 
     MealRepository mealRepo;
+    MealPlanRepository mealPlanRepo;
 
-
-    public MealDetailsPresenterImp(MealRepository mealRepo, MealDetailsView mealDetailsView) {
+    private boolean isClicked = false;
+    public MealDetailsPresenterImp(MealRepository mealRepo,MealPlanRepository mealPlanRepo,MealDetailsView mealDetailsView) {
         this.mealRepo = mealRepo;
         this.mealDetailsView = mealDetailsView;
+        this.mealPlanRepo = mealPlanRepo;
     }
-
+    @Override
     public void getMealDetails(String mealId){
         mealRepo.getMealById(mealId)
                 .subscribeOn(Schedulers.io())
@@ -34,13 +38,51 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter, NetworkCal
     }
 
     @Override
-    public void onSuccessResult(List<Meal> meals) {
-        mealDetailsView.showMealDetails(meals);
+    public void toggleFavIcon() {
+        isClicked = !isClicked;
+        mealDetailsView.updateToggleIcon(isClicked);
     }
 
     @Override
-    public void onFailureResult(String errMsg) {
-        mealDetailsView.showError(errMsg);
+    public Disposable addToFavoriteMeals(Meal meal) {
+        return mealRepo.insertMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {
+                            mealDetailsView.showToast("Added to favorites");
+                        },
+                        throwable -> mealDetailsView.showError(throwable.getMessage())
+                );
+    }
+
+    @Override
+    public Disposable removeFromFavoriteMeals(Meal meal){
+        return  mealRepo.deleteMeal(meal)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> mealDetailsView.showError("Removed from favorite"),
+                        throwable -> mealDetailsView.showError(throwable.getMessage())
+                );
+
+
+    }
+
+    @Override
+    public Disposable addMealToCalender(MealPlan mealPlan){
+
+        return mealPlanRepo.insertMealPlan(mealPlan)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        () -> {
+                            mealDetailsView.showToast("Added to calender");
+                        },
+                        throwable -> {
+                            mealDetailsView.showError(throwable.getMessage());
+                        }
+                );
     }
 
 }

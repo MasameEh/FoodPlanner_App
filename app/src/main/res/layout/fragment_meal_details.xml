@@ -13,21 +13,46 @@
         android:backgroundTint="@color/white"
         tools:context=".meal_details.view.MealDetailsFragment">
 
-        <ImageView
-            android:id="@+id/iv_meal_detail_image"
+        <FrameLayout
+            android:id="@+id/framelayout_image"
             android:layout_width="match_parent"
-            android:layout_height="316dp"
-            android:scaleType="centerCrop"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_default="wrap"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/holder" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_meal_detail_image"
+                android:layout_width="match_parent"
+                android:layout_height="316dp"
+                android:scaleType="centerCrop"
+
+                tools:src="@drawable/holder" />
+
+            <ImageView
+                android:id="@+id/iv_favorite"
+                android:layout_width="57dp"
+                android:layout_height="54dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:foregroundGravity="center"
+                app:srcCompat="@drawable/touch" />
+
+            <ImageView
+                android:id="@+id/iv_calender"
+                android:layout_width="53dp"
+                android:layout_height="49dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@drawable/schedule" />
+        </FrameLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
             android:layout_width="0dp"
-            android:layout_height="92dp"
+            android:layout_height="100dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="-40dp"
             android:layout_marginEnd="8dp"
@@ -38,7 +63,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_meal_detail_image">
+            app:layout_constraintTop_toBottomOf="@+id/framelayout_image">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

@@ -7,7 +7,6 @@ import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.IngredientResponse;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealResponse;
-import com.example.foodplanner.data.remote.network.IngredientCallBack;
 import com.example.foodplanner.data.remote.network.MealService;
 import com.example.foodplanner.utils.RandomMealsPicker;
 
@@ -15,22 +14,19 @@ import java.util.List;
 
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import io.reactivex.rxjava3.core.Single;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MealsRemoteDataSourceImp implements MealsRemoteDataSource{
+public class MealRemoteDataSourceImp implements MealRemoteDataSource {
 
     private static final String BASE_URL = "https://www.themealdb.com/api/json/v1/1/";
-    private static MealsRemoteDataSourceImp instance;
+    private static MealRemoteDataSourceImp instance;
 
     private final MealService mealService;
 
     private static final String TAG = "MealsRemoteDataSource";
-    private MealsRemoteDataSourceImp(){
+    private MealRemoteDataSourceImp(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create()) // Convert JSON to Java objects
@@ -39,9 +35,9 @@ public class MealsRemoteDataSourceImp implements MealsRemoteDataSource{
 
         mealService = retrofit.create(MealService.class);
     }
-    public static MealsRemoteDataSourceImp getInstance() {
+    public static MealRemoteDataSourceImp getInstance() {
         if (instance == null) {
-            instance = new MealsRemoteDataSourceImp();
+            instance = new MealRemoteDataSourceImp();
         }
         return instance;
     }

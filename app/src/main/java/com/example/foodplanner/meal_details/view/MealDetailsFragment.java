@@ -1,5 +1,8 @@
 package com.example.foodplanner.meal_details.view;
 
+import static androidx.navigation.Navigation.findNavController;
+
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,37 +18,49 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
+import com.example.foodplanner.data.local.db.MealPlan.MealPlanLocalDataSourceImp;
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.data.remote.network.Meal.MealsRemoteDataSourceImp;
-import com.example.foodplanner.data.repo.MealsRepositoryImp;
+import com.example.foodplanner.data.model.MealPlan;
+import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
+import com.example.foodplanner.data.repo.meal_plan_repo.MealPlanRepositoryImp;
+import com.example.foodplanner.data.repo.fav_meal_repo.MealRepositoryImp;
 import com.example.foodplanner.meal_details.presenter.MealDetailsPresenter;
 import com.example.foodplanner.meal_details.presenter.MealDetailsPresenterImp;
 import com.example.foodplanner.utils.CountryMapper;
 import com.example.foodplanner.utils.MealUtils;
 
+import java.util.Calendar;
 import java.util.List;
+
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 
 public class MealDetailsFragment extends Fragment implements MealDetailsView{
 
     private static final String TAG = "MealDetailsFragment";
 
-    MealDetailsPresenter presenter;
+    private MealDetailsPresenter presenter;
     private TextView mealName, mealCountry, mealCategory;
-    private ImageView mealImage, countryImage;
+    private ImageView mealImage, countryImage, favIcon, calenderIcon;
 
     private Meal meal;
+    private MealPlan mealPlan;
 
-    WebView webView;
+    private WebView webView;
 
-    TextView instructionsTv;
+    private TextView instructionsTv;
 
-    RecyclerView ingredientsRv;
+    private RecyclerView ingredientsRv;
+
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public MealDetailsFragment() {
         // Required empty public constructor
@@ -74,10 +89,24 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         String mealId = MealDetailsFragmentArgs.fromBundle(getArguments()).getMealId();
 
         presenter = new MealDetailsPresenterImp(
-                MealsRepositoryImp.getInstance(MealsRemoteDataSourceImp.getInstance()),
+                MealRepositoryImp.getInstance(
+                        MealRemoteDataSourceImp.getInstance(),
+                        MealLocalDataSourceImp.getInstance(requireContext())),
+                MealPlanRepositoryImp.getInstance(
+                        MealPlanLocalDataSourceImp.getInstance(requireContext())
+                ),
                 this);
 
         presenter.getMealDetails(mealId);
+
+        favIcon.setOnClickListener(v -> {
+            presenter.toggleFavIcon();
+
+        });
+        calenderIcon.setOnClickListener(
+                v -> {
+                    showDatePicker();
+                });
     }
 
 
@@ -90,11 +119,20 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         webView = view.findViewById(R.id.web_view);
         mealCategory = view.findViewById(R.id.tv_category);
         countryImage = view.findViewById(R.id.iv_meal_country);
+        favIcon = view.findViewById(R.id.iv_favorite);
+        calenderIcon = view.findViewById(R.id.iv_calender);
+
     }
     @Override
     public void showMealDetails(List<Meal> meals) {
 
         meal = meals.get(0);
+        mealPlan = new MealPlan();
+        mealPlan.setMealId(meal.getMealId());
+        mealPlan.setMealName(meal.getMealName());
+        mealPlan.setMealImage(meal.getMealImage());
+
+
         List<Ingredient> ingredientsList = MealUtils.getIngredientsList(meal);
         Log.i(TAG, "showMealDetails: " + ingredientsList + meal.getStrIngredient1());
         mealCountry.setText(meal.getMealCountry());
@@ -102,6 +140,8 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         instructionsTv.setText(meal.getMealInstructions());
         countryImage.setImageResource(CountryMapper.getImageForCountry(meal.getMealCountry()));
         mealCategory.setText(meal.getMealCategory());
+
+
         // Load the video properly into WebView
         String videoUrl = meal.getMealVideo();
 
@@ -121,9 +161,66 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         IngredientsRecyclerViewAdapter adapter = new IngredientsRecyclerViewAdapter(requireContext(), ingredientsList);
         ingredientsRv.setAdapter(adapter);
     }
+    @Override
+    public void updateToggleIcon(boolean isClicked){
+        favIcon.setImageResource(isClicked ? R.drawable.touch_colored: R.drawable.touch);
+        if(isClicked){
+            Disposable disposable = presenter.addToFavoriteMeals(meal);
+            compositeDisposable.add(disposable);
+        }else{
+            Disposable disposable = presenter.removeFromFavoriteMeals(meal);
+            compositeDisposable.add(disposable);
+        }
+    }
+
+    private void showDatePicker() {
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    Calendar selectedDateCal = Calendar.getInstance();
+                    selectedDateCal.set(selectedYear, selectedMonth, selectedDay, 0, 0, 0);
+
+                    // Ensure milliseconds are zero
+                    selectedDateCal.set(Calendar.MILLISECOND, 0);
+
+                    //It returns the number of milliseconds since January 1, 1970
+                    long selectedDateMillis = selectedDateCal.getTimeInMillis();
+
+                    mealPlan.setDate(selectedDateMillis);
+                    Log.i(TAG, "showPlanMealDetails: " + mealPlan.toString());
+                    Disposable disposable = presenter.addMealToCalender(mealPlan);
+                    compositeDisposable.add(disposable);
+
+                }, year, month, day);
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
+        datePickerDialog.show();
+    }
+    @Override
+    public void showToast(String msg) {
+        Toast.makeText(requireContext(), msg,Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void showError(String err) {
+        LayoutInflater inflater = LayoutInflater.from(requireContext());
+        View layout = inflater.inflate(R.layout.custom_toast, null);
 
+        TextView text = layout.findViewById(R.id.toast_text);
+        text.setText(err);
+
+        Toast toast = new Toast(requireContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
+    }
+
+
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }
