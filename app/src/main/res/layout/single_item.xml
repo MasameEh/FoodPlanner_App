@@ -37,6 +37,7 @@
             android:lines="3"
             android:textColor="@color/white"
             android:textSize="18sp"
+            app:autoSizeMaxTextSize="18sp"
             app:autoSizeTextType="uniform" />
 
     </androidx.cardview.widget.CardView>

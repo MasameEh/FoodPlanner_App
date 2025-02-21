@@ -33,6 +33,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+
 
 public class MealsPlanFragment extends Fragment implements MealsPlanView,
         OnRemoveIconClicked<MealPlan>, OnMealClickListener {
@@ -45,6 +48,7 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView,
     private TextView dateTv;
 
     private MealsPlanPresenter mealsPresenter;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +88,8 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView,
 
                     Log.i(TAG, "calendarView: --- " + date);
                     dateTv.setText(String.format("%s%s", getString(R.string.planned_meals_for), date));
-                    mealsPresenter.getMealsForDay(selectedDateMillis);
+                    Disposable disposable = mealsPresenter.getMealsForDay(selectedDateMillis);
+                    compositeDisposable.add(disposable);
 
                 }
         );
@@ -111,7 +116,8 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView,
 
     @Override
     public void onIconClicked(MealPlan meal) {
-        mealsPresenter.removeMealsForDay(meal);
+        Disposable disposable = mealsPresenter.removeMealsForDay(meal);
+        compositeDisposable.add(disposable);
     }
 
     @Override
@@ -119,5 +125,11 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView,
         MealsPlanFragmentDirections.ActionMealsPlanToMealDetailsFragment action =
                 MealsPlanFragmentDirections.actionMealsPlanToMealDetailsFragment(mealId);
         NavHostFragment.findNavController(this).navigate(action);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.clear();
     }
 }

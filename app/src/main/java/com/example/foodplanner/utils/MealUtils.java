@@ -16,28 +16,16 @@ public class MealUtils {
         List<Ingredient> ingredientsList = new ArrayList<>();
 
         for (int i = 1; i <= 20; i++) {
-            try {
-                // Use reflection to dynamically access ingredient and measure fields
-                Field ingredientField = Meal.class.getDeclaredField("strIngredient" + i);
-                Field measureField = Meal.class.getDeclaredField("strMeasure" + i);
 
-                // Ensure the fields are accessible
-                ingredientField.setAccessible(true);
-                measureField.setAccessible(true);
+            String ingredientName = meal.getStrIngredient(i);
+            String measure = meal.getStrMeasure(i);
 
-                // Retrieve values from the meal object
-                String ingredientName = (String) ingredientField.get(meal);
-                String measure = (String) measureField.get(meal);
+            Log.d(TAG, "Extracting Ingredient: " + ingredientName + " - " + measure);
 
-                Log.d(TAG, "Extracting Ingredient: " + ingredientName + " - " + measure);
 
-                // Add only non-empty ingredients with measures
-                if (ingredientName != null && !ingredientName.trim().isEmpty() &&
-                        measure != null && !measure.trim().isEmpty()) {
-                    ingredientsList.add(new Ingredient(ingredientName, measure));
-                }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                Log.e(TAG, "Error extracting ingredient " + i, e);
+            if (ingredientName != null && !ingredientName.trim().isEmpty() &&
+                    measure != null && !measure.trim().isEmpty()) {
+                ingredientsList.add(new Ingredient(ingredientName, measure));
             }
         }
 

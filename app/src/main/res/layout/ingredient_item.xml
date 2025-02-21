@@ -10,9 +10,9 @@
         android:id="@+id/cardView"
         android:layout_width="135dp"
         android:layout_height="135dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="8dp"
         app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,13 +22,14 @@
 
         <TextView
             android:id="@+id/tv_measure"
-            android:layout_width="59dp"
-            android:layout_height="36dp"
+            android:layout_width="63dp"
+            android:layout_height="33dp"
             android:layout_gravity="bottom|center"
             android:fontFamily="@font/josefin_sans_bold"
             android:gravity="center"
-            android:text="15gp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeTextType="none" />
 
         <ImageView
             android:id="@+id/iv_ingredient"
@@ -38,14 +39,15 @@
 
         <TextView
             android:id="@+id/tv_ingredient"
-            android:layout_width="210dp"
-            android:layout_height="53dp"
+            android:layout_width="135dp"
+            android:layout_height="48dp"
             android:layout_gravity="bottom|center"
             android:fontFamily="@font/josefin_sans_bold"
             android:gravity="center|top"
-            android:text="White wine "
             android:textColor="#0B0A0A"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeTextType="uniform" />
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,10 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
 
-import com.example.foodplanner.data.model.CategoryResponse;
-import com.example.foodplanner.data.model.MealResponse;
 import com.example.foodplanner.data.remote.network.MealService;
-import retrofit2.Call;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -24,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.fragment_splash);
         LottieAnimationView lottieAnimationView = findViewById(R.id.lottie_splash);
 
         Retrofit retrofit = new Retrofit.Builder()
