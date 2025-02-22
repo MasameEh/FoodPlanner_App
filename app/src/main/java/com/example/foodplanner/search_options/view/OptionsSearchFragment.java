@@ -111,8 +111,6 @@ public class OptionsSearchFragment extends Fragment implements OptionsSearchView
 
             }
         });
-        int spacing = 24;
-        //recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, spacing, true));
 
     }
 

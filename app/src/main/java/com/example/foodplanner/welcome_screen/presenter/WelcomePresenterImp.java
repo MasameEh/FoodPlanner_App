@@ -1,8 +1,7 @@
 package com.example.foodplanner.welcome_screen.presenter;
 
 import com.example.foodplanner.data.remote.auth.AuthCallback;
-import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
-import com.example.foodplanner.data.repo.AuthRepository;
+import com.example.foodplanner.data.repo.FirebaseRepository;
 import com.example.foodplanner.welcome_screen.view.WelcomeView;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -10,9 +9,9 @@ public class WelcomePresenterImp implements WelcomePresenter, AuthCallback {
 
     WelcomeView welcomeView;
 
-    AuthRepository authRepo;
+    FirebaseRepository authRepo;
 
-    public WelcomePresenterImp(WelcomeView welcomeView, AuthRepository firebaseRemote) {
+    public WelcomePresenterImp(WelcomeView welcomeView, FirebaseRepository firebaseRemote) {
         this.welcomeView = welcomeView;
         this.authRepo = firebaseRemote;
     }

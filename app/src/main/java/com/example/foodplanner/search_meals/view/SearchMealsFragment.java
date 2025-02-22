@@ -8,10 +8,13 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
@@ -20,6 +23,7 @@ import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.fav_meal_repo.MealRepositoryImp;
 import com.example.foodplanner.search_meals.presenter.SearchMealPresenterImp;
 import com.example.foodplanner.search_meals.presenter.SearchMealsPresenter;
+import com.example.foodplanner.utils.CustomToast;
 
 import java.util.List;
 
@@ -28,9 +32,13 @@ public class SearchMealsFragment extends Fragment implements SearchMealView, OnM
 
     private static final String TAG = "SearchMealsFragment";
 
-    SearchMealsPresenter presenter;
+    private SearchMealsPresenter presenter;
 
-    RecyclerView rv;
+    private  RecyclerView rv;
+
+    private EditText searchEt;
+
+    private MealRecyclerViewAdapter mealAdapter;
 
     public SearchMealsFragment() {
         // Required empty public constructor
@@ -77,19 +85,43 @@ public class SearchMealsFragment extends Fragment implements SearchMealView, OnM
         super.onViewCreated(view, savedInstanceState);
 
         rv = view.findViewById(R.id.rv_meals);
+        searchEt = view.findViewById(R.id.et_meals_search);
+
+        searchEt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                presenter.filterMeals(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
     @Override
-    public void showDate(List<Meal> meals) {
+    public void showMealsData(List<Meal> meals) {
         Log.i(TAG, "showDate: " + meals.get(0).toString());
-        MealRecyclerViewAdapter mealAdapter = new MealRecyclerViewAdapter(requireContext(), meals, this);
+        mealAdapter = new MealRecyclerViewAdapter(requireContext(), meals, this);
 
         rv.setAdapter(mealAdapter);
     }
 
     @Override
-    public void showError(String message) {
+    public void showFilteredMeals(List<Meal> meals) {
+         mealAdapter.setData(meals);
+    }
 
+    @Override
+    public void showError(String message) {
+        CustomToast.showCustomToast(requireContext(), message);
     }
 
     @Override

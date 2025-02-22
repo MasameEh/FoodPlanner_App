@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.foodplanner.splash.SplashFragment"
+        android:name="com.example.foodplanner.splash.view.SplashFragment"
         android:label="SplashFragment" >
         <action
             android:id="@+id/action_splashFragment_to_welcomeFragment"
@@ -82,7 +82,8 @@
         tools:layout="@layout/fragment_favorite" >
         <action
             android:id="@+id/action_favoriteFragment_to_mealDetailsFragment"
-            app:destination="@id/mealDetailsFragment" />
+            app:destination="@id/mealDetailsFragment"
+            app:popUpTo="@id/favoriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -125,7 +126,8 @@
             app:argType="string" />
         <action
             android:id="@+id/action_searchMealsFragment_to_mealDetailsFragment"
-            app:destination="@id/mealDetailsFragment" />
+            app:destination="@id/mealDetailsFragment"
+            app:popUpTo="@id/searchMealsFragment" />
     </fragment>
     <fragment
         android:id="@+id/mealsPlan"
@@ -134,6 +136,7 @@
         tools:layout="@layout/fragment_meals_plan" >
         <action
             android:id="@+id/action_mealsPlan_to_mealDetailsFragment"
-            app:destination="@id/mealDetailsFragment" />
+            app:destination="@id/mealDetailsFragment"
+            app:popUpTo="@id/mealsPlan" />
     </fragment>
 </navigation>

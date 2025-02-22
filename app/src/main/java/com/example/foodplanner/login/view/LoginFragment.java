@@ -9,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +19,11 @@ import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.local.CacheHelper;
-import com.example.foodplanner.data.repo.AuthRepositoryImp;
+import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.login.presenter.LoginPresenter;
 import com.example.foodplanner.login.presenter.LoginPresenterImp;
-import com.google.firebase.auth.FirebaseUser;
 
-import com.example.foodplanner.data.remote.auth.AuthCallback;
-import com.example.foodplanner.data.remote.auth.AuthService;
 import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
-import com.example.foodplanner.data.model.User;
 import com.example.foodplanner.utils.InputValidator;
 
 
@@ -53,7 +48,7 @@ public class LoginFragment extends Fragment implements LoginView{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loginPresenter = new LoginPresenterImp(AuthRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
+        loginPresenter = new LoginPresenterImp(FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
                 CacheHelper.getInstance(requireContext())), this);
     }
 

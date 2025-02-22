@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
 import com.example.foodplanner.data.local.CacheHelper;
-import com.example.foodplanner.data.repo.AuthRepositoryImp;
+import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.profile.presenter.ProfilePresenter;
 import com.example.foodplanner.profile.presenter.ProfilePresenterImp;
 
@@ -54,7 +54,7 @@ public class ProfileFragment extends Fragment implements ProfileView{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
-        profilePresenter = new ProfilePresenterImp(AuthRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
+        profilePresenter = new ProfilePresenterImp(FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
                 CacheHelper.getInstance(requireContext())), this);
 
         logoutBtn = view.findViewById(R.id.btn_logout);

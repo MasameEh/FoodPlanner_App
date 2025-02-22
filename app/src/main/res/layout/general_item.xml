@@ -9,8 +9,7 @@
         android:id="@+id/cv_general"
         android:layout_width="183dp"
         android:layout_height="100dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="30dp"
         app:cardBackgroundColor="@color/secondary"
         app:cardCornerRadius="15dp"
@@ -27,6 +26,7 @@
                 android:id="@+id/iv_general_item_image"
                 android:layout_width="79dp"
                 android:layout_height="93dp"
+                android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -41,6 +41,7 @@
                 android:layout_height="66dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/josefin_sans_bold"
                 android:gravity="center"
@@ -48,6 +49,7 @@
                 android:textSize="16sp"
                 app:autoSizeTextType="none"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_general_item_image"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

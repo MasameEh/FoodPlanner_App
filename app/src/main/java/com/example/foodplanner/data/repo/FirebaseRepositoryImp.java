@@ -3,21 +3,22 @@ package com.example.foodplanner.data.repo;
 import com.example.foodplanner.data.local.CacheHelper;
 import com.example.foodplanner.data.remote.auth.AuthCallback;
 import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
+import com.google.firebase.auth.FirebaseUser;
 
-public class AuthRepositoryImp implements AuthRepository {
+public class FirebaseRepositoryImp implements FirebaseRepository {
 
-    private FirebaseRemoteDataSource firebaseSource;
+    private final FirebaseRemoteDataSource firebaseSource;
     private final CacheHelper cacheHelper;
-    private static AuthRepositoryImp repo;
+    private static FirebaseRepositoryImp repo;
 
-    private AuthRepositoryImp(FirebaseRemoteDataSource firebaseSource, CacheHelper cacheHelper) {
+    private FirebaseRepositoryImp(FirebaseRemoteDataSource firebaseSource, CacheHelper cacheHelper) {
         this.firebaseSource = firebaseSource;
         this.cacheHelper = cacheHelper;
     }
 
-    public static AuthRepositoryImp getInstance(FirebaseRemoteDataSource firebaseSource, CacheHelper cacheHelper){
+    public static FirebaseRepositoryImp getInstance(FirebaseRemoteDataSource firebaseSource, CacheHelper cacheHelper){
         if(repo == null){
-            repo =  new AuthRepositoryImp(firebaseSource, cacheHelper);
+            repo =  new FirebaseRepositoryImp(firebaseSource, cacheHelper);
         }
         return repo;
     }
@@ -29,6 +30,11 @@ public class AuthRepositoryImp implements AuthRepository {
     @Override
     public String getUserId() {
         return cacheHelper.getString("userId");
+    }
+
+    @Override
+    public FirebaseUser getCurrentUser() {
+        return firebaseSource.getCurrentUser();
     }
 
     @Override
@@ -52,7 +58,6 @@ public class AuthRepositoryImp implements AuthRepository {
 
     @Override
     public void logoutUser(AuthCallback callback) {
-
         firebaseSource.logout(callback);
     }
 

@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.fragment_splash);
-        LottieAnimationView lottieAnimationView = findViewById(R.id.lottie_splash);
+        LottieAnimationView lottieAnimationView = findViewById(R.id.lottie_no_internet);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)

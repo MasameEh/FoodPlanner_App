@@ -1,16 +1,16 @@
 package com.example.foodplanner.signup.presenter;
 
 import com.example.foodplanner.data.remote.auth.AuthCallback;
-import com.example.foodplanner.data.repo.AuthRepository;
+import com.example.foodplanner.data.repo.FirebaseRepository;
 import com.example.foodplanner.signup.view.SignupView;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SignupPresenterImp implements SignupPresenter, AuthCallback {
-    private final AuthRepository authRepo;
+    private final FirebaseRepository authRepo;
 
     private final SignupView signupView;
 
-    public SignupPresenterImp(AuthRepository authRepo, SignupView signupView) {
+    public SignupPresenterImp(FirebaseRepository authRepo, SignupView signupView) {
         this.authRepo = authRepo;
         this.signupView = signupView;
     }

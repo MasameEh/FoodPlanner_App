@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
             user = new User("Guest", "guest@example.com"); // Default User
         }
         Log.i(TAG, "onViewCreated: " + user.toString());
-        //Toast.makeText(requireContext(), "Authentication succeeded: " + user.toString(), Toast.LENGTH_SHORT).show();
+
     }
 
 

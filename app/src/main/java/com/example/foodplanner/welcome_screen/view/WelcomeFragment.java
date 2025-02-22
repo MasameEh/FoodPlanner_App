@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.local.CacheHelper;
 import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
-import com.example.foodplanner.data.repo.AuthRepositoryImp;
+import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.welcome_screen.presenter.WelcomePresenter;
 import com.example.foodplanner.welcome_screen.presenter.WelcomePresenterImp;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -35,12 +35,12 @@ import com.google.firebase.auth.FirebaseUser;
 public class WelcomeFragment extends Fragment implements WelcomeView{
 
     private static final int RC_SIGN_IN = 9001;
-    Button googleBtn;
-    Button emailBtn;
+    private Button googleBtn;
+    private Button emailBtn, guestBtn;
 
-    TextView loginTv;
+    private TextView loginTv;
 
-    View view;
+    private View view;
     private GoogleSignInClient googleSignInClient;
     private WelcomePresenter presenter;
 
@@ -67,7 +67,7 @@ public class WelcomeFragment extends Fragment implements WelcomeView{
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
         presenter = new WelcomePresenterImp(this,
-                AuthRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
+                FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
                         CacheHelper.getInstance(requireContext())));
         initializeUI(view);
 
@@ -76,16 +76,20 @@ public class WelcomeFragment extends Fragment implements WelcomeView{
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
-        // sign up
+
+        guestBtn.setOnClickListener(v -> {
+            findNavController(view).navigate(R.id.action_welcomeFragment_to_homeFragment);
+        });
+
         emailBtn.setOnClickListener(v -> {
             findNavController(view).navigate(R.id.action_welcomeFragment_to_signupFragment);
         });
-        // google auth
+
         googleBtn.setOnClickListener(v -> {
             signInWithGoogle();
         });
 
-        // normal log in
+
         loginTv.setOnClickListener(v -> {
             findNavController(view).navigate(R.id.action_welcomeFragment_to_loginFragment);
         });
@@ -100,6 +104,7 @@ public class WelcomeFragment extends Fragment implements WelcomeView{
         emailBtn = view.findViewById(R.id.btn_emailsignup);
         googleBtn = view.findViewById(R.id.btn_google);
         loginTv = view.findViewById(R.id.tv_login);
+        guestBtn = view.findViewById(R.id.btn_guest);
     }
 
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -62,9 +62,9 @@ public class MealRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
         return dataSet.size();
     }
 
-    public void setData(List<Meal> countries) {
+    public void setData(List<Meal> meals) {
         dataSet.clear();
-        dataSet.addAll(countries);
+        dataSet.addAll(meals);
         notifyDataSetChanged();
     }
 

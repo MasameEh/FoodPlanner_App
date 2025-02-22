@@ -29,10 +29,13 @@ public class FirebaseRemoteDataSource implements AuthService{
         }
         return repo;
     }
+
+    @Override
     public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
     }
 
+    @Override
     public void login(String email, String password, AuthCallback callback) {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {

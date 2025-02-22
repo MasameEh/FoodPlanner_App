@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface SearchMealView {
 
-    void showDate(List<Meal> meals);
+    void showMealsData(List<Meal> meals);
+    void showFilteredMeals(List<Meal> meals);
     void showError(String message);
 }
