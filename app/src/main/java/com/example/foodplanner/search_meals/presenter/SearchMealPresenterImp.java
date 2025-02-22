@@ -1,5 +1,7 @@
 package com.example.foodplanner.search_meals.presenter;
 
+import android.util.Log;
+
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.repo.fav_meal_repo.MealRepository;
 import com.example.foodplanner.search_meals.view.SearchMealView;
@@ -16,7 +18,10 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
 
     private final SearchMealView searchView;
 
-    private List<Meal> meals;
+    private final List<Meal> meals = new ArrayList<>();
+
+
+    private static final String TAG = "SearchMealPresenterImp";
 
     public SearchMealPresenterImp(MealRepository mealRepo, SearchMealView searchView) {
         this.mealRepo = mealRepo;
@@ -31,7 +36,7 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         meals -> {
-                            this.meals = new ArrayList<>(meals);
+                            this.meals.addAll(meals);
                             searchView.showMealsData(meals);
                         },
                         throwable -> searchView.showError(throwable.getMessage())
@@ -45,7 +50,8 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         meals -> {
-                            this.meals = new ArrayList<>(meals);
+                            this.meals.addAll(meals);
+                            Log.i(TAG, "getMealsByCountry: " + this.meals);
                             searchView.showMealsData(meals);
                         },
                         throwable -> searchView.showError(throwable.getMessage())
@@ -59,7 +65,7 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         meals ->{
-                            this.meals = new ArrayList<>(meals);
+                            this.meals.addAll(meals);
                             searchView.showMealsData(meals);
                         } ,
                         throwable -> searchView.showError(throwable.getMessage())
@@ -69,7 +75,7 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
     @Override
     public void filterMeals(String query) {
         List<Meal> filtered = new ArrayList<>();
-
+        Log.i(TAG, "filterMeals: " + meals);
         if (query.isEmpty()) {
             filtered.addAll(meals);
         } else {

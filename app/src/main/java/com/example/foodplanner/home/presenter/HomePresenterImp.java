@@ -8,9 +8,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomePresenterImp implements HomePresenter{
 
-    private boolean isBookmarked = false;
-    HomeView homeView;
-    MealRepository mealRepo;
+    private HomeView homeView;
+    private MealRepository mealRepo;
 
     private static final String TAG = "HomePresenterImp";
     public HomePresenterImp(HomeView homeView, MealRepository mealRepo) {
@@ -38,16 +37,6 @@ public class HomePresenterImp implements HomePresenter{
                         throwable -> homeView.showErr(throwable.getMessage())
                 );
 
-    }
-    @Override
-    public void addToFavoriteMeals() {
-
-    }
-
-
-    public void toggleBookmark() {
-        isBookmarked = !isBookmarked;
-        homeView.updateBookmarkIcon(isBookmarked);
     }
 
 

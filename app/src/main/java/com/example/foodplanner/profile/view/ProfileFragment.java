@@ -60,9 +60,6 @@ public class ProfileFragment extends Fragment implements ProfileView{
         logoutBtn = view.findViewById(R.id.btn_logout);
 
         logoutBtn.setOnClickListener(v -> {
-//            firebaseAuth.logout();;
-//            cacheHelper.saveString("userId", null);
-//            findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
             Log.i(TAG, "onViewCreated: log out clicked" );
             profilePresenter.logoutUser();
         });
@@ -70,8 +67,7 @@ public class ProfileFragment extends Fragment implements ProfileView{
 
     @Override
     public void navigateToLogin() {
-        Log.i(TAG, "nav to login" );
-        findNavController(view).navigate(R.id.action_profileFragment_to_loginFragment);
+        findNavController(view).navigate(R.id.action_profileFragment_to_welcomeFragment);
     }
 
     @Override

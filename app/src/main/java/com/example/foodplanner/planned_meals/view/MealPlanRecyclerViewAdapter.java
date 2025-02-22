@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.fav_meals.view.OnRemoveIconClicked;
 import com.example.foodplanner.search_meals.view.OnMealClickListener;
@@ -44,7 +43,7 @@ public class MealPlanRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
         //inflation (parsing) xml to view objects
         LayoutInflater inflater =  LayoutInflater.from(context);
         // parent : viewGroup to put view on
-        View view =  inflater.inflate(R.layout.fav_meal_item, parent, false);
+        View view =  inflater.inflate(R.layout.fav_meal_card, parent, false);
 
         return new RecyclerViewHolder(view);
     }

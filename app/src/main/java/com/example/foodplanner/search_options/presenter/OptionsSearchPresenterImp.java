@@ -22,9 +22,9 @@ public class OptionsSearchPresenterImp implements OptionsSearchPresenter {
     CategoryRepository categoryRepo;
     MealRepository mealRepo;
 
-    private List<Meal> countries;
-    private List<Category> categories;
-    private List<Ingredient> ingredients;
+    private final List<Meal> countries = new ArrayList<>();
+    private final List<Category> categories = new ArrayList<>();
+    private final List<Ingredient> ingredients = new ArrayList<>();
 
 
     private static final String TAG = "SearchPresenterImp";
@@ -42,9 +42,9 @@ public class OptionsSearchPresenterImp implements OptionsSearchPresenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                    categories1 -> {
-                        this.categories = new ArrayList<>(categories1);
-                        searchView.showCategories(categories1);
+                    categoriesList -> {
+                        categories.addAll(categoriesList);
+                        searchView.showCategories(categoriesList);
                     }    ,
                     throwable ->  searchView.showErr(throwable.getMessage())
                 );
@@ -56,9 +56,9 @@ public class OptionsSearchPresenterImp implements OptionsSearchPresenter {
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe(
-                       countries -> {
-                           this.countries = new ArrayList<>(countries);
-                           searchView.showCountries(countries);
+                       countriesList -> {
+                           countries.addAll(countriesList);
+                           searchView.showCountries(countriesList);
                        },
                        throwable -> searchView.showErr(throwable.getMessage())
                );
@@ -70,9 +70,9 @@ public class OptionsSearchPresenterImp implements OptionsSearchPresenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        ingredients -> {
-                            this.ingredients = new ArrayList<>(ingredients);
-                            searchView.showIngredients(ingredients);
+                        ingredientsList -> {
+                            ingredients.addAll(ingredientsList);
+                            searchView.showIngredients(ingredientsList);
                         },
                         throwable -> searchView.showErr(throwable.getMessage())
                 );;

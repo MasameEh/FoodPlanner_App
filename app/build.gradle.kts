@@ -71,4 +71,8 @@ dependencies {
 
     implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
 
+
+    implementation ("com.github.sparrow007:carouselrecyclerview:1.2.6")
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+
 }

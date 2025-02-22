@@ -40,16 +40,15 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
     private static final String TAG = "HomeFragment";
 
     ImageView mealIv;
-    ImageView bookmarkIv;
 
-    TextView mealNameTv;
+    TextView mealNameTv, mealCategoryTv;
 
     User user;
 
     HomePresenter presenter;
 
     ProgressBar progressBar;
-    RecyclerView rv;
+    RecyclerView randomMealsRv;
 
     CardView cv;
     private Meal randomMeal;
@@ -92,10 +91,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
         presenter.getRandomMeal();
         presenter.getVariousRandomMeals();
 
-        bookmarkIv.setOnClickListener(v -> {
-            presenter.toggleBookmark();
-        });
-
 
         cv.setOnClickListener(v ->
         {
@@ -114,17 +109,20 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
 
 
     public void initializeUI(View view){
-        bookmarkIv = view.findViewById(R.id.iv_r_bookmark);
         mealIv = view.findViewById(R.id.iv_item_thumbnail);
         mealNameTv = view.findViewById(R.id.tv_item_name);
-        rv =  view.findViewById(R.id.rv_random);
+        mealCategoryTv = view.findViewById(R.id.tv_rand_category);
+
+        randomMealsRv =  view.findViewById(R.id.rv_random);
         cv =  view.findViewById(R.id.cv_random_item);
+
         progressBar = view.findViewById(R.id.pB_progress);
     }
     @Override
     public void showRandomMealData(List<Meal> meals) {
         randomMeal = meals.get(0);
         mealNameTv.setText(randomMeal.getMealName());
+        mealCategoryTv.setText(randomMeal.getMealCategory());
         Glide.with(HomeFragment.this)
                 .load(randomMeal.getMealImage())
                 .into(mealIv);
@@ -144,17 +142,13 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
         toast.show();
     }
 
-    public void updateBookmarkIcon(boolean isBookmarked){
-        bookmarkIv.setImageResource(isBookmarked ? R.drawable.touch_colored: R.drawable.touch);
-        Toast.makeText(requireContext(), "Added to favorite",Toast.LENGTH_SHORT).show();
-    }
 
 
     public void showRandomMealsData(List<Meal> meals){
         //progressBar.setVisibility(View.GONE);
         Log.i(TAG, "meals: " + meals.get(0).getMealName());
         randomMealsAdapter = new RandomMealsRecyclerViewAdapter(requireContext(), meals, this);
-        rv.setAdapter(randomMealsAdapter);
+        randomMealsRv.setAdapter(randomMealsAdapter);
     }
 
 

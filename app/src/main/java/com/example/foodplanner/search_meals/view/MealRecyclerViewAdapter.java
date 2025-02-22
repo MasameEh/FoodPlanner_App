@@ -29,10 +29,11 @@ public class MealRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
         this.dataSet = dataSet;
         this.listener = listener;
     }
-    @NonNull
+
     @Override
     //if view (row) is null
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         //inflation (parsing) xml to view objects
         LayoutInflater inflater =  LayoutInflater.from(context);
         // parent : viewGroup to put view on
@@ -48,12 +49,13 @@ public class MealRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
 
         holder.itemName.setText(currMeal.getMealName());
         Glide.with(context).load(currMeal.getMealImage()).into(holder.itemImage);
-
+        holder.itemImage.setTranslationY(-position * 0.3f);
         holder.itemCard.setOnClickListener(
                 v -> {
                     listener.onMealClicked(currMeal.getMealId());
                 }
         );
+
 
     }
 

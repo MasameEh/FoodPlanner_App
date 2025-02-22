@@ -3,10 +3,13 @@ package com.example.foodplanner.meal_details.view;
 import static androidx.navigation.Navigation.findNavController;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,6 +37,7 @@ import com.example.foodplanner.meal_details.presenter.MealDetailsPresenter;
 import com.example.foodplanner.meal_details.presenter.MealDetailsPresenterImp;
 import com.example.foodplanner.utils.CountryMapper;
 import com.example.foodplanner.utils.MealUtils;
+import com.google.firebase.database.collection.LLRBNode;
 
 import java.util.Calendar;
 import java.util.List;
@@ -179,7 +183,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),
+        DatePickerDialog datePickerDialog = new DatePickerDialog(requireContext(),R.style.DialogTheme,
                 (view, selectedYear, selectedMonth, selectedDay) -> {
                     Calendar selectedDateCal = Calendar.getInstance();
                     selectedDateCal.set(selectedYear, selectedMonth, selectedDay, 0, 0, 0);
@@ -196,8 +200,11 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
                     compositeDisposable.add(disposable);
 
                 }, year, month, day);
+
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         datePickerDialog.show();
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.primary));
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(requireContext(), R.color.primary));
     }
     @Override
     public void showToast(String msg) {

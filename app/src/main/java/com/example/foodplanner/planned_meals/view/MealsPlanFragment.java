@@ -1,5 +1,9 @@
 package com.example.foodplanner.planned_meals.view;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.foodplanner.R;
@@ -45,10 +50,10 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView,
 
     private RecyclerView mealPlanRv;
     private CalendarView calendarView;
-    private TextView dateTv;
-
+    private TextView dateTv, planTv;
+    private ImageView pandaIv;
     private MealsPlanPresenter mealsPresenter;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,8 +76,18 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView,
         super.onViewCreated(view, savedInstanceState);
         initializeUI(view);
 
-        calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
+        Calendar currentDateCal = Calendar.getInstance();
 
+        currentDateCal.set(Calendar.HOUR_OF_DAY, 0);
+        currentDateCal.set(Calendar.MINUTE, 0);
+        currentDateCal.set(Calendar.SECOND, 0);
+        currentDateCal.set(Calendar.MILLISECOND, 0);
+        long currentDateMillis = currentDateCal.getTimeInMillis();
+
+        Disposable disposable1 = mealsPresenter.getMealsForDay(currentDateMillis);
+        compositeDisposable.add(disposable1);
+
+        calendarView.setMinDate(Calendar.getInstance().getTimeInMillis());
         calendarView.setOnDateChangeListener(
                 (view1, year, month, dayOfMonth) -> {
                     Calendar selectedDateCal = Calendar.getInstance();
@@ -88,8 +103,8 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView,
 
                     Log.i(TAG, "calendarView: --- " + date);
                     dateTv.setText(String.format("%s%s", getString(R.string.planned_meals_for), date));
-                    Disposable disposable = mealsPresenter.getMealsForDay(selectedDateMillis);
-                    compositeDisposable.add(disposable);
+                    Disposable disposable2 = mealsPresenter.getMealsForDay(selectedDateMillis);
+                    compositeDisposable.add(disposable2);
 
                 }
         );
@@ -100,11 +115,21 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView,
         calendarView = view.findViewById(R.id.calendarView_meals);
         mealPlanRv = view.findViewById(R.id.rv_planned_meals);
         dateTv = view.findViewById(R.id.tv_day);
+        planTv = view.findViewById(R.id.tv__no_plan);
+        pandaIv = view.findViewById(R.id.iv_panda);
     }
     @Override
     public void showMealForDay(List<MealPlan> meals) {
         Log.i(TAG, "showMealForDay: --- " + meals.toString());
 
+        if(!meals.isEmpty()){
+            planTv.setVisibility(GONE);
+            pandaIv.setVisibility(GONE);
+
+        }else{
+            planTv.setVisibility(VISIBLE);
+            pandaIv.setVisibility(VISIBLE);
+        }
         MealPlanRecyclerViewAdapter mealAdapter = new MealPlanRecyclerViewAdapter(requireContext(), meals, this, this);
         mealPlanRv.setAdapter(mealAdapter);
     }

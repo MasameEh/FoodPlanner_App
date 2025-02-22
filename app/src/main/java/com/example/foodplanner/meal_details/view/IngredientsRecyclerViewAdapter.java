@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Ingredient;
-import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.utils.CountryMapper;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class IngredientsRecyclerViewAdapter extends RecyclerView.Adapter<Recycle
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater =  LayoutInflater.from(context);
         // parent : viewGroup to put view on
-        View view =  inflater.inflate(R.layout.ingredient_item, parent, false);
+        View view =  inflater.inflate(R.layout.ingredient_card, parent, false);
 
         return new RecyclerViewHolder(view);
     }

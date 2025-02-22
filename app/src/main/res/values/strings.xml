@@ -6,7 +6,7 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_up_with_email">SIGN UP WITH EMAIL</string>
     <string name="google">Google</string>
-    <string name="welcome_to_mealbuddy">Welcome to MealBuddy</string>
+    <string name="welcome_to_meal_buddy">Welcome to MealBuddy</string>
     <string name="discover_new_recipe_and_plan_meals">Discover new recipe and plan meals</string>
     <string name="email">Email</string>
     <string name="username">Username</string>
@@ -26,6 +26,6 @@
     <string name="instructions">Instructions</string>
     <string name="your_favorite_meals">Your Favorite Meals:</string>
     <string name="planned_meals_for">"Planned Meals for "</string>
-    <string name="continue_as_as_guest">Continue as as Guest</string>
     <string name="continue_as_a_guest">Continue as a Guest</string>
+    <string name="no_favorite_meals_added_yet">No Favorite Meals added yet!</string>
 </resources>

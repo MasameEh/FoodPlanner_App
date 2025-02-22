@@ -1,5 +1,7 @@
 package com.example.foodplanner.search_options.view;
 
+import static android.view.View.GONE;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
@@ -41,17 +45,18 @@ import com.example.foodplanner.data.model.Meal;
 public class OptionsSearchFragment extends Fragment implements OptionsSearchView, OnItemClickListener  {
 
 
-    ChipGroup chipGroup;
-    RecyclerView recyclerView;
-    EditText searchEt;
-    String selectedChip;
+    private ChipGroup chipGroup;
+    private RecyclerView recyclerView;
+    private EditText searchEt;
+    private String selectedChip;
+    private TextView searchOptionsTv;
+    private ImageView searchIv;
+    private IngredientRecyclerViewAdapter ingredientAdapter;
+    private CategoryRecyclerViewAdapter categoryAdapter;
 
-    IngredientRecyclerViewAdapter ingredientAdapter;
-    CategoryRecyclerViewAdapter categoryAdapter;
-
-    CountryRecyclerViewAdapter countryAdapter;
+    private CountryRecyclerViewAdapter countryAdapter;
     private static final String TAG = "SearchFragment";
-    OptionsSearchPresenter optionsSearchPresenter;
+    private OptionsSearchPresenter optionsSearchPresenter;
 
     public OptionsSearchFragment() {
         // Required empty public constructor
@@ -115,7 +120,6 @@ public class OptionsSearchFragment extends Fragment implements OptionsSearchView
     }
 
     private void setupChoiceChips(){
-
         for(int i = 0; i < chipGroup.getChildCount(); i++){
             Chip chip = (Chip)chipGroup.getChildAt(i);
 
@@ -145,18 +149,24 @@ public class OptionsSearchFragment extends Fragment implements OptionsSearchView
         chipGroup = view.findViewById(R.id.chipGroup);
         recyclerView = view.findViewById(R.id.rv_items);
         searchEt =  view.findViewById(R.id.et_filter);
+        searchOptionsTv = view.findViewById(R.id.tv_search_options);
+        searchIv = view.findViewById(R.id.iv_search);
     }
 
 
     @Override
     public void showCategories(List<Category> categories) {
         Log.i(TAG, "showCategories: " + categories.get(0).getCategoryName());
-         categoryAdapter = new CategoryRecyclerViewAdapter(requireContext(), categories, this);
+        searchOptionsTv.setVisibility(GONE);
+        searchIv.setVisibility(GONE);
+                categoryAdapter = new CategoryRecyclerViewAdapter(requireContext(), categories, this);
         recyclerView.setAdapter(categoryAdapter);
     }
 
     @Override
     public void showCountries(List<Meal> countries) {
+        searchOptionsTv.setVisibility(GONE);
+        searchIv.setVisibility(GONE);
         countryAdapter = new CountryRecyclerViewAdapter(requireContext(), countries, this);
         Log.i(TAG, "showCountries: " + countries.get(0).getMealCountry());
         recyclerView.setAdapter(countryAdapter);
@@ -164,6 +174,8 @@ public class OptionsSearchFragment extends Fragment implements OptionsSearchView
 
     @Override
     public void showIngredients(List<Ingredient> ingredients) {
+        searchOptionsTv.setVisibility(GONE);
+        searchIv.setVisibility(GONE);
         Log.i(TAG, "showIngredients: " + ingredients.get(0).getName());
         ingredientAdapter =  new IngredientRecyclerViewAdapter(requireContext(), ingredients, this);
         recyclerView.setAdapter(ingredientAdapter);

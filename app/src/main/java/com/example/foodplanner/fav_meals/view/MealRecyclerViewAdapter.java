@@ -39,7 +39,7 @@ public class MealRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHo
         //inflation (parsing) xml to view objects
         LayoutInflater inflater =  LayoutInflater.from(context);
         // parent : viewGroup to put view on
-        View view =  inflater.inflate(R.layout.fav_meal_item, parent, false);
+        View view =  inflater.inflate(R.layout.fav_meal_card, parent, false);
 
         return new RecyclerViewHolder(view);
     }
