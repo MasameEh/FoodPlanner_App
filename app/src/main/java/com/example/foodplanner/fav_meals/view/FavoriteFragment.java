@@ -1,5 +1,8 @@
 package com.example.foodplanner.fav_meals.view;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,9 +36,11 @@ public class FavoriteFragment extends Fragment implements FavoriteView, OnRemove
 
 
 
-    RecyclerView favMealRv;
+    private RecyclerView favMealRv;
 
-    FavoriteMealsPresenter favoritePresenter;
+    private FavoriteMealsPresenter favoritePresenter;
+    private ImageView noFavMealAddedIv;
+    private TextView noMealAddedTv;
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -68,12 +74,21 @@ public class FavoriteFragment extends Fragment implements FavoriteView, OnRemove
 
     void initializeUI(View view){
         favMealRv = view.findViewById(R.id.rv_fav_meals);
-
+        noFavMealAddedIv = view.findViewById(R.id.iv_no_meal);
+        noMealAddedTv = view.findViewById(R.id.tv_no_meal);
     }
     @Override
     public void showFavMeals(List<Meal> meals) {
-        MealRecyclerViewAdapter favAdapter =  new MealRecyclerViewAdapter(requireContext(), meals, this, this);
-        favMealRv.setAdapter(favAdapter);
+        if(!meals.isEmpty()){
+            noFavMealAddedIv.setVisibility(GONE);
+            noMealAddedTv.setVisibility(GONE);
+            MealRecyclerViewAdapter favAdapter =  new MealRecyclerViewAdapter(requireContext(), meals, this, this);
+            favMealRv.setAdapter(favAdapter);
+        }else{
+            noFavMealAddedIv.setVisibility(VISIBLE);
+            noMealAddedTv.setVisibility(VISIBLE);
+        }
+
     }
 
     @Override
