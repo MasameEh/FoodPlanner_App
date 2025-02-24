@@ -82,12 +82,13 @@ public class FavoriteFragment extends Fragment implements FavoriteView, OnRemove
         if(!meals.isEmpty()){
             noFavMealAddedIv.setVisibility(GONE);
             noMealAddedTv.setVisibility(GONE);
-            MealRecyclerViewAdapter favAdapter =  new MealRecyclerViewAdapter(requireContext(), meals, this, this);
-            favMealRv.setAdapter(favAdapter);
+
         }else{
             noFavMealAddedIv.setVisibility(VISIBLE);
             noMealAddedTv.setVisibility(VISIBLE);
         }
+        MealRecyclerViewAdapter favAdapter =  new MealRecyclerViewAdapter(requireContext(), meals, this, this);
+        favMealRv.setAdapter(favAdapter);
 
     }
 
