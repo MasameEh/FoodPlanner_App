@@ -20,8 +20,7 @@
             android:id="@+id/divider2"
             android:layout_width="0dp"
             android:layout_height="3dp"
-            android:layout_marginLeft="12dp"
-
+            android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="8dp"
             android:background="@android:color/background_light"
@@ -47,7 +46,6 @@
             android:layout_width="0dp"
             android:layout_height="3dp"
             android:layout_marginLeft="8dp"
-
             android:layout_marginTop="16dp"
             android:layout_marginRight="12dp"
             android:background="@android:color/background_light"
@@ -152,7 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/josefin_sans_bold"
-            android:text="OR"
+            android:text="@string/or"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/btn_google"

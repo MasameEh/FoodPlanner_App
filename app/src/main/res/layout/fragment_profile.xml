@@ -54,7 +54,7 @@
         android:fontFamily="@font/josefin_sans_bold"
         android:gravity="center"
         android:maxLines="2"
-        android:text="Mohamed Sameh"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="28sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView4"

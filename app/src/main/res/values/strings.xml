@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FoodPlanner</string>
+    <string name="app_name">MealBuddy</string>
     <string name="logo">MealBuddy</string>
     <string name="log_in">Log in</string>
     <string name="log_in_underline"><u>Login</u></string>
@@ -29,4 +29,9 @@
     <string name="continue_as_a_guest">Continue as a Guest</string>
     <string name="no_favorite_meals_added_yet">No Favorite Meals added yet!</string>
     <string name="no_plans">No Plans!</string>
+    <string name="you_may_also_like">You May Also Like:</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="youtube">Youtube</string>
+    <string name="search_for_your_next_meal_by_country_category_or_ingredient">Search for your next meal by country, category, or ingredient!</string>
+    <string name="or">OR</string>
 </resources>

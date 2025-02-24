@@ -123,7 +123,7 @@
         android:layout_height="76dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/josefin_sans_bold"
-        android:text="Search for your next meal by country, category, or ingredient!"
+        android:text="@string/search_for_your_next_meal_by_country_category_or_ingredient"
         android:textColor="@color/onPrimary"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
