@@ -27,7 +27,6 @@ public class RandomMealsPicker {
         mealAreas.add("Malaysian");
         mealAreas.add("Mexican");
         mealAreas.add("Moroccan");
-        mealAreas.add("Norwegian");
         mealAreas.add("Polish");
         mealAreas.add("Portuguese");
         mealAreas.add("Russian");

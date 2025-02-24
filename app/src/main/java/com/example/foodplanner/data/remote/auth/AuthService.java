@@ -2,13 +2,16 @@ package com.example.foodplanner.data.remote.auth;
 
 import com.google.firebase.auth.FirebaseUser;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
+
 public interface AuthService {
-    void login(String email, String password, AuthCallback callback);
+    Single<String> login(String email, String password);
 
-    void signUpWithEmail(String email, String password, String username, AuthCallback callback);
+    Single<String> signUpWithEmail(String email, String password, String username);
 
-    void signInWithGoogle(String idToken, AuthCallback callback);
+    Single<FirebaseUser> signInWithGoogle(String idToken);
 
-    void logout(AuthCallback callback);
+    Completable logout();
     FirebaseUser getCurrentUser();
 }

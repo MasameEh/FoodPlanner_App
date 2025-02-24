@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements MainView{
 
     @Override
     public void showError(String error) {
-        CustomToast.showCustomToast(this, error);
+        CustomToast.showCustomErrToast(this, error);
     }
 
 

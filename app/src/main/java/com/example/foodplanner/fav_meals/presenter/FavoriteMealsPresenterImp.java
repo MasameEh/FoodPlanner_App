@@ -1,7 +1,7 @@
 package com.example.foodplanner.fav_meals.presenter;
 
 import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.data.repo.fav_meal_repo.MealRepository;
+import com.example.foodplanner.data.repo.meal_repo.MealRepository;
 import com.example.foodplanner.fav_meals.view.FavoriteView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;

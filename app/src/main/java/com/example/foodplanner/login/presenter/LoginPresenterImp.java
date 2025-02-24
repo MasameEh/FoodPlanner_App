@@ -5,7 +5,11 @@ import com.example.foodplanner.data.repo.FirebaseRepository;
 import com.example.foodplanner.login.view.LoginView;
 import com.google.firebase.auth.FirebaseUser;
 
-public class LoginPresenterImp implements LoginPresenter, AuthCallback {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public class LoginPresenterImp implements LoginPresenter {
 
     private FirebaseRepository authRepo;
 
@@ -18,17 +22,16 @@ public class LoginPresenterImp implements LoginPresenter, AuthCallback {
 
     @Override
     public void loginUser(String email, String password) {
-        authRepo.loginUser(email, password, this);
+        Disposable subscribe = authRepo.loginUser(email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        (s) -> {
+                            authRepo.saveUserId(s);
+                            loginView.onUserLoggedIn();
+                        },
+                        throwable -> loginView.showError(throwable.getMessage())
+                );
     }
 
-    @Override
-    public void onSuccess(FirebaseUser user) {
-        authRepo.saveUserId(user.getUid());
-        loginView.onUserLoggedIn();
-    }
-
-    @Override
-    public void onFailure(Exception e) {
-        loginView.showError(e.getMessage());
-    }
 }

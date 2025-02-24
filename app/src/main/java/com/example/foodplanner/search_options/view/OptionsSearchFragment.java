@@ -28,7 +28,7 @@ import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.remote.network.Category.CategoriesRemoteDataSourceImp;
 import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.category_repo.CategoryRepositoryImp;
-import com.example.foodplanner.data.repo.fav_meal_repo.MealRepositoryImp;
+import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.search_options.presenter.OptionsSearchPresenter;
 import com.example.foodplanner.search_options.presenter.OptionsSearchPresenterImp;
 import com.example.foodplanner.search_options.view.adapters.CategoryRecyclerViewAdapter;
@@ -209,5 +209,11 @@ public class OptionsSearchFragment extends Fragment implements OptionsSearchView
         OptionsSearchFragmentDirections.ActionSearchFragmentToSearchMealsFragment action =
                 OptionsSearchFragmentDirections.actionSearchFragmentToSearchMealsFragment(name, type);
         NavHostFragment.findNavController(this).navigate(action);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        optionsSearchPresenter.clear();
     }
 }

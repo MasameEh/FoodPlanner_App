@@ -13,6 +13,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
+
 public class FirebaseRemoteDataSource implements AuthService{
 
     private final FirebaseAuth mAuth;
@@ -36,41 +39,58 @@ public class FirebaseRemoteDataSource implements AuthService{
     }
 
     @Override
-    public void login(String email, String password, AuthCallback callback) {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        callback.onSuccess(mAuth.getCurrentUser());
-                    } else {
-                        callback.onFailure(task.getException());
-                    }
-                });
+    public Single<String> login(String email, String password) {
+        return Single.create(
+                emitter -> {
+                    mAuth.signInWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    emitter.onSuccess(getCurrentUser().getUid());
+
+                                } else {
+                                    emitter.onError(task.getException());
+
+                                }
+                            });
+                }
+        );
     }
 
     @Override
-    public void signUpWithEmail(String email, String password, String username, AuthCallback callback) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        saveUserToFirestore(mAuth.getCurrentUser().getUid(), username, email);
-                        callback.onSuccess(mAuth.getCurrentUser());
-                    } else {
-                        callback.onFailure(task.getException());
-                    }
-                });
+    public Single<String> signUpWithEmail(String email, String password, String username) {
+        return Single.create(
+                emitter -> {
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    emitter.onSuccess(getCurrentUser().getUid());
+                                    saveUserToFirestore(mAuth.getCurrentUser().getUid(), username, email);
+
+                                } else {
+                                    emitter.onError(task.getException());
+                                }
+                            });
+                }
+        );
     }
 
     @Override
-    public void signInWithGoogle(String idToken, AuthCallback callback) {
+    public Single<FirebaseUser> signInWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        callback.onSuccess(mAuth.getCurrentUser());
-                    } else {
-                        callback.onFailure(task.getException());
-                    }
-                });
+        return Single.create(
+                emitter -> {
+                    mAuth.signInWithCredential(credential)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    emitter.onSuccess(getCurrentUser());
+
+                                } else {
+                                    emitter.onError(task.getException());
+
+                                }
+                            });
+                }
+        );
     }
 
     public void saveUserToFirestore(String userId, String username, String email) {
@@ -86,30 +106,13 @@ public class FirebaseRemoteDataSource implements AuthService{
                 .addOnFailureListener(e -> Log.e("Firestore", "Error adding user", e));
     }
 
-//    public void getUserFromFirestore(String userId, UserCallback callback) {
-//        FirebaseFirestore.getInstance().collection("users")
-//                .document(userId)
-//                .get()
-//                .addOnSuccessListener(documentSnapshot -> {
-//                    if (documentSnapshot.exists()) {
-//                        String name = documentSnapshot.getString("name");
-//                        String email = documentSnapshot.getString("email");
-//                        callback.onSuccess(new User(userId, name, email));
-//                    } else {
-//                        callback.onFailure("User not found");
-//                    }
-//                })
-//                .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
-//    }
-
     @Override
-    public void logout(AuthCallback callback) {
-        try {
-            mAuth.signOut();
-            callback.onSuccess(mAuth.getCurrentUser());
-        } catch (Exception e) {
-            callback.onFailure(e);
-        }
-
+    public Completable logout() {
+        return Completable.create(
+                emitter -> {
+                    mAuth.signOut();
+                    emitter.onComplete();
+                }
+            );
     }
 }

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_random_item"
+        android:id="@+id/cv_randoms_card"
         android:layout_width="265dp"
         android:layout_height="199dp"
         android:layout_marginBottom="16dp"

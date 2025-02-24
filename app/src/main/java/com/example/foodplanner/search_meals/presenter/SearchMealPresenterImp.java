@@ -3,13 +3,14 @@ package com.example.foodplanner.search_meals.presenter;
 import android.util.Log;
 
 import com.example.foodplanner.data.model.Meal;
-import com.example.foodplanner.data.repo.fav_meal_repo.MealRepository;
+import com.example.foodplanner.data.repo.meal_repo.MealRepository;
 import com.example.foodplanner.search_meals.view.SearchMealView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SearchMealPresenterImp implements SearchMealsPresenter{
@@ -31,7 +32,7 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
 
     @Override
     public void getMealsByCategory(String category) {
-        mealRepo.getMealsByCategory(category)
+        Disposable subscribe = mealRepo.getMealsByCategory(category)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -45,7 +46,7 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
 
     @Override
     public void getMealsByCountry(String country) {
-        mealRepo.getMealsByCountry(country)
+        Disposable subscribe = mealRepo.getMealsByCountry(country)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -60,7 +61,7 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
 
     @Override
     public void getMealsByIngredient(String ingredient) {
-        mealRepo.getMealsByIngredient(ingredient)
+        Disposable subscribe = mealRepo.getMealsByIngredient(ingredient)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
@@ -70,6 +71,21 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
                         } ,
                         throwable -> searchView.showError(throwable.getMessage())
                 );
+    }
+
+    @Override
+    public void getMealsData(String type, String name) {
+        switch(type){
+            case "category":
+                getMealsByCategory(name);
+                break;
+            case "country":
+                getMealsByCountry(name);
+                break;
+            case "ingredient":
+                getMealsByIngredient(name);
+                break;
+        }
     }
 
     @Override

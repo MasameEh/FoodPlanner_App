@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.repo.fav_meal_repo;
+package com.example.foodplanner.data.repo.meal_repo;
 
 import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSource;
 import com.example.foodplanner.data.model.Ingredient;

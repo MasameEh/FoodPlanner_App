@@ -1,11 +1,13 @@
 package com.example.foodplanner.welcome_screen.presenter;
 
-import com.example.foodplanner.data.remote.auth.AuthCallback;
 import com.example.foodplanner.data.repo.FirebaseRepository;
 import com.example.foodplanner.welcome_screen.view.WelcomeView;
-import com.google.firebase.auth.FirebaseUser;
 
-public class WelcomePresenterImp implements WelcomePresenter, AuthCallback {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
+public class WelcomePresenterImp implements WelcomePresenter {
 
     WelcomeView welcomeView;
 
@@ -19,17 +21,16 @@ public class WelcomePresenterImp implements WelcomePresenter, AuthCallback {
     @Override
     public void signInWithGoogle(String idToken) {
 
-        authRepo.signInWithGoogle(idToken, this);
+        Disposable subscribe = authRepo.signInWithGoogle(idToken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        user -> {
+                            authRepo.saveUserId(user.getUid());
+                            welcomeView.onGoogleSignInSuccess(user);
+                        },
+                        throwable -> welcomeView.onGoogleSignInFailure(throwable.getMessage())
+                );
     }
 
-    @Override
-    public void onSuccess(FirebaseUser user) {
-        authRepo.saveUserId(user.getUid());
-        welcomeView.onGoogleSignInSuccess(user);
-    }
-
-    @Override
-    public void onFailure(Exception e) {
-        welcomeView.onGoogleSignInFailure(e.getMessage());
-    }
 }

@@ -3,12 +3,11 @@ package com.example.foodplanner.meal_details.presenter;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.data.repo.meal_plan_repo.MealPlanRepository;
-import com.example.foodplanner.data.repo.fav_meal_repo.MealRepository;
+import com.example.foodplanner.data.repo.meal_repo.MealRepository;
 import com.example.foodplanner.meal_details.view.MealDetailsView;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 

@@ -1,10 +1,11 @@
 package com.example.foodplanner.meal_details.view;
 
-import static androidx.navigation.Navigation.findNavController;
+
+import static com.example.foodplanner.utils.CustomToast.showCustomDoneToast;
+import static com.example.foodplanner.utils.CustomToast.showCustomErrToast;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
@@ -32,12 +32,12 @@ import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealPlan;
 import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.meal_plan_repo.MealPlanRepositoryImp;
-import com.example.foodplanner.data.repo.fav_meal_repo.MealRepositoryImp;
+import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.meal_details.presenter.MealDetailsPresenter;
 import com.example.foodplanner.meal_details.presenter.MealDetailsPresenterImp;
 import com.example.foodplanner.utils.CountryMapper;
 import com.example.foodplanner.utils.MealUtils;
-import com.google.firebase.database.collection.LLRBNode;
+
 
 import java.util.Calendar;
 import java.util.List;
@@ -208,21 +208,13 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
     }
     @Override
     public void showToast(String msg) {
-        Toast.makeText(requireContext(), msg,Toast.LENGTH_SHORT).show();
+        showCustomDoneToast(requireContext(), msg);
+        //Toast.makeText(requireContext(), msg,Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void showError(String err) {
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
-        View layout = inflater.inflate(R.layout.custom_toast, null);
-
-        TextView text = layout.findViewById(R.id.toast_text);
-        text.setText(err);
-
-        Toast toast = new Toast(requireContext());
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(layout);
-        toast.show();
+        showCustomErrToast(requireContext(), err);
     }
 
 

@@ -16,16 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
-import com.example.foodplanner.data.repo.fav_meal_repo.MealRepositoryImp;
+import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.fav_meals.presenter.FavoriteMealsPresenter;
 import com.example.foodplanner.fav_meals.presenter.FavoriteMealsPresenterImp;
-import com.example.foodplanner.home.view.HomeFragmentDirections;
 import com.example.foodplanner.search_meals.view.OnMealClickListener;
 import com.example.foodplanner.utils.CustomToast;
 
@@ -95,7 +93,7 @@ public class FavoriteFragment extends Fragment implements FavoriteView, OnRemove
     @Override
     public void showError(String err) {
 
-        CustomToast.showCustomToast(requireContext(), err);
+        CustomToast.showCustomErrToast(requireContext(), err);
     }
 
 

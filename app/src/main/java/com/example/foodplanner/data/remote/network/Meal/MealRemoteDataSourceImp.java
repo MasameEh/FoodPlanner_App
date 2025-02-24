@@ -35,6 +35,7 @@ public class MealRemoteDataSourceImp implements MealRemoteDataSource {
 
         mealService = retrofit.create(MealService.class);
     }
+
     public static MealRemoteDataSourceImp getInstance() {
         if (instance == null) {
             instance = new MealRemoteDataSourceImp();

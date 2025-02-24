@@ -29,7 +29,7 @@ import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.User;
 import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
-import com.example.foodplanner.data.repo.fav_meal_repo.MealRepositoryImp;
+import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.home.presenter.HomePresenter;
 import com.example.foodplanner.home.presenter.HomePresenterImp;
 import com.example.foodplanner.search_meals.view.OnMealClickListener;
@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
         mealCategoryTv = view.findViewById(R.id.tv_rand_category);
 
         randomMealsRv =  view.findViewById(R.id.rv_random);
-        cv =  view.findViewById(R.id.cv_random_item);
+        cv =  view.findViewById(R.id.cv_random_home_card);
 
         progressBar = view.findViewById(R.id.pB_progress);
     }
@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
     @Override
     public void onMealClicked(String mealId) {
         HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
-                HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(randomMeal.getMealId());
+                HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(mealId);
         NavHostFragment.findNavController(this).navigate(action);
     }
 }

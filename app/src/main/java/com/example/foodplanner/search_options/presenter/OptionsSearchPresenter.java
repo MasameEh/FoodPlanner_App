@@ -9,4 +9,6 @@ public interface OptionsSearchPresenter {
     void filterCategories(String query);
     void filterIngredients(String query);
 
+    void clear();
+
 }

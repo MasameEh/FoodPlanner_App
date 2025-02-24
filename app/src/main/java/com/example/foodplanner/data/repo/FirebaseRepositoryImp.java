@@ -5,6 +5,9 @@ import com.example.foodplanner.data.remote.auth.AuthCallback;
 import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
 import com.google.firebase.auth.FirebaseUser;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Single;
+
 public class FirebaseRepositoryImp implements FirebaseRepository {
 
     private final FirebaseRemoteDataSource firebaseSource;
@@ -42,23 +45,23 @@ public class FirebaseRepositoryImp implements FirebaseRepository {
         cacheHelper.clear();
     }
     @Override
-    public void loginUser(String email, String password, AuthCallback callback) {
-        firebaseSource.login(email, password, callback);
+    public Single<String> loginUser(String email, String password) {
+        return firebaseSource.login(email, password);
     }
 
     @Override
-    public void registerUser(String email, String password, String username, AuthCallback callback) {
-        firebaseSource.signUpWithEmail(email, password, username, callback);
+    public Single<String> registerUser(String email, String password, String username) {
+        return firebaseSource.signUpWithEmail(email, password, username);
     }
 
     @Override
-    public void signInWithGoogle(String idToken, AuthCallback callback) {
-        firebaseSource.signInWithGoogle(idToken, callback);
+    public Single<FirebaseUser> signInWithGoogle(String idToken) {
+        return firebaseSource.signInWithGoogle(idToken);
     }
 
     @Override
-    public void logoutUser(AuthCallback callback) {
-        firebaseSource.logout(callback);
+    public Completable logoutUser() {
+        return firebaseSource.logout();
     }
 
 

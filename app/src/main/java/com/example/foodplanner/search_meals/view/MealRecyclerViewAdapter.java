@@ -84,6 +84,6 @@ class RecyclerViewHolder extends RecyclerView.ViewHolder{
         conView = itemView;
         itemName = itemView.findViewById(R.id.tv_item_name);
         itemImage = itemView.findViewById(R.id.iv_item_thumbnail);
-        itemCard = itemView.findViewById(R.id.cv_random_item);
+        itemCard = itemView.findViewById(R.id.cv_randoms_card);
     }
 }

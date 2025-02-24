@@ -6,13 +6,15 @@ import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.repo.category_repo.CategoryRepository;
-import com.example.foodplanner.data.repo.fav_meal_repo.MealRepository;
+import com.example.foodplanner.data.repo.meal_repo.MealRepository;
 import com.example.foodplanner.search_options.view.OptionsSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class OptionsSearchPresenterImp implements OptionsSearchPresenter {
@@ -35,47 +37,53 @@ public class OptionsSearchPresenterImp implements OptionsSearchPresenter {
         this.searchView = searchview;
     }
 
-
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     @Override
     public void getCategories() {
-        categoryRepo.getCategories()
+        Disposable subscribe = categoryRepo.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     categoriesList -> {
+                        categories.clear();
                         categories.addAll(categoriesList);
                         searchView.showCategories(categoriesList);
                     }    ,
                     throwable ->  searchView.showErr(throwable.getMessage())
                 );
+        compositeDisposable.add(subscribe);
     }
 
     @Override
     public void getCountries() {
-       mealRepo.getCountries()
+        Disposable subscribe = mealRepo.getCountries()
                .subscribeOn(Schedulers.io())
                .observeOn(AndroidSchedulers.mainThread())
                .subscribe(
                        countriesList -> {
+                           countries.clear();
                            countries.addAll(countriesList);
                            searchView.showCountries(countriesList);
                        },
                        throwable -> searchView.showErr(throwable.getMessage())
                );
+        compositeDisposable.add(subscribe);
     }
 
     @Override
     public void getIngredients() {
-        mealRepo.getIngredients()
+        Disposable subscribe = mealRepo.getIngredients()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         ingredientsList -> {
+                            ingredients.clear();
                             ingredients.addAll(ingredientsList);
                             searchView.showIngredients(ingredientsList);
                         },
                         throwable -> searchView.showErr(throwable.getMessage())
-                );;
+                );
+        compositeDisposable.add(subscribe);
     }
 
     @Override
@@ -135,6 +143,11 @@ public class OptionsSearchPresenterImp implements OptionsSearchPresenter {
             }
         }
         searchView.showFilteredIngredients(filtered);
+    }
+
+    @Override
+    public void clear(){
+        compositeDisposable.clear();;
     }
 
 }

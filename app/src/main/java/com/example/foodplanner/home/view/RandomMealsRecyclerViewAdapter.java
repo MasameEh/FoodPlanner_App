@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.search_meals.view.OnMealClickListener;
-import com.example.foodplanner.search_options.view.OnItemClickListener;
 
 import java.util.List;
 
@@ -81,6 +80,6 @@ class RandomRecyclerViewHolder extends RecyclerView.ViewHolder{
         conView = itemView;
         itemName = itemView.findViewById(R.id.tv_item_name);
         itemImage = itemView.findViewById(R.id.iv_item_thumbnail);
-        itemCardView = itemView.findViewById(R.id.cv_random_item);
+        itemCardView = itemView.findViewById(R.id.cv_randoms_card);
     }
 }

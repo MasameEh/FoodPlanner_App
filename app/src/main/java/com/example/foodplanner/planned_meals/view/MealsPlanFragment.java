@@ -136,7 +136,7 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView,
 
     @Override
     public void showError(String err) {
-        CustomToast.showCustomToast(requireContext(), err);
+        CustomToast.showCustomErrToast(requireContext(), err);
     }
 
     @Override

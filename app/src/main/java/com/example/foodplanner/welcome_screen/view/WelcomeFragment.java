@@ -75,6 +75,7 @@ public class WelcomeFragment extends Fragment implements WelcomeView{
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
+
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
 
         guestBtn.setOnClickListener(v -> {

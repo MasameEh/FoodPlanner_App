@@ -1,4 +1,4 @@
-package com.example.foodplanner.data.repo.fav_meal_repo;
+package com.example.foodplanner.data.repo.meal_repo;
 
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
