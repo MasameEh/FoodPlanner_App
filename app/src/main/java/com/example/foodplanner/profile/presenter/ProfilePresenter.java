@@ -1,7 +1,8 @@
 package com.example.foodplanner.profile.presenter;
 
-import com.example.foodplanner.data.remote.auth.AuthCallback;
+import com.google.firebase.auth.FirebaseUser;
 
 public interface ProfilePresenter {
+    FirebaseUser getCurrentUser();
     void logoutUser();
 }

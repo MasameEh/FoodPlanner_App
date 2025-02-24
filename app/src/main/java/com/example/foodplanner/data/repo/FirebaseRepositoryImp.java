@@ -1,7 +1,6 @@
 package com.example.foodplanner.data.repo;
 
 import com.example.foodplanner.data.local.CacheHelper;
-import com.example.foodplanner.data.remote.auth.AuthCallback;
 import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
 import com.google.firebase.auth.FirebaseUser;
 

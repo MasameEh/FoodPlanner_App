@@ -1,9 +1,7 @@
 package com.example.foodplanner.login.presenter;
 
-import com.example.foodplanner.data.remote.auth.AuthCallback;
 import com.example.foodplanner.data.repo.FirebaseRepository;
 import com.example.foodplanner.login.view.LoginView;
-import com.google.firebase.auth.FirebaseUser;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;

@@ -7,6 +7,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -45,6 +46,8 @@ public class FirebaseRemoteDataSource implements AuthService{
                     mAuth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
+
+
                                     emitter.onSuccess(getCurrentUser().getUid());
 
                                 } else {
@@ -63,6 +66,21 @@ public class FirebaseRemoteDataSource implements AuthService{
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
+
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user != null) {
+                                        // Update display name with username
+                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(username)
+                                                .build();
+
+                                        user.updateProfile(profileUpdates)
+                                                .addOnCompleteListener(updateTask -> {
+                                                    if (updateTask.isSuccessful()) {
+                                                        Log.d("Firebase", "Display name set to: " + username);
+                                                    }
+                                                });
+                                    }
                                     emitter.onSuccess(getCurrentUser().getUid());
                                     saveUserToFirestore(mAuth.getCurrentUser().getUid(), username, email);
 

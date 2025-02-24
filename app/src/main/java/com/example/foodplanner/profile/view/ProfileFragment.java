@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
@@ -29,7 +31,8 @@ public class ProfileFragment extends Fragment implements ProfileView{
     Button logoutBtn;
     private static final String TAG = "ProfileFragment";
     private View view;
-
+    private EditText username, email;
+    private TextView name;
     private ProfilePresenter profilePresenter;
 
     public ProfileFragment() {
@@ -54,15 +57,29 @@ public class ProfileFragment extends Fragment implements ProfileView{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
+
+        initializeUI(view);
+
         profilePresenter = new ProfilePresenterImp(FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
                 CacheHelper.getInstance(requireContext())), this);
 
-        logoutBtn = view.findViewById(R.id.btn_logout);
+
+
+        username.setText(profilePresenter.getCurrentUser().getDisplayName());
+        name.setText(profilePresenter.getCurrentUser().getDisplayName());
+        email.setText(profilePresenter.getCurrentUser().getEmail());
 
         logoutBtn.setOnClickListener(v -> {
             Log.i(TAG, "onViewCreated: log out clicked" );
             profilePresenter.logoutUser();
         });
+    }
+
+    private void initializeUI(View view){
+        logoutBtn = view.findViewById(R.id.btn_logout);
+        username = view.findViewById(R.id.et_fixed_username);
+        email = view.findViewById(R.id.et_fixed_email);
+        name = view.findViewById(R.id.tv_username);
     }
 
     @Override

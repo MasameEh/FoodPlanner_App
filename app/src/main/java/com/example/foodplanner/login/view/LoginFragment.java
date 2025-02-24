@@ -80,7 +80,7 @@ public class LoginFragment extends Fragment implements LoginView{
 
     private void initializeUI(View view){
         loginBtn = view.findViewById(R.id.btn_login);
-        emailEt = view.findViewById(R.id.et_email1);
+        emailEt = view.findViewById(R.id.et_login_email);
         passwordEt = view.findViewById(R.id.et_password1);
         signupTv = view.findViewById(R.id.tv_signup);
     }

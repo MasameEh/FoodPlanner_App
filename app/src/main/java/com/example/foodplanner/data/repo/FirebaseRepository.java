@@ -1,7 +1,6 @@
 package com.example.foodplanner.data.repo;
 
 
-import com.example.foodplanner.data.remote.auth.AuthCallback;
 import com.google.firebase.auth.FirebaseUser;
 
 import io.reactivex.rxjava3.core.Completable;
