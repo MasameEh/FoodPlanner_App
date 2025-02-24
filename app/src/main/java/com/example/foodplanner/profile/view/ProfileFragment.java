@@ -17,9 +17,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
+import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
+import com.example.foodplanner.data.local.db.MealPlan.MealPlanLocalDataSourceImp;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.local.CacheHelper;
+import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
+import com.example.foodplanner.data.repo.meal_plan_repo.MealPlanRepositoryImp;
+import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.profile.presenter.ProfilePresenter;
 import com.example.foodplanner.profile.presenter.ProfilePresenterImp;
 
@@ -54,8 +59,10 @@ public class ProfileFragment extends Fragment implements ProfileView{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.view=view;
-        profilePresenter = new ProfilePresenterImp(FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
-                CacheHelper.getInstance(requireContext())), this);
+        profilePresenter = new ProfilePresenterImp(
+                FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                        CacheHelper.getInstance(requireContext())),
+                this);
 
         logoutBtn = view.findViewById(R.id.btn_logout);
 

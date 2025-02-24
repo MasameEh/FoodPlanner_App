@@ -77,6 +77,9 @@ public class Meal {
         this.mealImage = mealImage;
     }
 
+    public Meal() {
+        // Required empty constructor for Firestore
+    }
     public String getStrIngredient(int index) {
         switch (index) {
             case 1: return strIngredient1;

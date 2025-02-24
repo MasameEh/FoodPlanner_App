@@ -23,9 +23,10 @@ public interface MealRepository {
 
 
     Flowable<List<Meal>> getFavStoredMeals();
+
+    Completable insertAllMeals(List<Meal> meals);
     Completable insertMeal(Meal meal);
 
-     Completable deleteMeal(Meal meal);
-
+    Completable deleteMeal(Meal meal);
 
 }

@@ -1,25 +1,29 @@
 package com.example.foodplanner.data.repo;
 
 import com.example.foodplanner.data.local.CacheHelper;
-import com.example.foodplanner.data.remote.auth.AuthCallback;
-import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
+import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealPlan;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteData;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
 public class FirebaseRepositoryImp implements FirebaseRepository {
 
-    private final FirebaseRemoteDataSource firebaseSource;
+    private final FirebaseRemoteData firebaseSource;
     private final CacheHelper cacheHelper;
     private static FirebaseRepositoryImp repo;
 
-    private FirebaseRepositoryImp(FirebaseRemoteDataSource firebaseSource, CacheHelper cacheHelper) {
+    private FirebaseRepositoryImp(FirebaseRemoteData firebaseSource, CacheHelper cacheHelper) {
         this.firebaseSource = firebaseSource;
         this.cacheHelper = cacheHelper;
     }
 
-    public static FirebaseRepositoryImp getInstance(FirebaseRemoteDataSource firebaseSource, CacheHelper cacheHelper){
+    public static FirebaseRepositoryImp getInstance(FirebaseRemoteDataSourceImp firebaseSource, CacheHelper cacheHelper){
         if(repo == null){
             repo =  new FirebaseRepositoryImp(firebaseSource, cacheHelper);
         }
@@ -64,5 +68,20 @@ public class FirebaseRepositoryImp implements FirebaseRepository {
         return firebaseSource.logout();
     }
 
+
+    @Override
+    public Completable saveFavoriteToFirestore(Meal meal) {
+        return firebaseSource.saveFavoriteToFirestore(meal);
+    }
+
+    @Override
+    public Completable removeFromFavorites(Meal meal) {
+        return firebaseSource.removeFromFavorites(meal);
+    }
+
+    @Override
+    public Single<List<Meal>> getFavoritesFromFirestore() {
+        return firebaseSource.getFavoritesFromFirestore();
+    }
 
 }

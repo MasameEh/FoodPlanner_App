@@ -18,9 +18,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.local.CacheHelper;
 import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
+import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.search_meals.presenter.SearchMealPresenterImp;
 import com.example.foodplanner.search_meals.presenter.SearchMealsPresenter;
@@ -54,6 +57,8 @@ public class SearchMealsFragment extends Fragment implements SearchMealView, OnM
 
         presenter = new SearchMealPresenterImp(
                 MealRepositoryImp.getInstance(
+                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext())),
                         MealRemoteDataSourceImp.getInstance(),
                         MealLocalDataSourceImp.getInstance(requireContext()))
                 ,this);

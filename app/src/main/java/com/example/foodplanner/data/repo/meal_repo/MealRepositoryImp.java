@@ -1,9 +1,12 @@
 package com.example.foodplanner.data.repo.meal_repo;
 
+import android.util.Log;
+
 import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSource;
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSource;
+import com.example.foodplanner.data.repo.FirebaseRepository;
 
 
 import java.util.List;
@@ -11,21 +14,24 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MealRepositoryImp implements MealRepository {
+    private final FirebaseRepository firebaseRepo;
     private final MealRemoteDataSource mealRemote;
     private final MealLocalDataSource mealLocal;
     private static MealRepositoryImp repo = null;
 
-    private MealRepositoryImp(MealRemoteDataSource mealsRemote, MealLocalDataSource mealLocal) {
+    private MealRepositoryImp(FirebaseRepository firebaseRepo, MealRemoteDataSource mealsRemote, MealLocalDataSource mealLocal) {
+        this.firebaseRepo = firebaseRepo;
         this.mealRemote = mealsRemote;
         this.mealLocal = mealLocal;
     }
 
 
-    public static MealRepositoryImp getInstance(MealRemoteDataSource mealsRemote, MealLocalDataSource mealLocal){
+    public static MealRepositoryImp getInstance(FirebaseRepository firebaseRepo, MealRemoteDataSource mealsRemote, MealLocalDataSource mealLocal){
         if(repo==null){
-            repo = new MealRepositoryImp(mealsRemote, mealLocal);
+            repo = new MealRepositoryImp(firebaseRepo, mealsRemote, mealLocal);
         }
 
         return repo;
@@ -76,12 +82,29 @@ public class MealRepositoryImp implements MealRepository {
         return mealLocal.getFavStoredMeals();
     }
 
-    public Completable insertMeal(Meal meal){
-        return mealLocal.insert(meal);
+    @Override
+    public Completable insertAllMeals(List<Meal> meals) {
+        Log.i("logggin", "Repository: Starting to insert meals: " + meals);
+        return mealLocal.insertAllMeals(meals)
+                .doOnComplete(() -> Log.i("logggin", "Repository: Meals inserted successfully"))
+                .doOnError(error -> Log.e("logggin", "Repository: Error inserting meals", error));
     }
 
+    @Override
+    public Completable insertMeal(Meal meal){
+        return mealLocal.insert(meal).andThen(
+                firebaseRepo.getCurrentUser() != null ?
+                        firebaseRepo.saveFavoriteToFirestore(meal) :
+                        Completable.complete()
+        );
+    }
+    @Override
     public Completable deleteMeal(Meal meal){
-        return mealLocal.delete(meal);
+        return mealLocal.delete(meal) .andThen(
+                firebaseRepo.getCurrentUser() != null ?
+                        firebaseRepo.removeFromFavorites(meal) :
+                        Completable.complete()
+        );
     }
 
 }

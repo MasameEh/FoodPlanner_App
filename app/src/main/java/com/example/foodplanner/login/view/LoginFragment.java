@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,14 @@ import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.local.CacheHelper;
+import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
+import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
+import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.login.presenter.LoginPresenter;
 import com.example.foodplanner.login.presenter.LoginPresenterImp;
 
-import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.utils.InputValidator;
 
 
@@ -48,8 +52,16 @@ public class LoginFragment extends Fragment implements LoginView{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loginPresenter = new LoginPresenterImp(FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
-                CacheHelper.getInstance(requireContext())), this);
+        loginPresenter = new LoginPresenterImp(
+                FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                CacheHelper.getInstance(requireContext())),
+                this,
+                MealRepositoryImp.getInstance(
+                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext())),
+                        MealRemoteDataSourceImp.getInstance(),
+                        MealLocalDataSourceImp.getInstance(requireContext()))
+                );
     }
 
     @Override
@@ -95,7 +107,7 @@ public class LoginFragment extends Fragment implements LoginView{
 //        Toast.makeText(requireContext(), "email or password is incorrect.", Toast.LENGTH_SHORT).show();
         LayoutInflater inflater = LayoutInflater.from(requireContext());
         View layout = inflater.inflate(R.layout.custom_toast, null);
-
+        Log.i(TAG, "showError: " + message);
         TextView text = layout.findViewById(R.id.toast_text);
         text.setText("email or password is incorrect.");
 

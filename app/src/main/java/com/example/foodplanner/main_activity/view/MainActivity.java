@@ -22,17 +22,14 @@ import androidx.navigation.ui.NavigationUI;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.local.CacheHelper;
-import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.main_activity.presenter.MainPresenter;
 import com.example.foodplanner.main_activity.presenter.MainPresenterImp;
 import com.example.foodplanner.utils.CustomToast;
-import com.example.foodplanner.utils.InternetConnection;
 
 import com.example.foodplanner.utils.NetworkHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import io.reactivex.rxjava3.disposables.Disposable;
 
 public class MainActivity extends AppCompatActivity implements MainView{
     private static final String TAG = "MainActivity";
@@ -53,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainView{
         presenter = new MainPresenterImp(
                 this,
                 FirebaseRepositoryImp.getInstance(
-                        FirebaseRemoteDataSource.getInstance(),
+                        FirebaseRemoteDataSourceImp.getInstance(),
                         CacheHelper.getInstance(this)
                         )
                 );
