@@ -7,7 +7,6 @@ public interface SearchMealsPresenter {
     void getMealsByIngredient(String ingredient);
 
 
-
     void getMealsData(String type, String name);
 
     void filterMeals(String query);

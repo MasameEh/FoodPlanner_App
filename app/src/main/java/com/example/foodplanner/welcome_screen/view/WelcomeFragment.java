@@ -2,6 +2,8 @@ package com.example.foodplanner.welcome_screen.view;
 
 import static androidx.navigation.Navigation.findNavController;
 
+import static com.example.foodplanner.utils.CustomToast.showCustomErrToast;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -144,6 +146,6 @@ public class WelcomeFragment extends Fragment implements WelcomeView{
 
     @Override
     public void onGoogleSignInFailure(String errorMessage) {
-        Toast.makeText(getContext(), "Sign-in failed: " + errorMessage, Toast.LENGTH_LONG).show();
+        showCustomErrToast(requireContext(), errorMessage);
     }
 }

@@ -7,6 +7,7 @@
     </style>
 
 
+
     <style name="LogoTextStyle">
         <item name="android:fontFamily">@font/pacifico</item>
         <item name="android:textSize">20sp</item>
@@ -34,4 +35,6 @@
     <style name="DialogButtonStyled" parent="Theme.MaterialComponents.Light">
         <item name="android:textColor">@color/black</item>
     </style>
+
+
 </resources>
