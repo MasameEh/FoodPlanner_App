@@ -84,4 +84,19 @@ public class FirebaseRepositoryImp implements FirebaseRepository {
         return firebaseSource.getFavoritesFromFirestore();
     }
 
+    @Override
+    public Single<List<MealPlan>> getPlansFromFirestore() {
+        return firebaseSource.getPlansFromFirestore();
+    }
+
+    @Override
+    public Completable savePlanToFirestore(MealPlan meal) {
+        return firebaseSource.savePlanToFirestore(meal);
+    }
+
+    @Override
+    public Completable removeFromPlans(MealPlan meal) {
+        return firebaseSource.removeFromPlans(meal);
+    }
+
 }

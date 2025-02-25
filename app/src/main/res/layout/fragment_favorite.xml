@@ -33,12 +33,14 @@
 
     <ImageView
         android:id="@+id/iv_no_meal"
-        android:layout_width="398dp"
-        android:layout_height="342dp"
+        android:layout_width="326dp"
+        android:layout_height="281dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView17"
+        app:layout_constraintVertical_bias="0.338"
         app:srcCompat="@drawable/no_meals" />
 
     <TextView
@@ -48,10 +50,9 @@
         android:fontFamily="@font/josefin_sans_bold"
         android:text="@string/no_favorite_meals_added_yet"
         android:textColor="@color/onPrimary"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.371"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_no_meal"
         app:layout_constraintVertical_bias="0.0" />

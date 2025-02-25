@@ -21,8 +21,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.local.CacheHelper;
 import com.example.foodplanner.data.local.db.MealPlan.MealPlanLocalDataSourceImp;
 import com.example.foodplanner.data.model.MealPlan;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
+import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.data.repo.meal_plan_repo.MealPlanRepositoryImp;
 import com.example.foodplanner.fav_meals.view.FavoriteFragmentDirections;
 import com.example.foodplanner.fav_meals.view.OnRemoveIconClicked;
@@ -60,8 +63,10 @@ public class MealsPlanFragment extends Fragment implements MealsPlanView,
         super.onCreate(savedInstanceState);
         mealsPresenter = new MealsPlanPresenterImp(
                 MealPlanRepositoryImp.getInstance(
-                        MealPlanLocalDataSourceImp.getInstance(requireContext()))
-                , this);
+                        MealPlanLocalDataSourceImp.getInstance(requireContext()),
+                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext()))
+                ), this);
     }
 
     @Override

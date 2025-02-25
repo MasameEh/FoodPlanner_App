@@ -13,9 +13,13 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 
 @Dao
 public interface MealPlanDAO {
+
+    @Query("SELECT * FROM meal_plan_table")
+    Single<List<MealPlan>> getAllPlannedMeals();
     @Query("SELECT * FROM meal_plan_table WHERE date = :selectedDate")
     Flowable<List<MealPlan>> getMealsForDay(long selectedDate);
 
@@ -25,7 +29,9 @@ public interface MealPlanDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertMealPlan(MealPlan mealPlan);
 
-    // Remove a meal from the plan
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    Completable insertAllPlannedMeals(List<MealPlan> mealPlans);
+
     @Delete
     Completable deleteMealPlan(MealPlan mealPlan);
 }

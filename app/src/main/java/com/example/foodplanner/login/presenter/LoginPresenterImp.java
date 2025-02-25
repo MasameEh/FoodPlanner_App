@@ -12,6 +12,9 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.Completable;
+import android.util.Pair;
 
 public class LoginPresenterImp implements LoginPresenter {
 
@@ -21,40 +24,43 @@ public class LoginPresenterImp implements LoginPresenter {
     private  MealPlanRepository mealPlanRepo;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     public LoginPresenterImp(FirebaseRepository authRepo,
-                             LoginView loginView, MealRepository mealRepo) {
+                             LoginView loginView, MealRepository mealRepo,MealPlanRepository mealPlanRepo) {
         this.authRepo = authRepo;
         this.loginView = loginView;
         this.mealRepo = mealRepo;
+        this.mealPlanRepo = mealPlanRepo;
     }
 
     @Override
     public void loginUser(String email, String password) {
         Disposable subscribe = authRepo.loginUser(email, password)
-                .subscribeOn(Schedulers.io())
-                .doOnSuccess(userId -> {
+                .flatMap(userId -> {
                     Log.i("logggin", "Login success, userId: " + userId);
                     authRepo.saveUserId(userId);
+                    return Single.zip(
+                            authRepo.getFavoritesFromFirestore(),
+                            authRepo.getPlansFromFirestore(),
+                            (favorites, plans) -> {
+                                Log.i("logggin", "Got data from Firestore - Favorites: " + 
+                                        favorites.size() + ", Plans: " + plans.size());
+                                return new Pair<>(favorites, plans);
+                            }
+                    );
                 })
-                .flatMap(__ -> {
-                    Log.i("logggin", "Getting favorites from Firestore");
-                    return authRepo.getFavoritesFromFirestore();
-                })
-                .doOnSuccess(meals -> {
-                    Log.i("logggin", "Got meals from Firestore: " );
-                })
-                .flatMapCompletable(meals -> {
-                    Log.i("logggin", "Starting to insert meals: " );
-                    return mealRepo.insertAllMeals(meals)
-                            .subscribeOn(Schedulers.io());
+                .flatMapCompletable(pair -> {
+                    return Completable.mergeArray(
+                            mealRepo.insertAllMeals(pair.first),
+                            mealPlanRepo.insertAllPlannedMeals(pair.second)
+                    ).subscribeOn(Schedulers.io());
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> {
-                            Log.i("logggin", "All operations completed successfully");
+                            Log.i("logggin", "All data synced successfully");
                             loginView.onUserLoggedIn();
                         },
                         throwable -> {
-                            Log.e("logggin", "Error occurred: ", throwable);
+                            Log.e("logggin", "Error syncing data: ", throwable);
                             loginView.showError(throwable.getMessage());
                         }
                 );

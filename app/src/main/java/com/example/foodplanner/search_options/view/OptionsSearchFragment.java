@@ -93,6 +93,8 @@ public class OptionsSearchFragment extends Fragment implements OptionsSearchView
 
         initializeUI(view);
         setupChoiceChips();
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.grid_spacing);
+        recyclerView.addItemDecoration(new ItemSpacingDecoration(2, spacingInPixels, true));
 
         searchEt.addTextChangedListener(new TextWatcher() {
             @Override

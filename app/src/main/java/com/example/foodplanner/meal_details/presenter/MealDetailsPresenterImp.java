@@ -76,7 +76,7 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> {
-                            mealDetailsView.showToast("Added to calender");
+                            mealDetailsView.showToast("Added to Calendar");
                         },
                         throwable -> {
                             mealDetailsView.showError(throwable.getMessage());

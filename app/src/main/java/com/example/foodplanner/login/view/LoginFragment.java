@@ -21,8 +21,10 @@ import android.widget.Toast;
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.local.CacheHelper;
 import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
+import com.example.foodplanner.data.local.db.MealPlan.MealPlanLocalDataSourceImp;
 import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
+import com.example.foodplanner.data.repo.meal_plan_repo.MealPlanRepositoryImp;
 import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.login.presenter.LoginPresenter;
 import com.example.foodplanner.login.presenter.LoginPresenterImp;
@@ -59,8 +61,12 @@ public class LoginFragment extends Fragment implements LoginView{
                         FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
                                 CacheHelper.getInstance(requireContext())),
                         MealRemoteDataSourceImp.getInstance(),
-                        MealLocalDataSourceImp.getInstance(requireContext()))
-                );
+                        MealLocalDataSourceImp.getInstance(requireContext())),
+                MealPlanRepositoryImp.getInstance(
+                        MealPlanLocalDataSourceImp.getInstance(requireContext()),
+                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext()))
+                ));
     }
 
     @Override

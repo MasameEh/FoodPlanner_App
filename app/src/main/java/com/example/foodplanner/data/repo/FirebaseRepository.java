@@ -30,4 +30,9 @@ public interface FirebaseRepository {
     Completable removeFromFavorites(Meal meal);
 
     Single<List<Meal>> getFavoritesFromFirestore();
+
+    Single<List<MealPlan>> getPlansFromFirestore();
+
+    Completable savePlanToFirestore(MealPlan meal);
+    Completable removeFromPlans(MealPlan meal);
 }

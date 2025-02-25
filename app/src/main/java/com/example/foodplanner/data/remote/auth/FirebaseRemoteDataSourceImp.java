@@ -9,6 +9,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -23,7 +24,7 @@ import java.util.Map;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
-public class FirebaseRemoteDataSourceImp implements FirebaseRemoteData{
+public class FirebaseRemoteDataSourceImp implements FirebaseRemoteData {
 
     private final FirebaseAuth mAuth;
     @SuppressLint("StaticFieldLeak")
@@ -33,8 +34,8 @@ public class FirebaseRemoteDataSourceImp implements FirebaseRemoteData{
         this.mAuth = FirebaseAuth.getInstance();
     }
 
-    public static FirebaseRemoteDataSourceImp getInstance(){
-        if(repo == null){
+    public static FirebaseRemoteDataSourceImp getInstance() {
+        if (repo == null) {
             repo = new FirebaseRemoteDataSourceImp();
         }
         return repo;
@@ -70,8 +71,21 @@ public class FirebaseRemoteDataSourceImp implements FirebaseRemoteData{
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
-                                    emitter.onSuccess(getCurrentUser().getUid());
+                                    if (getCurrentUser() != null) {
+                                        // Update display name with username
+                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(username)
+                                                .build();
+
+                                        getCurrentUser().updateProfile(profileUpdates)
+                                                .addOnCompleteListener(updateTask -> {
+                                                    if (updateTask.isSuccessful()) {
+                                                        Log.d("Firebase", "Display name set to: " + username);
+                                                    }
+                                                });
+                                    }
                                     saveUserToFirestore(mAuth.getCurrentUser().getUid(), username, email);
+                                    emitter.onSuccess(getCurrentUser().getUid());
 
                                 } else {
                                     emitter.onError(task.getException());
@@ -120,7 +134,7 @@ public class FirebaseRemoteDataSourceImp implements FirebaseRemoteData{
                     mAuth.signOut();
                     emitter.onComplete();
                 }
-            );
+        );
     }
 
     @Override
@@ -187,6 +201,74 @@ public class FirebaseRemoteDataSourceImp implements FirebaseRemoteData{
                         }
                         emitter.onSuccess(meals);
                     })
+                    .addOnFailureListener(emitter::onError);
+        });
+    }
+
+    @Override
+    public Single<List<MealPlan>> getPlansFromFirestore() {
+        FirebaseUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            return Single.error(new Exception("User not logged in"));
+        }
+
+        return Single.create(emitter -> {
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(currentUser.getUid())
+                    .collection("plans")
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        List<MealPlan> meals = new ArrayList<>();
+                        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                            MealPlan meal = document.toObject(MealPlan.class);
+                            if (meal != null) {
+                                meals.add(meal);
+                            }
+                        }
+                        emitter.onSuccess(meals);
+                    })
+                    .addOnFailureListener(emitter::onError);
+        });
+    }
+
+    @Override
+    public Completable savePlanToFirestore(MealPlan meal) {
+        FirebaseUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            return Completable.error(new Exception("User not logged in"));
+        }
+
+        return Completable.create(emitter -> {
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(currentUser.getUid())
+                    .collection("plans")
+                    .document(meal.getMealId())
+                    .set(meal)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.i("FIREBASE", "savePlanToFirestore: DONE");
+                        emitter.onComplete();
+                    })
+                    .addOnFailureListener(emitter::onError);
+        });
+    }
+
+    @Override
+    public Completable removeFromPlans(MealPlan meal) {
+        FirebaseUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            return Completable.error(new Exception("User not logged in"));
+        }
+
+        return Completable.create(emitter -> {
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(currentUser.getUid())
+                    .collection("plans")
+                    .document(meal.getMealId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> emitter.onComplete())
                     .addOnFailureListener(emitter::onError);
         });
     }

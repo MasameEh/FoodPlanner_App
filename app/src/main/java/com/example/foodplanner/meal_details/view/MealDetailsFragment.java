@@ -102,7 +102,9 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
                         MealRemoteDataSourceImp.getInstance(),
                         MealLocalDataSourceImp.getInstance(requireContext())),
                 MealPlanRepositoryImp.getInstance(
-                        MealPlanLocalDataSourceImp.getInstance(requireContext())
+                        MealPlanLocalDataSourceImp.getInstance(requireContext()),
+                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext()))
                 ),
                 this);
 

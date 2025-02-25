@@ -10,6 +10,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
 
 public class MealPlanLocalDataSourceImp implements MealPlanLocalDataSource{
 
@@ -39,6 +40,16 @@ public class MealPlanLocalDataSourceImp implements MealPlanLocalDataSource{
     @Override
     public Flowable<List<MealPlan>> getMealsForWeek(long startDate, long endDate) {
         return mealPlanDAO.getMealsForWeek(startDate, endDate);
+    }
+
+    @Override
+    public Single<List<MealPlan>> getAllPlannedMeals() {
+        return mealPlanDAO.getAllPlannedMeals();
+    }
+
+    @Override
+    public Completable insertAllPlannedMeals(List<MealPlan> mealPlans) {
+        return mealPlanDAO.insertAllPlannedMeals(mealPlans);
     }
 
     @Override

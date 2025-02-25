@@ -30,6 +30,7 @@ import com.example.foodplanner.utils.CustomToast;
 
 import com.example.foodplanner.utils.NetworkHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity implements MainView{
     private static final String TAG = "MainActivity";
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements MainView{
                     bottomNavigationView.setVisibility(GONE);
 
             }else{
+                //actionBar.show();
                 bottomNavigationView.setVisibility(VISIBLE);
             }
 
@@ -96,9 +98,15 @@ public class MainActivity extends AppCompatActivity implements MainView{
             }
 
             if (navDestination.getId() == R.id.favoriteFragment
-                        || navDestination.getId() == R.id.mealsPlan) {
-                showOnlineUI();
-            }else{
+                    || navDestination.getId() == R.id.mealsPlan ||
+                    navDestination.getId() == R.id.welcomeFragment ||
+                    navDestination.getId() == R.id.loginFragment ||
+                    navDestination.getId() == R.id.signupFragment||
+                    navDestination.getId() == R.id.splashFragment
+                  ) {
+                lottieAnimView.setVisibility(View.GONE);
+                fragmentContainerView.setVisibility(View.VISIBLE);
+            } else {
                 presenter.observeNetworkStatus();
             }
         });
@@ -114,7 +122,6 @@ public class MainActivity extends AppCompatActivity implements MainView{
     void initializeUI(){
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         lottieAnimView = findViewById(R.id.lottie_no_internet);
-        lottieAnimView = findViewById(R.id.lottie_no_internet);
         fragmentContainerView = findViewById(R.id.fragmentContainerView);
     }
     public void showSignupDialog() {
@@ -128,8 +135,6 @@ public class MainActivity extends AppCompatActivity implements MainView{
 
     public void showNoNetworkAnimation() {
         lottieAnimView.setVisibility(VISIBLE);
-        //lottieAnimView.setAnimation(R.raw.no_internet);
-
         lottieAnimView.playAnimation();
     }
 
@@ -138,6 +143,14 @@ public class MainActivity extends AppCompatActivity implements MainView{
     public void showOnlineUI() {
         lottieAnimView.setVisibility(View.GONE);
         fragmentContainerView.setVisibility(View.VISIBLE);
+
+        Snackbar.make(findViewById(android.R.id.content),
+                        "Network connection restored",
+                        Snackbar.LENGTH_SHORT)
+                .setAnchorView(bottomNavigationView)
+                .setBackgroundTint(ContextCompat.getColor(this, R.color.primary))
+                .setTextColor(ContextCompat.getColor(this, R.color.white))
+                .show();
     }
 
     @Override
@@ -155,6 +168,6 @@ public class MainActivity extends AppCompatActivity implements MainView{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        presenter.clear();
     }
 }

@@ -135,16 +135,16 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
 
     @Override
     public void showErr(String err) {
-        LayoutInflater inflater = LayoutInflater.from(requireContext());
-        View layout = inflater.inflate(R.layout.custom_toast, null);
-
-        TextView text = layout.findViewById(R.id.toast_text);
-        text.setText(err);
-
-        Toast toast = new Toast(requireContext());
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.setView(layout);
-        toast.show();
+//        LayoutInflater inflater = LayoutInflater.from(requireContext());
+//        View layout = inflater.inflate(R.layout.custom_toast, null);
+//
+//        TextView text = layout.findViewById(R.id.toast_text);
+//        text.setText(err);
+//
+//        Toast toast = new Toast(requireContext());
+//        toast.setDuration(Toast.LENGTH_SHORT);
+//        toast.setView(layout);
+//        toast.show();
     }
 
 

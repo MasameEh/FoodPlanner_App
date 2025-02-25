@@ -5,4 +5,6 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public interface MainPresenter {
     void observeNetworkStatus();
     boolean checkGuestAccess();
+
+    void clear();
 }
