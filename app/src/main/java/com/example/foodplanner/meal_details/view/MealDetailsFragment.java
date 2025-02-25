@@ -106,8 +106,9 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
                 ),
                 this);
 
-        presenter.getMealDetails(mealId);
+        Disposable mealDetails = presenter.getMealDetails(mealId);
 
+        compositeDisposable.add(mealDetails);
         favIcon.setOnClickListener(v -> {
             presenter.toggleFavIcon();
 
@@ -214,7 +215,6 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
     @Override
     public void showToast(String msg) {
         showCustomDoneToast(requireContext(), msg);
-        //Toast.makeText(requireContext(), msg,Toast.LENGTH_SHORT).show();
     }
 
     @Override

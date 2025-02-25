@@ -26,8 +26,8 @@ public class MealDetailsPresenterImp implements MealDetailsPresenter {
         this.mealPlanRepo = mealPlanRepo;
     }
     @Override
-    public void getMealDetails(String mealId){
-        mealRepo.getMealById(mealId)
+    public Disposable getMealDetails(String mealId){
+        return mealRepo.getMealById(mealId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

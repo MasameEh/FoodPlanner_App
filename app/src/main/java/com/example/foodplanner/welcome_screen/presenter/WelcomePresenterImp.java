@@ -4,6 +4,7 @@ import com.example.foodplanner.data.repo.FirebaseRepository;
 import com.example.foodplanner.welcome_screen.view.WelcomeView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -12,7 +13,7 @@ public class WelcomePresenterImp implements WelcomePresenter {
     WelcomeView welcomeView;
 
     FirebaseRepository authRepo;
-
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     public WelcomePresenterImp(WelcomeView welcomeView, FirebaseRepository firebaseRemote) {
         this.welcomeView = welcomeView;
         this.authRepo = firebaseRemote;
@@ -31,6 +32,11 @@ public class WelcomePresenterImp implements WelcomePresenter {
                         },
                         throwable -> welcomeView.onGoogleSignInFailure(throwable.getMessage())
                 );
+        compositeDisposable.add(subscribe);
     }
 
+    @Override
+    public void clear(){
+        compositeDisposable.clear();;
+    }
 }

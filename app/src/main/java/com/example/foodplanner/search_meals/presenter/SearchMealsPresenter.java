@@ -10,4 +10,6 @@ public interface SearchMealsPresenter {
     void getMealsData(String type, String name);
 
     void filterMeals(String query);
+
+    void clear();
 }

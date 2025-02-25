@@ -9,7 +9,7 @@ import com.example.foodplanner.login.view.LoginView;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -19,7 +19,7 @@ public class LoginPresenterImp implements LoginPresenter {
     private final LoginView loginView;
     private final MealRepository mealRepo;
     private  MealPlanRepository mealPlanRepo;
-
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     public LoginPresenterImp(FirebaseRepository authRepo,
                              LoginView loginView, MealRepository mealRepo) {
         this.authRepo = authRepo;
@@ -58,6 +58,11 @@ public class LoginPresenterImp implements LoginPresenter {
                             loginView.showError(throwable.getMessage());
                         }
                 );
+        compositeDisposable.add(subscribe);
     }
 
+    @Override
+    public void clear(){
+        compositeDisposable.clear();;
+    }
 }

@@ -21,6 +21,7 @@ import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.splash.presenter.SplashPresenter;
 import com.example.foodplanner.splash.presenter.SplashPresenterImp;
+import com.example.foodplanner.utils.CustomToast;
 
 public class SplashFragment extends Fragment implements SplashView{
 
@@ -87,6 +88,6 @@ public class SplashFragment extends Fragment implements SplashView{
 
     @Override
     public void showError(String err) {
-
+        CustomToast.showCustomErrToast(requireContext(), err);
     }
 }

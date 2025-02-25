@@ -138,4 +138,10 @@ public class SearchMealsFragment extends Fragment implements SearchMealView, OnM
                 SearchMealsFragmentDirections.actionSearchMealsFragmentToMealDetailsFragment(mealId);
         NavHostFragment.findNavController(this).navigate(action);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.clear();
+    }
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -20,7 +21,7 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
     private final SearchMealView searchView;
 
     private final List<Meal> meals = new ArrayList<>();
-
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private static final String TAG = "SearchMealPresenterImp";
 
@@ -42,6 +43,7 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
                         },
                         throwable -> searchView.showError(throwable.getMessage())
                 );
+        compositeDisposable.add(subscribe);
     }
 
     @Override
@@ -57,6 +59,7 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
                         },
                         throwable -> searchView.showError(throwable.getMessage())
                 );
+        compositeDisposable.add(subscribe);
     }
 
     @Override
@@ -71,6 +74,7 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
                         } ,
                         throwable -> searchView.showError(throwable.getMessage())
                 );
+        compositeDisposable.add(subscribe);
     }
 
     @Override
@@ -104,5 +108,11 @@ public class SearchMealPresenterImp implements SearchMealsPresenter{
             }
         }
         searchView.showFilteredMeals(filtered);
+    }
+
+
+    @Override
+    public void clear(){
+        compositeDisposable.clear();;
     }
 }

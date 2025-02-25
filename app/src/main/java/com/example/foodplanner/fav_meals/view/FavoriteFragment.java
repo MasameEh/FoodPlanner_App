@@ -114,4 +114,9 @@ public class FavoriteFragment extends Fragment implements FavoriteView, OnRemove
         NavHostFragment.findNavController(this).navigate(action);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        favoritePresenter.clear();
+    }
 }

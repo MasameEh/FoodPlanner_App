@@ -111,4 +111,12 @@ public class SignupFragment extends Fragment implements SignupView{
         toast.setView(layout);
         toast.show();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        signupPresenter.clear();
+    }
+
+
 }

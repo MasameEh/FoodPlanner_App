@@ -40,7 +40,6 @@ public class LoginFragment extends Fragment implements LoginView{
 
     TextView signupTv;
 
-
     LoginPresenter loginPresenter;
     NavController navController;
 
@@ -115,5 +114,11 @@ public class LoginFragment extends Fragment implements LoginView{
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        loginPresenter.clear();
     }
 }

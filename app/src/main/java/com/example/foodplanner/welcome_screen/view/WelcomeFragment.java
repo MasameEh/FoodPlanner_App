@@ -148,4 +148,10 @@ public class WelcomeFragment extends Fragment implements WelcomeView{
     public void onGoogleSignInFailure(String errorMessage) {
         showCustomErrToast(requireContext(), errorMessage);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.clear();
+    }
 }

@@ -1,12 +1,12 @@
 package com.example.foodplanner.profile.presenter;
 
 import com.example.foodplanner.data.repo.FirebaseRepository;
-import com.example.foodplanner.data.repo.meal_plan_repo.MealPlanRepository;
-import com.example.foodplanner.data.repo.meal_repo.MealRepository;
+
 import com.example.foodplanner.profile.view.ProfileView;
+import com.google.firebase.auth.FirebaseUser;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -17,6 +17,7 @@ public class ProfilePresenterImp implements ProfilePresenter {
 
     private final ProfileView profileView;
 
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     public ProfilePresenterImp(FirebaseRepository authRepo,
 
                                ProfileView profileView) {
@@ -40,8 +41,12 @@ public class ProfilePresenterImp implements ProfilePresenter {
                         },
                         throwable -> profileView.showError(throwable.getMessage())
                 );
+        compositeDisposable.add(subscribe);
     }
 
-
+    @Override
+    public void clear(){
+        compositeDisposable.clear();
+    }
 
 }

@@ -19,8 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
 import com.example.foodplanner.data.local.CacheHelper;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.profile.presenter.ProfilePresenter;
 import com.example.foodplanner.profile.presenter.ProfilePresenterImp;
@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment implements ProfileView{
 
         initializeUI(view);
 
-        profilePresenter = new ProfilePresenterImp(FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
+        profilePresenter = new ProfilePresenterImp(FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
                 CacheHelper.getInstance(requireContext())), this);
 
 
@@ -90,5 +90,11 @@ public class ProfileFragment extends Fragment implements ProfileView{
     @Override
     public void showError(String message) {
         Toast.makeText(requireContext(), "Failed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        profilePresenter.clear();
     }
 }
