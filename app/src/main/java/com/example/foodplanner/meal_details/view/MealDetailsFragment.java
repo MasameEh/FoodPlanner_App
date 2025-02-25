@@ -25,12 +25,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.local.CacheHelper;
 import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.local.db.MealPlan.MealPlanLocalDataSourceImp;
 import com.example.foodplanner.data.model.Ingredient;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.MealPlan;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
+import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.data.repo.meal_plan_repo.MealPlanRepositoryImp;
 import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.meal_details.presenter.MealDetailsPresenter;
@@ -94,6 +97,8 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
 
         presenter = new MealDetailsPresenterImp(
                 MealRepositoryImp.getInstance(
+                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext())),
                         MealRemoteDataSourceImp.getInstance(),
                         MealLocalDataSourceImp.getInstance(requireContext())),
                 MealPlanRepositoryImp.getInstance(

@@ -25,10 +25,13 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.local.CacheHelper;
 import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.model.Meal;
 import com.example.foodplanner.data.model.User;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
+import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.home.presenter.HomePresenter;
 import com.example.foodplanner.home.presenter.HomePresenterImp;
@@ -68,6 +71,8 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
 
         presenter = new HomePresenterImp(this,
                 MealRepositoryImp.getInstance(
+                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext())),
                         MealRemoteDataSourceImp.getInstance(),
                         MealLocalDataSourceImp.getInstance(requireContext())));
 

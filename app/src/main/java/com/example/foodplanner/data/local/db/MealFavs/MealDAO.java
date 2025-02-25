@@ -22,7 +22,8 @@ public interface MealDAO {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertMeal(Meal meal);
-
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    Completable insertAllMeals(List<Meal> meals);
     @Delete
     Completable deleteMeal(Meal meal);
 

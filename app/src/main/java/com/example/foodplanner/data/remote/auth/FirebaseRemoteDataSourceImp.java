@@ -3,33 +3,39 @@ package com.example.foodplanner.data.remote.auth;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealPlan;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
-public class FirebaseRemoteDataSource implements AuthService{
+public class FirebaseRemoteDataSourceImp implements FirebaseRemoteData{
 
     private final FirebaseAuth mAuth;
     @SuppressLint("StaticFieldLeak")
-    private static FirebaseRemoteDataSource repo = null;
+    private static FirebaseRemoteDataSourceImp repo = null;
 
-    private FirebaseRemoteDataSource() {
+    private FirebaseRemoteDataSourceImp() {
         this.mAuth = FirebaseAuth.getInstance();
     }
 
-    public static FirebaseRemoteDataSource getInstance(){
+    public static FirebaseRemoteDataSourceImp getInstance(){
         if(repo == null){
-            repo = new FirebaseRemoteDataSource();
+            repo = new FirebaseRemoteDataSourceImp();
         }
         return repo;
     }
@@ -46,8 +52,6 @@ public class FirebaseRemoteDataSource implements AuthService{
                     mAuth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
-
-
                                     emitter.onSuccess(getCurrentUser().getUid());
 
                                 } else {
@@ -66,21 +70,6 @@ public class FirebaseRemoteDataSource implements AuthService{
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
-
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null) {
-                                        // Update display name with username
-                                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                                .setDisplayName(username)
-                                                .build();
-
-                                        user.updateProfile(profileUpdates)
-                                                .addOnCompleteListener(updateTask -> {
-                                                    if (updateTask.isSuccessful()) {
-                                                        Log.d("Firebase", "Display name set to: " + username);
-                                                    }
-                                                });
-                                    }
                                     emitter.onSuccess(getCurrentUser().getUid());
                                     saveUserToFirestore(mAuth.getCurrentUser().getUid(), username, email);
 
@@ -133,4 +122,74 @@ public class FirebaseRemoteDataSource implements AuthService{
                 }
             );
     }
+
+    @Override
+    public Completable saveFavoriteToFirestore(Meal meal) {
+        FirebaseUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            return Completable.error(new Exception("User not logged in"));
+        }
+
+        return Completable.create(emitter -> {
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(currentUser.getUid())
+                    .collection("favorites")
+                    .document(meal.getMealId())
+                    .set(meal)
+                    .addOnSuccessListener(aVoid -> {
+                        Log.i("FIREBASE", "saveFavoriteToFirestore: DONE");
+                        emitter.onComplete();
+                    })
+                    .addOnFailureListener(emitter::onError);
+        });
+    }
+
+    @Override
+    public Completable removeFromFavorites(Meal meal) {
+        FirebaseUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            return Completable.error(new Exception("User not logged in"));
+        }
+
+        return Completable.create(emitter -> {
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(currentUser.getUid())
+                    .collection("favorites")
+                    .document(meal.getMealId())
+                    .delete()
+                    .addOnSuccessListener(aVoid -> emitter.onComplete())
+                    .addOnFailureListener(emitter::onError);
+        });
+    }
+
+    @Override
+    public Single<List<Meal>> getFavoritesFromFirestore() {
+        FirebaseUser currentUser = getCurrentUser();
+        if (currentUser == null) {
+            return Single.error(new Exception("User not logged in"));
+        }
+
+        return Single.create(emitter -> {
+            FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(currentUser.getUid())
+                    .collection("favorites")
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        List<Meal> meals = new ArrayList<>();
+                        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                            Meal meal = document.toObject(Meal.class);
+                            if (meal != null) {
+                                meals.add(meal);
+                            }
+                        }
+                        emitter.onSuccess(meals);
+                    })
+                    .addOnFailureListener(emitter::onError);
+        });
+    }
+
+
 }

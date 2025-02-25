@@ -34,6 +34,11 @@ public class MealLocalDataSourceImp implements MealLocalDataSource {
         return favMeals;
     }
 
+    @Override
+    public Completable insertAllMeals(List<Meal> meals) {
+        return mealDAO.insertAllMeals(meals);
+    }
+
     public Completable delete(Meal meal){
         return  mealDAO.deleteMeal(meal);
     }

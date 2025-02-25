@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.foodplanner.R;
 
 import com.example.foodplanner.data.local.CacheHelper;
-import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.signup.presenter.SignupPresenter;
 import com.example.foodplanner.signup.presenter.SignupPresenterImp;
@@ -62,7 +62,8 @@ public class SignupFragment extends Fragment implements SignupView{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        signupPresenter = new SignupPresenterImp(FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
+        signupPresenter = new SignupPresenterImp(
+                FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
                 CacheHelper.getInstance(requireContext())), this);
 
         this.view = view;

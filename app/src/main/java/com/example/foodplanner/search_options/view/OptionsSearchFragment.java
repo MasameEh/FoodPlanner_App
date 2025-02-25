@@ -22,11 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.data.local.CacheHelper;
 import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.model.Category;
 import com.example.foodplanner.data.model.Ingredient;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.remote.network.Category.CategoriesRemoteDataSourceImp;
 import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
+import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.data.repo.category_repo.CategoryRepositoryImp;
 import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.search_options.presenter.OptionsSearchPresenter;
@@ -82,7 +85,8 @@ public class OptionsSearchFragment extends Fragment implements OptionsSearchView
         super.onViewCreated(view, savedInstanceState);
         optionsSearchPresenter = new OptionsSearchPresenterImp(
                 CategoryRepositoryImp.getInstance(CategoriesRemoteDataSourceImp.getInstance()),
-                MealRepositoryImp.getInstance(
+                MealRepositoryImp.getInstance(FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext())),
                         MealRemoteDataSourceImp.getInstance(),
                         MealLocalDataSourceImp.getInstance(requireContext()))
                         ,this);

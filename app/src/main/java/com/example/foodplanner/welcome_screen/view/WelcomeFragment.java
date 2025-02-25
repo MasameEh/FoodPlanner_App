@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.local.CacheHelper;
-import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.welcome_screen.presenter.WelcomePresenter;
 import com.example.foodplanner.welcome_screen.presenter.WelcomePresenterImp;
@@ -69,7 +69,7 @@ public class WelcomeFragment extends Fragment implements WelcomeView{
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
         presenter = new WelcomePresenterImp(this,
-                FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
+                FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
                         CacheHelper.getInstance(requireContext())));
         initializeUI(view);
 

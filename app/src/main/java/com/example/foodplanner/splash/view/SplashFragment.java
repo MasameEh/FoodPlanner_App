@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.local.CacheHelper;
-import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSource;
+import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
 import com.example.foodplanner.splash.presenter.SplashPresenter;
 import com.example.foodplanner.splash.presenter.SplashPresenterImp;
@@ -39,7 +39,7 @@ public class SplashFragment extends Fragment implements SplashView{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         splashPresenter =  new SplashPresenterImp(
-                FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSource.getInstance(),
+                FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
                         CacheHelper.getInstance(requireContext())),
                 this);
     }
