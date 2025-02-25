@@ -78,7 +78,18 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        presenter = new MealDetailsPresenterImp(
+                MealRepositoryImp.getInstance(
+                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext())),
+                        MealRemoteDataSourceImp.getInstance(),
+                        MealLocalDataSourceImp.getInstance(requireContext())),
+                MealPlanRepositoryImp.getInstance(
+                        MealPlanLocalDataSourceImp.getInstance(requireContext()),
+                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext()))
+                ),
+                this);
     }
 
     @Override
@@ -95,19 +106,6 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
         initializeUI(view);
         String mealId = MealDetailsFragmentArgs.fromBundle(getArguments()).getMealId();
 
-        presenter = new MealDetailsPresenterImp(
-                MealRepositoryImp.getInstance(
-                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
-                                CacheHelper.getInstance(requireContext())),
-                        MealRemoteDataSourceImp.getInstance(),
-                        MealLocalDataSourceImp.getInstance(requireContext())),
-                MealPlanRepositoryImp.getInstance(
-                        MealPlanLocalDataSourceImp.getInstance(requireContext()),
-                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
-                                CacheHelper.getInstance(requireContext()))
-                ),
-                this);
-
         Disposable mealDetails = presenter.getMealDetails(mealId);
 
         compositeDisposable.add(mealDetails);
@@ -123,6 +121,7 @@ public class MealDetailsFragment extends Fragment implements MealDetailsView{
 
 
     public void initializeUI(View view){
+
         mealName = view.findViewById(R.id.tv_meal_name);
         mealCountry = view.findViewById(R.id.tv_meal_country);
         mealImage = view.findViewById(R.id.iv_meal_detail_image);

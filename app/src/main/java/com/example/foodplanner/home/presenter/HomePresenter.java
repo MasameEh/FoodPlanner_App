@@ -5,4 +5,6 @@ public interface HomePresenter {
 
 
     void getVariousRandomMeals();
+
+    void clear();
 }

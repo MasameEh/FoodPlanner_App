@@ -4,6 +4,7 @@ import com.example.foodplanner.data.repo.meal_repo.MealRepository;
 import com.example.foodplanner.home.view.HomeView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -13,6 +14,7 @@ public class HomePresenterImp implements HomePresenter{
     private final MealRepository mealRepo;
 
     private static final String TAG = "HomePresenterImp";
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
     public HomePresenterImp(HomeView homeView, MealRepository mealRepo) {
         this.homeView = homeView;
         this.mealRepo = mealRepo;
@@ -27,8 +29,9 @@ public class HomePresenterImp implements HomePresenter{
                         meals -> homeView.showRandomMealData(meals),
                         throwable -> homeView.showErr(throwable.getMessage())
                 );
+        compositeDisposable.add(subscribe);
     }
-
+    @Override
     public void getVariousRandomMeals() {
         Disposable subscribe = mealRepo.getVariousRandomMeals()
                 .subscribeOn(Schedulers.io())
@@ -37,9 +40,11 @@ public class HomePresenterImp implements HomePresenter{
                         meals -> homeView.showRandomMealsData(meals),
                         throwable -> homeView.showErr(throwable.getMessage())
                 );
-
+        compositeDisposable.add(subscribe);
     }
-
-
+    @Override
+    public void clear(){
+        compositeDisposable.clear();;
+    }
 
 }

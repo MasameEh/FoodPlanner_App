@@ -42,20 +42,19 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
 
     private static final String TAG = "HomeFragment";
 
-    ImageView mealIv;
+    private ImageView mealIv;
 
-    TextView mealNameTv, mealCategoryTv;
+    private TextView mealNameTv, mealCategoryTv;
 
-    User user;
+    private User user;
 
-    HomePresenter presenter;
-
-    ProgressBar progressBar;
-    RecyclerView randomMealsRv;
+    private HomePresenter presenter;
+    private ProgressBar progressBar;
+    private RecyclerView randomMealsRv;
 
     CardView cv;
     private Meal randomMeal;
-    RandomMealsRecyclerViewAdapter randomMealsAdapter;
+    private RandomMealsRecyclerViewAdapter randomMealsAdapter;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -67,7 +66,6 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate: ");
         requireActivity().setTitle("Home");
-        //user = HomeFragmentArgs.fromBundle(getArguments()).getUser();
 
         presenter = new HomePresenterImp(this,
                 MealRepositoryImp.getInstance(
@@ -162,5 +160,11 @@ public class HomeFragment extends Fragment implements HomeView, OnMealClickListe
         HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
                 HomeFragmentDirections.actionHomeFragmentToMealDetailsFragment(mealId);
         NavHostFragment.findNavController(this).navigate(action);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.clear();
     }
 }
