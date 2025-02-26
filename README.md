@@ -16,7 +16,25 @@ MealBuddy is an Android app that helps users plan their meals, discover new reci
 - 🚀 **Optimized Performance** with **RxJava & MVP architecture**.
 
 ## 📱 Screenshots
-
+<div align="center">
+  <img src="screenshots/splash.jpg" width="250">
+  <img src="screenshots/welcome.jpg" width="250">
+  <img src="screenshots/google.jpg" width="250">
+  <img src="screenshots/login.jpg" width="250">
+  <img src="screenshots/signup.jpg" width="250">
+  <img src="screenshots/home.jpg" width="250">
+  <img src="screenshots/meal_details.jpg" width="250">
+  <img src="screenshots/search_options.jpg" width="250">
+  <img src="screenshots/ingredients.jpg" width="250">
+  <img src="screenshots/meals.jpg" width="250">
+  <img src="screenshots/favs.jpg" width="250">
+  <img src="screenshots/no_favs.jpg" width="250">
+  <img src="screenshots/plans.jpg" width="250">
+  <img src="screenshots/profile.jpg" width="250">
+  <img src="screenshots/guest.jpeg" width="250">
+  <img src="screenshots/offline.jpeg" width="250">
+  
+</div>
 
 ## 🏗️ Architecture
 - **MVP (Model-View-Presenter) Architecture** for better maintainability.
@@ -36,16 +54,11 @@ MealBuddy is an Android app that helps users plan their meals, discover new reci
 ## 🛠️ Setup & Installation
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/yourusername/FoodPlanner.git
+   git clone https://github.com/MasameEh/FoodPlanner.git
    cd FoodPlanner
    ```
 2. **Open in Android Studio** and sync Gradle.
 3. **Add API Keys**:
-   - Get a free API key from [TheMealDB](https://www.themealdb.com/api.php).
-   - Add it to `local.properties`:
-     ```properties
-     MEALDB_API_KEY=your_api_key_here
-     ```
    - Set up Firebase and add `google-services.json` to the `app/` folder.
 4. **Run the app** on an emulator or device.
 
