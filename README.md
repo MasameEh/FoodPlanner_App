@@ -11,7 +11,6 @@ MealBuddy is an Android app that helps users plan their meals, discover new reci
 - 🔄 **Sync & Backup** favorites and meal plans via **Cloud Firestore**.
 - 👤 **Authentication** with Google, Facebook, and Twitter via **Firebase**.
 - 🎥 **Meal Details**: Name, image, country, ingredients (with images), steps, and a video.
-- 📆 **Bonus Feature**: Add meals to the device's calendar.
 - ⚡ **Offline Support**: Access saved meals and plans without an internet connection.
 - 🚀 **Optimized Performance** with **RxJava & MVP architecture**.
 
