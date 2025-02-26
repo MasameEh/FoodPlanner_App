@@ -14,4 +14,6 @@ public interface MealLocalDataSource {
     Completable insertAllMeals(List<Meal> meals);
     Completable delete(Meal meal);
     Completable insert(Meal meal);
+
+    Completable clearDatabase();
 }

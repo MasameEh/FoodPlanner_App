@@ -107,4 +107,9 @@ public class MealRepositoryImp implements MealRepository {
         );
     }
 
+    @Override
+    public Completable clearDatabase() {
+        return mealLocal.clearDatabase();
+    }
+
 }

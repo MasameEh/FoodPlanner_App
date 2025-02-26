@@ -2,6 +2,7 @@ package com.example.foodplanner.profile.presenter;
 
 import com.example.foodplanner.data.repo.FirebaseRepository;
 
+import com.example.foodplanner.data.repo.meal_repo.MealRepository;
 import com.example.foodplanner.profile.view.ProfileView;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -17,13 +18,13 @@ public class ProfilePresenterImp implements ProfilePresenter {
 
     private final ProfileView profileView;
 
+    private final MealRepository mealRepository;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    public ProfilePresenterImp(FirebaseRepository authRepo,
-
-                               ProfileView profileView) {
+    public ProfilePresenterImp(FirebaseRepository authRepo, ProfileView profileView, MealRepository mealRepository) {
         this.authRepo = authRepo;
         this.profileView = profileView;
 
+        this.mealRepository = mealRepository;
     }
 
     public FirebaseUser getCurrentUser(){
@@ -32,10 +33,12 @@ public class ProfilePresenterImp implements ProfilePresenter {
 
     public void logoutUser(){
         Disposable subscribe = authRepo.logoutUser()
+                .andThen(mealRepository.clearDatabase())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         () -> {
+
                             authRepo.clearUserData();
                             profileView.navigateToLogin();
                         },

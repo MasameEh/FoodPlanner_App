@@ -7,18 +7,20 @@ import com.example.foodplanner.data.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MealLocalDataSourceImp implements MealLocalDataSource {
     private final MealDAO mealDAO;
-
+    private FavoriteDatabase database;
     private final Flowable<List<Meal>> favMeals;
     @SuppressLint("StaticFieldLeak")
     private static MealLocalDataSourceImp repo = null;
 
     private MealLocalDataSourceImp(Context context){
-        FavoriteDatabase database = FavoriteDatabase.getInstance(context);
+        database = FavoriteDatabase.getInstance(context);
         mealDAO = database.getMealDAO();
         favMeals = mealDAO.getAllFavProducts();
     }
@@ -45,5 +47,14 @@ public class MealLocalDataSourceImp implements MealLocalDataSource {
 
     public Completable insert(Meal meal){
         return mealDAO.insertMeal(meal);
+    }
+
+    @Override
+    public Completable clearDatabase() {
+        return Completable.create(emitter -> {
+                    database.clearAllTables();
+                    emitter.onComplete();
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

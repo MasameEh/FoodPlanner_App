@@ -50,7 +50,6 @@ public class SearchMealsFragment extends Fragment implements SearchMealView, OnM
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

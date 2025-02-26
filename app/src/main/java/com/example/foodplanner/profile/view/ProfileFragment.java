@@ -20,8 +20,11 @@ import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.data.local.CacheHelper;
+import com.example.foodplanner.data.local.db.MealFavs.MealLocalDataSourceImp;
 import com.example.foodplanner.data.remote.auth.FirebaseRemoteDataSourceImp;
+import com.example.foodplanner.data.remote.network.Meal.MealRemoteDataSourceImp;
 import com.example.foodplanner.data.repo.FirebaseRepositoryImp;
+import com.example.foodplanner.data.repo.meal_repo.MealRepositoryImp;
 import com.example.foodplanner.profile.presenter.ProfilePresenter;
 import com.example.foodplanner.profile.presenter.ProfilePresenterImp;
 
@@ -60,8 +63,15 @@ public class ProfileFragment extends Fragment implements ProfileView{
 
         initializeUI(view);
 
-        profilePresenter = new ProfilePresenterImp(FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
-                CacheHelper.getInstance(requireContext())), this);
+        profilePresenter = new ProfilePresenterImp(
+                FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                CacheHelper.getInstance(requireContext())), this,
+                MealRepositoryImp.getInstance(
+                        FirebaseRepositoryImp.getInstance(FirebaseRemoteDataSourceImp.getInstance(),
+                                CacheHelper.getInstance(requireContext())),
+                        MealRemoteDataSourceImp.getInstance(),
+                        MealLocalDataSourceImp.getInstance(requireContext()))
+                );
 
 
 

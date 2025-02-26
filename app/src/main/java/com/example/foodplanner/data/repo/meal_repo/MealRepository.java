@@ -29,4 +29,6 @@ public interface MealRepository {
 
     Completable deleteMeal(Meal meal);
 
+    Completable clearDatabase();
+
 }
