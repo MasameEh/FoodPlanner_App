@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
     id("androidx.navigation.safeargs")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -28,8 +29,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
@@ -74,5 +75,9 @@ dependencies {
 
     implementation ("com.github.sparrow007:carouselrecyclerview:1.2.6")
     implementation ("com.facebook.shimmer:shimmer:0.5.0")
+
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.56.2")
+    annotationProcessor("com.google.dagger:hilt-android-compiler:2.56.2")
 
 }

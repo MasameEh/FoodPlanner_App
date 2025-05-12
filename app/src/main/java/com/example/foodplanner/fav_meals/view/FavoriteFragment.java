@@ -32,10 +32,10 @@ import com.example.foodplanner.utils.CustomToast;
 
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class FavoriteFragment extends Fragment implements FavoriteView, OnRemoveIconClicked<Meal>, OnMealClickListener  {
-
-
 
     private RecyclerView favMealRv;
 

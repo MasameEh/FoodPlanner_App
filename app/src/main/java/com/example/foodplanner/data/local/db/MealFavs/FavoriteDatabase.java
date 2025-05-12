@@ -7,6 +7,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.foodplanner.data.model.Meal;
+import com.example.foodplanner.data.model.MealPlan;
 
 
 @Database(entities = {Meal.class}, version = 1)

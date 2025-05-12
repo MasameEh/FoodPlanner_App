@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_app_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodPlanner"
-        tools:targetApi="31" >
+        tools:targetApi="31"
+        android:name=".FoodPlannerApplication">
         <activity
             android:name=".main_activity.view.MainActivity"
             android:exported="true"

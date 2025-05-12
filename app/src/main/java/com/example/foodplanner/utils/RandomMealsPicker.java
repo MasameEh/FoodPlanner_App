@@ -7,7 +7,6 @@ import java.util.Random;
 public class RandomMealsPicker {
     static List<String> mealAreas = new ArrayList<>();
     static {
-
         mealAreas.add("American");
         mealAreas.add("British");
         mealAreas.add("Canadian");

@@ -32,6 +32,9 @@ import com.example.foodplanner.utils.NetworkHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity implements MainView{
     private static final String TAG = "MainActivity";
     private NavController navController;

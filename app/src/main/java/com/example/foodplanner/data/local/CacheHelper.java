@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 public class CacheHelper {
     private static final String PREF_NAME = "food_planner_prefs";
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
     private static CacheHelper cacheHelper;
