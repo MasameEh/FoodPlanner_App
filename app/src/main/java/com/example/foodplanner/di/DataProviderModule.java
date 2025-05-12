@@ -1,5 +1,9 @@
 package com.example.foodplanner.di;
 
+import android.content.Context;
+
+import com.example.foodplanner.data.local.db.MealFavs.FavoriteDatabase;
+import com.example.foodplanner.data.local.db.MealFavs.MealDAO;
 import com.example.foodplanner.data.remote.network.MealService;
 
 import javax.inject.Singleton;
@@ -7,6 +11,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory;
 import retrofit2.Retrofit;
@@ -31,7 +36,13 @@ public class DataProviderModule {
     }
 
     @Provides
-    public MealService provideDataBase(Retrofit retrofit){
-        return retrofit.create(MealService.class);
+    @Singleton
+    public FavoriteDatabase provideDataBase(@ApplicationContext Context context){
+        return FavoriteDatabase.getInstance(context);
+    }
+
+    @Provides
+    public MealDAO provideDao (FavoriteDatabase db){
+        return db.getMealDAO();
     }
 }
